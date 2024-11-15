@@ -1,6 +1,6 @@
-<img title="sanguihedral" src="./public/sanguihedral.png" alt="bloody ten-sided die" width="91" data-align="center">
-
 # Sanguihedral
+
+<img title="sanguihedral" src="./public/sanguihedral.png" alt="bloody ten-sided die" width="91" data-align="center">
 
 Sanguihedral is intended to be a sect-agnostic dice and character sheet app for Vampire the Masquerade v5. This app is designed and built for two purposes:
 
@@ -8,7 +8,7 @@ Sanguihedral is intended to be a sect-agnostic dice and character sheet app for 
 
 - Second, it was requested by my local LARP group because our preferred dice rolling app is no longer available for iOS users and we needed a replacement
 
-Current version can be found here => https://uncletallest.github.io/sanguihedral/
+Current version can be found here => <https://uncletallest.github.io/sanguihedral/>
 
 ## Design Notes
 
@@ -18,7 +18,7 @@ Character Sheet options:
 
 - choose Sect [this changes the dice image used for rolls]
 
-- choose Clan (Optional)[this also affects images and sheet labels]
+- choose Clan [this also affects images and sheet labels]
 
 - input character values [this populates available rolls]
 
@@ -37,4 +37,7 @@ Nice to haves =>
 - display messy criticals and bestial failures
 
 Want to show me appreciation for the work I've done on this free app?
-Buy me a coffee --
+
+Well then, buy me a coffee...
+
+<a href='https://ko-fi.com/C0C3BK9W7' target='_blank'><img height='36' style='border:0px;height:120px;' src='./public/kofi_badge_sanguihedral.png' border='0' alt='Buy Me a Coffee at ko-fi.com' /></a>

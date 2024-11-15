@@ -1,7 +1,8 @@
 // import { useState } from "react";
 // import reactLogo from "./assets/react.svg";
 import sanguihedralLogo from "../public/sanguihedral.png";
-import KofiWidget from "./Components/KofiWidget";
+import kofiButton from "../public/kofi_badge_sanguihedral.png";
+// import KofiWidget from "./Components/KofiWidget";
 import "./App.css";
 
 function App() {
@@ -21,7 +22,10 @@ function App() {
       <h1>Sanguihedral</h1>
       <p>Sanguihedral is intended to be a cross-platform, sect-agnostic</p>
       <p>dice roller and character sheet app for Vampire the Masquerade v5.</p>
-      <KofiWidget />
+      {/* <KofiWidget /> */}
+      <a href="https://ko-fi.com/uncletallest" target="_blank">
+        <img src={kofiButton} className="logo" alt="Buy me a coffee on Ko-fi" />
+      </a>
     </>
   );
 }
