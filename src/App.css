@@ -20,6 +20,7 @@
   display: flex;
   flex-direction: row;
   justify-content: space-around;
+  padding-top: 32px;
 }
 
 .entryButton {
@@ -29,6 +30,7 @@
   border: none;
   border-radius: 2rem;
 }
+
 /* @keyframes logo-spin {
   from {
     transform: rotate(0deg);

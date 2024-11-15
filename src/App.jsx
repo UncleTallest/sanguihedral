@@ -29,11 +29,8 @@ function App() {
           dice roller and character sheet app for Vampire the Masquerade v5.
         </p>
         <div className="buttonContainer">
-          <button name="register" className="entryButton" type="button">
-            Sign Up
-          </button>
           <button name="login" className="entryButton" type="button">
-            Log In
+            Register or Log In
           </button>
         </div>
       </main>
