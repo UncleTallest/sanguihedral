@@ -34,8 +34,11 @@ body {
 
 main {
   background-color: #0e0e0e;
+  color: #f8f8f8;
   width: 80vw;
   height: 100vh;
+  display: flex;
+  margin: 0 auto;
 }
 
 h1 {
