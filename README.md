@@ -8,6 +8,8 @@ Sanguihedral is intended to be a sect-agnostic dice and character sheet app for 
 
 - Second, it was requested by my local LARP group because our preferred dice rolling app is no longer available for iOS users and we needed a replacement
 
+Current version can be found here => https://uncletallest.github.io/sanguihedral/
+
 ## Design Notes
 
 To be "complete" this app needs to give the player the ability to =>
@@ -33,3 +35,6 @@ Nice to haves =>
 - adjustable advantage/disadvantage on rolls
 
 - display messy criticals and bestial failures
+
+Want to show me appreciation for the work I've done on this free app?
+Buy me a coffee --
