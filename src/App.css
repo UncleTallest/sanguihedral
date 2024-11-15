@@ -32,7 +32,9 @@
 }
 
 .copyright {
+  margin-top: 12px;
   margin-bottom: 32px;
+  color: #f8f8f8;
 }
 
 .kofiButton {
