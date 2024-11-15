@@ -1,3 +1,5 @@
+<img title="" src="file:///home/tallest/.config/marktext/images/2024-11-15-12-04-49-image.png" alt="" width="91" data-align="center">
+
 # Sanguihedral
 
 Sanguihedral is intended to be a sect-agnostic dice and character sheet app for Vampire the Masquerade v5. This app is designed and built for two purposes:
@@ -16,7 +18,7 @@ Character Sheet options:
 
 - choose Clan (Optional)[this also affects images and sheet labels]
 
-- input other character sheet values [this populates available rolls]
+- input character values [this populates available rolls]
 
 Dice Roller options:
 
