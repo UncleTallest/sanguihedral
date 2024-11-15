@@ -13,7 +13,11 @@
   transition: filter 300ms;
 }
 .logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
+  filter: drop-shadow(0 0 2em #a80202);
+}
+
+.blurb {
+  line-height: 1.2rem;
 }
 
 .buttonContainer {
@@ -43,7 +47,7 @@
   transition: filter 300ms;
 }
 .kofiButton:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
+  filter: drop-shadow(0 0 12px #a80202);
 }
 
 /* @keyframes logo-spin {
