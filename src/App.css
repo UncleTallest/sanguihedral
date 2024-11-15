@@ -31,6 +31,10 @@
   border-radius: 2rem;
 }
 
+.kofiButton {
+  height: 360px;
+}
+
 /* @keyframes logo-spin {
   from {
     transform: rotate(0deg);
