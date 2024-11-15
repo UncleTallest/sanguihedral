@@ -36,7 +36,7 @@ main {
   background-color: #0e0e0e;
   color: #f8f8f8;
   width: 80vw;
-  height: 100vh;
+  min-height: 800px;
   display: flex;
   flex-direction: column;
   margin: 0 auto;
@@ -70,7 +70,7 @@ button:focus-visible {
 footer {
   background-color: #0e0e0e;
   width: 80vw;
-  height: 100vh;
+  height: 300px;
   margin: 0 auto;
 }
 
