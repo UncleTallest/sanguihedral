@@ -16,7 +16,7 @@ To be "complete" this app needs to give the player the ability to =>
 
 Character Sheet options:
 
-- choose Sect [this changes the dice image used for rolls]
+- choose Sect [this changes the dice image used for rolls and sheet labels]
 
 - choose Clan [this also affects images and sheet labels]
 
