@@ -35,6 +35,7 @@ function App() {
         </div>
       </main>
       <footer>
+        <p className="copyright">Copyright 2024 -- Jerry W Jackson</p>
         <a href="https://ko-fi.com/uncletallest" target="_blank">
           <img
             src={kofiButton}

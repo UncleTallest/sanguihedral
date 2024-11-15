@@ -31,6 +31,10 @@
   border-radius: 2rem;
 }
 
+.copyright {
+  margin-bottom: 32px;
+}
+
 .kofiButton {
   height: 100px;
   will-change: filter;
