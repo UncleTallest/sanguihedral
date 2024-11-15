@@ -19,13 +19,12 @@
 .buttonContainer {
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: space-around;
 }
 
 .entryButton {
   margin: 0;
-  margin-bottom: 40px;
-  width: 24rem;
+  width: 12rem;
   height: 4rem;
   border: none;
   border-radius: 2rem;
