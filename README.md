@@ -1,4 +1,4 @@
-<img title="" src="file:///home/tallest/.config/marktext/images/2024-11-15-12-04-49-image.png" alt="" width="91" data-align="center">
+<img title="sanguihedral" src="./public/sanguihedral.png" alt="bloody ten-sided die" width="91" data-align="center">
 
 # Sanguihedral
 
