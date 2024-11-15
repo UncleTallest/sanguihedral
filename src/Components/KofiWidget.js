@@ -21,8 +21,8 @@ const KofiWidget = () => {
     window.kofiWidgetOverlay.draw("uncletallest", {
       type: "floating-chat",
       "floating-chat.donateButton.text": "Tip Me",
-      "floating-chat.donateButton.background-color": "#a80202",
-      "floating-chat.donateButton.text-color": "#323842",
+      "floating-chat.donateButton.background-color": "#323842",
+      "floating-chat.donateButton.text-color": "#a80202",
     });
   }, [loaded]); // the hook will depend on the loaded state
 };
