@@ -19,8 +19,8 @@ function App() {
         </a>
       </div>
       <h1>Sanguihedral</h1>
-      <p>Sanguihedral is intended to be a cross-platform, sect-agnostic dice</p>
-      <p>roller and character sheet app for Vampire the Masquerade v5.</p>
+      <p>Sanguihedral is intended to be a cross-platform, sect-agnostic</p>
+      <p>dice roller and character sheet app for Vampire the Masquerade v5.</p>
       <KofiWidget />
     </>
   );
