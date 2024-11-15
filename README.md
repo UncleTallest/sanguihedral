@@ -36,6 +36,8 @@ Nice to haves =>
 
 - display messy criticals and bestial failures
 
+## Final note
+
 Want to show me appreciation for the work I've done on this free app?
 
 Well then, buy me a coffee...
