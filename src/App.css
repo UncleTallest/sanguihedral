@@ -16,6 +16,14 @@
   filter: drop-shadow(0 0 2em #646cffaa);
 }
 
+.kofiButton {
+  margin: 0;
+  margin-bottom: 40px;
+  width: 24rem;
+  height: 4rem;
+  border: none;
+  border-radius: 2rem;
+}
 /* @keyframes logo-spin {
   from {
     transform: rotate(0deg);

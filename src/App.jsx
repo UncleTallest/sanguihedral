@@ -28,12 +28,18 @@ function App() {
         <p>
           dice roller and character sheet app for Vampire the Masquerade v5.
         </p>
+        <button name="register" className="header__button" type="button">
+          Sign Up
+        </button>
+        <button name="login" className="header__button" type="button">
+          Log In
+        </button>
       </main>
       <footer>
         <a href="https://ko-fi.com/uncletallest" target="_blank">
           <img
             src={kofiButton}
-            className="logo"
+            className="kofiButton"
             alt="Buy me a coffee on Ko-fi"
           />
         </a>
