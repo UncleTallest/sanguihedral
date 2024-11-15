@@ -1,6 +1,5 @@
 #root {
-  max-width: 1280px;
-  margin: 0 auto;
+  margin: 0;
   padding: 0;
   text-align: center;
   height: 100vh;
@@ -13,11 +12,11 @@
   transition: filter 300ms;
 }
 .logo:hover {
-  filter: drop-shadow(0 0 2em #a80202);
+  filter: drop-shadow(0 0 15px #a80202);
 }
 
 .blurb {
-  line-height: 1.2rem;
+  line-height: 1.1rem;
 }
 
 .buttonContainer {
@@ -36,8 +35,8 @@
 }
 
 .copyright {
-  padding-top: 12px;
-  padding-bottom: 32px;
+  padding-top: 20px;
+  padding-bottom: 20px;
   color: #f8f8f8;
 }
 
