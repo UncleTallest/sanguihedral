@@ -17,11 +17,12 @@ function App() {
             alt="Sanguihedral logo"
           />
         </a>
-        {/* <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a> */}
       </div>
       <h1>Sanguihedral</h1>
+      <p>
+        Sanguihedral is intended to be a cross-platform, sect-agnostic dice
+        roller and character sheet app for Vampire the Masquerade v5.
+      </p>
       <KofiWidget />
     </>
   );
