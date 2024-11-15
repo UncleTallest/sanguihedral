@@ -16,7 +16,7 @@ Character Sheet options:
 
 - choose Clan (Optional)[this also affects images and sheet labels]
 
-- input character values [this populates available rolls]
+- input other character sheet values [this populates available rolls]
 
 Dice Roller options:
 
