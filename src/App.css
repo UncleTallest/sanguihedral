@@ -16,7 +16,13 @@
   filter: drop-shadow(0 0 2em #646cffaa);
 }
 
-.kofiButton {
+.buttonContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.entryButton {
   margin: 0;
   margin-bottom: 40px;
   width: 24rem;
