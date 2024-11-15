@@ -10,7 +10,7 @@ function App() {
   return (
     <>
       <div>
-        <a href="https://vite.dev" target="_blank">
+        <a href="https://uncletallest.github.io/sanguihedral/" target="_blank">
           <img
             src={sanguihedralLogo}
             className="logo"
