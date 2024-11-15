@@ -1,3 +1,5 @@
+@import url(./vendor/normalize.css);
+@import url(./vendor/fonts.css);
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
@@ -30,6 +32,12 @@ body {
   min-height: 100vh;
 }
 
+main {
+  background-color: #0e0e0e;
+  width: 80vw;
+  height: 100vh;
+}
+
 h1 {
   font-size: 3.2em;
   line-height: 1.1;
@@ -53,6 +61,12 @@ button:hover {
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
+}
+
+footer {
+  background-color: #0e0e0e;
+  width: 80vw;
+  height: 100vh;
 }
 
 @media (prefers-color-scheme: light) {

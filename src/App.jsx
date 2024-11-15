@@ -10,22 +10,34 @@ function App() {
 
   return (
     <>
-      <div>
-        <a href="https://uncletallest.github.io/sanguihedral/" target="_blank">
+      <main>
+        <div>
+          <a
+            href="https://uncletallest.github.io/sanguihedral/"
+            target="_blank"
+          >
+            <img
+              src={sanguihedralLogo}
+              className="logo"
+              alt="Sanguihedral logo"
+            />
+          </a>
+        </div>
+        <h1>Sanguihedral</h1>
+        <p>Sanguihedral is intended to be a cross-platform, sect-agnostic</p>
+        <p>
+          dice roller and character sheet app for Vampire the Masquerade v5.
+        </p>
+      </main>
+      <footer>
+        <a href="https://ko-fi.com/uncletallest" target="_blank">
           <img
-            src={sanguihedralLogo}
+            src={kofiButton}
             className="logo"
-            alt="Sanguihedral logo"
+            alt="Buy me a coffee on Ko-fi"
           />
         </a>
-      </div>
-      <h1>Sanguihedral</h1>
-      <p>Sanguihedral is intended to be a cross-platform, sect-agnostic</p>
-      <p>dice roller and character sheet app for Vampire the Masquerade v5.</p>
-      {/* <KofiWidget /> */}
-      <a href="https://ko-fi.com/uncletallest" target="_blank">
-        <img src={kofiButton} className="logo" alt="Buy me a coffee on Ko-fi" />
-      </a>
+      </footer>
     </>
   );
 }
