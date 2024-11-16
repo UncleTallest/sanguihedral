@@ -33,6 +33,7 @@
   height: 4rem;
   border: none;
   border-radius: 2rem;
+  color: #f8f8f8;
   background-image: url(/public/bloody_background.png);
   background-position: center;
   will-change: filter;
