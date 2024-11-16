@@ -33,6 +33,8 @@
   height: 4rem;
   border: none;
   border-radius: 2rem;
+  background-image: url(/public/bloody_background.png);
+  background-position: center;
   will-change: filter;
   transition: filter 300ms;
 }
