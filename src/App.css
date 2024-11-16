@@ -34,7 +34,7 @@
   border: none;
   border-radius: 2rem;
   color: #0e0e0e;
-  background-image: url(/public/bloody_background.png);
+  background-image: url(/public/bloody_background_128px_height.png);
   background-position: center;
   will-change: filter;
   transition: filter 300ms;
