@@ -25,9 +25,9 @@ function App() {
         </div>
         <h1>Sanguihedral</h1>
         <div className="blurb">
-          <p>Sanguihedral is intended to be a cross-platform, sect-agnostic</p>
           <p>
-            dice roller and character sheet app for Vampire the Masquerade v5.
+            Sanguihedral is intended to be a cross-platform, sect-agnostic dice
+            roller and character sheet app for Vampire the Masquerade v5.
           </p>
         </div>
         <div className="buttonContainer">
