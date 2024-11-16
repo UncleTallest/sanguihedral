@@ -50,7 +50,7 @@
 }
 
 .kofiButton {
-  height: 100px;
+  height: 4rem;
   will-change: filter;
   transition: filter 300ms;
 }
