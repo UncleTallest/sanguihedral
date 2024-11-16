@@ -34,6 +34,11 @@
   height: 4rem;
   border: none;
   border-radius: 2rem;
+  will-change: filter;
+  transition: filter 300ms;
+}
+.entryButton:hover {
+  filter: drop-shadow(0 0 15px #a80202);
 }
 
 .copyright {
