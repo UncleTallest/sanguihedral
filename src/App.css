@@ -18,6 +18,7 @@
 .blurb {
   line-height: 1.1rem;
   max-width: 300px;
+  text-align: center;
 }
 
 .buttonContainer {
