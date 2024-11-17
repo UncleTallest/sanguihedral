@@ -31,6 +31,8 @@ Nice to haves =>
 
 - adjustable advantage/disadvantage on rolls
 - display messy criticals and bestial failures
+- desktop client -- Linux>Windows>MacOS
+- storyteller mode that allows player clients to attach to a storyteller via NFC for a given scene; this would allow all rolls to be "silently" sent to the storyteller and keep other players guessing as long as possible
 
 ## Final note
 
