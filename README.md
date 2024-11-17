@@ -17,23 +17,19 @@ To be "complete" this app needs to give the player the ability to =>
 Character Sheet options:
 
 - choose Sect [this changes the dice image used for rolls and sheet labels]
-
 - choose Clan [this also affects images and sheet labels]
-
 - input character values [this populates available rolls]
 
 Dice Roller options:
 
 - choose what to roll [ensure there is a custom option (maybe a picker?) for when the ST allows an alternate skill for a given roll] -- include rouse checks, frenzy checks, and hunting rolls in this
-
 - account for hunger when rolling
-
+- choose a custom difficulty for a given roll for those times when you have difficulty modifiers given to you by a Storyteller for "reasons" :smirk:
 - display successes, critical successes, and failures
 
 Nice to haves =>
 
 - adjustable advantage/disadvantage on rolls
-
 - display messy criticals and bestial failures
 
 ## Final note
