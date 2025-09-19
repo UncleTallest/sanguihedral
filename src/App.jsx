@@ -43,8 +43,31 @@ function App() {
           />
         </a>
       </footer>
+      {activeModal === "login" && (
+        <LoginModal
+          isOpen={activeModal === "login"}
+          onClose={handleCloseModal}
+          handleLogin={handleLogin}
+          onSecondButtonClick={() => handleOpenModal("register")}
+          setActiveModal={setActiveModal}
+          isLoading={isLoading}
+          setIsLoading={setIsLoading}
+        />
+      )}
+      {activeModal === "register" && (
+        <RegisterModal
+          isOpen={activeModal === "register"}
+          onClose={handleCloseModal}
+          onRegistration={handleRegistration}
+          onLogin={handleLogin}
+          onSecondButtonClick={() => handleOpenModal("login")}
+          setActiveModal={setActiveModal}
+          isLoading={isLoading}
+          setIsLoading={setIsLoading}
+        />
+      )}
+      ;
     </>
   );
 }
-
 export default App;
