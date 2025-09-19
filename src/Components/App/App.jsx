@@ -2,8 +2,8 @@
 // import reactLogo from "./assets/react.svg";
 import sanguihedralLogo from "../../../public/sanguihedral.png";
 import kofiButton from "../../../public/kofi_badge_sanguihedral.png";
-import { handleOpenModal, handleCloseModal } from "../../../utils/modals";
-import { getToken, handleToken, checkToken } from "../../../utils/token";
+import { handleOpenModal, handleCloseModal } from "../../utils/modals";
+//import { getToken, handleToken, checkToken } from "../../../utils/token";
 import KofiWidget from "../KofiWidget/KofiWidget";
 import "./App.css";
 
