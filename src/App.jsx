@@ -12,10 +12,7 @@ function App() {
     <>
       <main>
         <div>
-          <a
-            href="https://uncletallest.github.io/sanguihedral/"
-            target="_blank"
-          >
+          <a href="https://uncletallest.github.io/sanguihedral/" target="_self">
             <img
               src={sanguihedralLogo}
               className="logo"
