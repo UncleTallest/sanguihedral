@@ -69,7 +69,6 @@ function App() {
           setIsLoading={setIsLoading}
         />
       )}
-      ;
     </>
   );
 }
