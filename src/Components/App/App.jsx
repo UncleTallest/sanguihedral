@@ -2,10 +2,13 @@
 // import reactLogo from "./assets/react.svg";
 import sanguihedralLogo from "../public/sanguihedral.png";
 import kofiButton from "../public/kofi_badge_sanguihedral.png";
-// import KofiWidget from "./Components/KofiWidget";
+import { handleOpenModal, handleCloseModal } from "../../utils/modals";
+import { getToken, handleToken, checkToken } from "../../utils/token";
+import KofiWidget from "../Components/KofiWidget/KofiWidget";
 import "./App.css";
 
 function App() {
+  const [activeModal, setActiveModal] = useState("");
   // const [count, setCount] = useState(0);
 
   return (
