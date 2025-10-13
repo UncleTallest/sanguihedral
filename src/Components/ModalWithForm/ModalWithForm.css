@@ -1,0 +1,121 @@
+.modal {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.8);
+}
+.modal_opened {
+  display: flex;
+}
+
+.modal__content {
+  background-color: white;
+  font-family: "Cabinet Grotesk", Arial, sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 20px;
+  width: 496px;
+  border-radius: 20px;
+  border: none;
+  padding: 20px 20px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.modal__content .modal_type_login {
+  height: 304px;
+}
+
+.modal__content .modal_type_register {
+  height: 456px;
+}
+
+.modal__content .modal_type_addItem {
+}
+
+.modal__content .modal_type_editProfile {
+}
+
+.modal__button-close {
+  background-image: url(../../images/modal__button-close.svg);
+  background-size: contain;
+  background-repeat: no-repeat;
+  width: 16px;
+  height: 16px;
+  border: none;
+  position: absolute;
+  right: 20px;
+  top: 20px;
+}
+
+.modal__button-close:hover {
+  cursor: pointer;
+}
+
+.modal__button {
+  padding: 8px 16px;
+  font-family: "Cabinet Grotesk", Arial, sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 1.2;
+  border-radius: 4px;
+}
+.modal__button-submit {
+  background: rgba(0, 0, 0, 1);
+  color: rgba(255, 255, 255, 1);
+}
+
+.modal__button-submit:hover {
+  background: rgba(0, 0, 0, 0.6);
+}
+
+.modal__button-submit:disabled {
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.modal__button-login {
+  background: rgba(255, 255, 255, 1);
+  color: rgba(0, 0, 0, 1);
+}
+
+.modal__form {
+  display: flex;
+  flex-direction: column;
+  border: none;
+}
+
+.modal__fieldset {
+  border: none;
+}
+
+.modal__input {
+  border: none;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.8);
+  font-size: 16px;
+  line-height: 20px;
+}
+
+.modal__label {
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 24px;
+}
+
+.modal__label:last-of-type {
+  padding-bottom: 0;
+}
+
+.modal__label .modal__input {
+}
+
+.modal__title {
+  font-size: 16px;
+  line-height: 1.2;
+  width: 100vw;
+}
