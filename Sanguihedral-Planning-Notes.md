@@ -7,7 +7,7 @@ _specifically the dice pools API for performing the actual dice rolls as specifi
 
 ```bash
 GET https://v5api.vampyrebytes.com/dice_pool/7/2/3
-# where first param = total dice (7), second param = hunder dice (2), 
+# where first param = total dice (7), second param = hunger dice (2), 
 # and third param = difficulty (3)
 ```
 
