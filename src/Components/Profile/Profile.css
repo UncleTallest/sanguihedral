@@ -4,6 +4,20 @@
   align-items: center;
 }
 
+.profile__avatar {
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 1rem;
+  will-change: filter;
+  transition: filter 300ms;
+}
+
+.profile__avatar:hover {
+  filter: drop-shadow(0 0 10px #a80202);
+}
+
 .profile__email {
   color: #888;
   font-size: 0.9rem;

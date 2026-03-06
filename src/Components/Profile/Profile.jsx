@@ -5,6 +5,13 @@ function Profile({ currentUser, onSignOut }) {
   return (
     <>
       <main className="profile">
+        {currentUser?.avatar && (
+          <img
+            src={currentUser.avatar}
+            className="profile__avatar"
+            alt={`${currentUser.name}'s avatar`}
+          />
+        )}
         <h1>Welcome, {currentUser?.name}</h1>
         <p className="profile__email">{currentUser?.email}</p>
         <div className="profile__characters">
