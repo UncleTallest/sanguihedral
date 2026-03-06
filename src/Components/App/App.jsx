@@ -1,37 +1,72 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import sanguihedralLogo from "../../../public/sanguihedral.png";
 import kofiButton from "../../../public/kofi_badge_sanguihedral.png";
 import KofiWidget from "../KofiWidget/KofiWidget";
 import LoginModal from "../LoginModal/LoginModal";
 import RegisterModal from "../RegisterModal/RegisterModal";
+import * as auth from "../../utils/auth";
+import { getToken, handleToken } from "../../utils/token";
 import "./App.css";
 
 function App() {
   const [activeModal, setActiveModal] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [currentUser, setCurrentUser] = useState(null);
 
-  const handleOpenModal = (modal) => {
-    setActiveModal(modal);
-  };
-
-  const handleCloseModal = () => {
-    setActiveModal("");
-  };
+  const handleOpenModal = (modal) => setActiveModal(modal);
+  const handleCloseModal = () => setActiveModal("");
 
   const handleLogin = (email, password) => {
     setIsLoading(true);
-    console.log("handleLogin called with", email);
-    // TODO: wire up auth API
-    setIsLoading(false);
+    auth
+      .login(email, password)
+      .then((data) => {
+        if (data.token) {
+          handleToken(data.token);
+          return auth.getUserData(data.token);
+        }
+        return Promise.reject(new Error(data.message || "Login failed"));
+      })
+      .then((user) => {
+        setCurrentUser(user);
+        setIsLoggedIn(true);
+        handleCloseModal();
+      })
+      .catch(console.error)
+      .finally(() => setIsLoading(false));
   };
 
   const handleRegistration = ({ user }) => {
-    setIsLoading(true);
-    console.log("handleRegistration called with", user);
-    // TODO: wire up auth API
-    setIsLoading(false);
+    const { name, email, password } = user;
+    auth
+      .register({ name, email, password })
+      .then((res) => {
+        if (res.email) {
+          handleLogin(email, password);
+        } else {
+          setIsLoading(false);
+          console.error(res.message || "Registration failed");
+        }
+      })
+      .catch((err) => {
+        setIsLoading(false);
+        console.error(err);
+      });
   };
+
+  useEffect(() => {
+    const token = getToken();
+    if (token) {
+      auth
+        .getUserData(token)
+        .then((user) => {
+          setCurrentUser(user);
+          setIsLoggedIn(true);
+        })
+        .catch(() => handleToken());
+    }
+  }, []);
 
   return (
     <>
