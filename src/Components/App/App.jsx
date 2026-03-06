@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
-import sanguihedralLogo from "../../../public/sanguihedral.png";
-import kofiButton from "../../../public/kofi_badge_sanguihedral.png";
-import KofiWidget from "../KofiWidget/KofiWidget";
+import { Routes, Route, Navigate, useNavigate } from "react-router-dom";
+import Landing from "../Landing/Landing";
+import Profile from "../Profile/Profile";
+import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
 import LoginModal from "../LoginModal/LoginModal";
 import RegisterModal from "../RegisterModal/RegisterModal";
 import * as auth from "../../utils/auth";
@@ -13,6 +14,8 @@ function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [currentUser, setCurrentUser] = useState(null);
+
+  const navigate = useNavigate();
 
   const handleOpenModal = (modal) => setActiveModal(modal);
   const handleCloseModal = () => setActiveModal("");
@@ -32,6 +35,7 @@ function App() {
         setCurrentUser(user);
         setIsLoggedIn(true);
         handleCloseModal();
+        navigate("/profile");
       })
       .catch(console.error)
       .finally(() => setIsLoading(false));
@@ -55,6 +59,13 @@ function App() {
       });
   };
 
+  const handleSignOut = () => {
+    handleToken();
+    setCurrentUser(null);
+    setIsLoggedIn(false);
+    navigate("/");
+  };
+
   useEffect(() => {
     const token = getToken();
     if (token) {
@@ -63,6 +74,7 @@ function App() {
         .then((user) => {
           setCurrentUser(user);
           setIsLoggedIn(true);
+          navigate("/profile");
         })
         .catch(() => handleToken());
     }
@@ -70,44 +82,26 @@ function App() {
 
   return (
     <>
-      <main>
-        <div>
-          <a href="https://uncletallest.github.io/sanguihedral/" target="_self">
-            <img
-              src={sanguihedralLogo}
-              className="logo"
-              alt="Sanguihedral logo"
-            />
-          </a>
-        </div>
-        <h1>Sanguihedral</h1>
-        <div className="blurb">
-          <p>
-            Sanguihedral is intended to be a cross-platform, sect-agnostic dice
-            roller and character sheet app for Vampire the Masquerade v5.
-          </p>
-        </div>
-        <div className="buttonContainer">
-          <button
-            name="login"
-            className="entryButton"
-            type="button"
-            onClick={() => handleOpenModal("login")}
-          >
-            Register or Log In
-          </button>
-        </div>
-      </main>
-      <footer>
-        <p className="copyright">Copyright 2024-2026 -- Jerry W Jackson</p>
-        <a href="https://ko-fi.com/uncletallest" target="_blank">
-          <img
-            src={kofiButton}
-            className="kofiButton"
-            alt="Buy me a coffee on Ko-fi"
-          />
-        </a>
-      </footer>
+      <Routes>
+        <Route
+          path="/"
+          element={
+            isLoggedIn ? (
+              <Navigate to="/profile" />
+            ) : (
+              <Landing onOpenModal={handleOpenModal} />
+            )
+          }
+        />
+        <Route
+          path="/profile"
+          element={
+            <ProtectedRoute isLoggedIn={isLoggedIn}>
+              <Profile currentUser={currentUser} onSignOut={handleSignOut} />
+            </ProtectedRoute>
+          }
+        />
+      </Routes>
       {activeModal === "login" && (
         <LoginModal
           modalName="login"

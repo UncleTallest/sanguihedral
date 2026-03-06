@@ -1,0 +1,16 @@
+.profile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.profile__email {
+  color: #888;
+  font-size: 0.9rem;
+  margin-top: -0.5rem;
+}
+
+.profile__characters {
+  margin-top: 2rem;
+  min-height: 4rem;
+}
