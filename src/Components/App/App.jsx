@@ -1,15 +1,37 @@
 import { useState } from "react";
-// import reactLogo from "./assets/react.svg";
 import sanguihedralLogo from "../../../public/sanguihedral.png";
 import kofiButton from "../../../public/kofi_badge_sanguihedral.png";
-import { handleOpenModal, handleCloseModal } from "../../utils/modals";
-//import { getToken, handleToken, checkToken } from "../../../utils/token";
 import KofiWidget from "../KofiWidget/KofiWidget";
+import LoginModal from "../LoginModal/LoginModal";
+import RegisterModal from "../RegisterModal/RegisterModal";
 import "./App.css";
 
 function App() {
   const [activeModal, setActiveModal] = useState("");
-  // const [count, setCount] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  const handleOpenModal = (modal) => {
+    setActiveModal(modal);
+  };
+
+  const handleCloseModal = () => {
+    setActiveModal("");
+  };
+
+  const handleLogin = (email, password) => {
+    setIsLoading(true);
+    console.log("handleLogin called with", email);
+    // TODO: wire up auth API
+    setIsLoading(false);
+  };
+
+  const handleRegistration = ({ user }) => {
+    setIsLoading(true);
+    console.log("handleRegistration called with", user);
+    // TODO: wire up auth API
+    setIsLoading(false);
+  };
 
   return (
     <>
@@ -31,7 +53,12 @@ function App() {
           </p>
         </div>
         <div className="buttonContainer">
-          <button name="login" className="entryButton" type="button">
+          <button
+            name="login"
+            className="entryButton"
+            type="button"
+            onClick={() => handleOpenModal("login")}
+          >
             Register or Log In
           </button>
         </div>
@@ -48,10 +75,10 @@ function App() {
       </footer>
       {activeModal === "login" && (
         <LoginModal
+          modalName="login"
           isOpen={activeModal === "login"}
-          onClose={handleCloseModal}
+          closeActiveModal={handleCloseModal}
           handleLogin={handleLogin}
-          onSecondButtonClick={() => handleOpenModal("register")}
           setActiveModal={setActiveModal}
           isLoading={isLoading}
           setIsLoading={setIsLoading}
@@ -59,11 +86,11 @@ function App() {
       )}
       {activeModal === "register" && (
         <RegisterModal
+          modalName="register"
           isOpen={activeModal === "register"}
-          onClose={handleCloseModal}
+          closeActiveModal={handleCloseModal}
           onRegistration={handleRegistration}
           onLogin={handleLogin}
-          onSecondButtonClick={() => handleOpenModal("login")}
           setActiveModal={setActiveModal}
           isLoading={isLoading}
           setIsLoading={setIsLoading}
@@ -72,4 +99,5 @@ function App() {
     </>
   );
 }
+
 export default App;
