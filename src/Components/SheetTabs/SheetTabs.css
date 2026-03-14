@@ -1,0 +1,21 @@
+.sheet-tabs {
+  display: flex;
+  justify-content: space-around;
+  background-color: #222;
+  position: sticky;
+  bottom: 0;
+  padding: 10px 0;
+  z-index: 100;
+}
+.sheet-tab {
+  background: none;
+  border: none;
+  color: #888;
+  font-size: 14px;
+  padding: 10px;
+  cursor: pointer;
+}
+.sheet-tab_active {
+  color: #fff;
+  border-bottom: 2px solid #d32f2f;
+}
