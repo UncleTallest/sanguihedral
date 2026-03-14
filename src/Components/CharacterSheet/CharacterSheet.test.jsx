@@ -11,9 +11,18 @@ const mockCharacter = {
 };
 
 describe("CharacterSheet Container", () => {
-  it("renders core tab by default and displays character name", () => {
+  it("renders core tab by default and displays character name and core fields", () => {
     render(<CharacterSheet initialCharacter={mockCharacter} onSave={() => {}} />);
     expect(screen.getByDisplayValue("Marcus")).toBeInTheDocument();
+    expect(screen.getByText(/Clan/i)).toBeInTheDocument();
+    expect(screen.getByText(/Hunger/i)).toBeInTheDocument();
+  });
+
+  it("allows updating core narrative fields", () => {
+    render(<CharacterSheet initialCharacter={mockCharacter} onSave={() => {}} />);
+    const clanSelect = screen.getByLabelText(/Clan/i);
+    fireEvent.change(clanSelect, { target: { value: "Brujah" } });
+    expect(screen.getByRole("button", { name: /save changes/i })).toBeInTheDocument();
   });
 
   it("shows save button only when changes are made", () => {
