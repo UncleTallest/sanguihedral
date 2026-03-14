@@ -1,7 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
+import CharacterCard from '../CharacterCard/CharacterCard';
 import './Dashboard.css';
 
-const Dashboard = ({ characters = [], onNewCharacter }) => {
+const Dashboard = ({ characters = [], onNewCharacter, onViewSheet, onDiceRoller, onDeleteCharacter }) => {
+  const [activeMenu, setActiveMenu] = useState(null);
+
+  const handleCardClick = (charId) => {
+    setActiveMenu(activeMenu === charId ? null : charId);
+  };
+
   return (
     <div className="dashboard">
       <header className="dashboard__header">
@@ -21,7 +28,26 @@ const Dashboard = ({ characters = [], onNewCharacter }) => {
           </div>
         ) : (
           <div className="dashboard__grid">
-            {/* CharacterCards will go here in Chunk 3 */}
+            {characters.map((char) => (
+              <div key={char._id} className="dashboard__card-wrapper">
+                <CharacterCard 
+                  character={char} 
+                  onClick={() => handleCardClick(char._id)} 
+                />
+                {activeMenu === char._id && (
+                  <div className="dashboard__menu">
+                    <button onClick={() => onViewSheet(char._id)}>View Sheet</button>
+                    <button onClick={() => onDiceRoller(char._id)}>Dice Roller</button>
+                    <button 
+                      className="dashboard__menu-delete" 
+                      onClick={() => onDeleteCharacter(char._id)}
+                    >
+                      Delete
+                    </button>
+                  </div>
+                )}
+              </div>
+            ))}
           </div>
         )}
       </main>

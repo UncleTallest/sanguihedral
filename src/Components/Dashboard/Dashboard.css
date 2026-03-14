@@ -76,6 +76,53 @@
   gap: 20px;
 }
 
+.dashboard__card-wrapper {
+  position: relative;
+}
+
+.dashboard__menu {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(30, 30, 30, 0.95);
+  border: 2px solid #d32f2f;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  gap: 10px;
+  z-index: 10;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
+  min-width: 150px;
+}
+
+.dashboard__menu button {
+  background-color: transparent;
+  border: 1px solid #444;
+  color: #fff;
+  padding: 8px 15px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.2s;
+}
+
+.dashboard__menu button:hover {
+  background-color: #333;
+  border-color: #888;
+}
+
+.dashboard__menu .dashboard__menu-delete {
+  color: #d32f2f;
+  border-color: rgba(211, 47, 47, 0.3);
+}
+
+.dashboard__menu .dashboard__menu-delete:hover {
+  background-color: rgba(211, 47, 47, 0.1);
+  border-color: #d32f2f;
+}
+
 @media (max-width: 600px) {
   .dashboard__header {
     flex-direction: column;

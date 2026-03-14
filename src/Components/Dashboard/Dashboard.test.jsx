@@ -24,4 +24,20 @@ describe("Dashboard Component", () => {
     
     expect(screen.getByText(/No characters found/i)).toBeInTheDocument();
   });
+
+  it("renders a list of characters when data is provided", () => {
+    const mockCharacters = [
+      { _id: "1", name: "Marcus", clan: "Gangrel", sect: "Camarilla", hunger: 1 },
+      { _id: "2", name: "Sarah", clan: "Toreador", sect: "Camarilla", hunger: 2 }
+    ];
+    
+    render(
+      <BrowserRouter>
+        <Dashboard characters={mockCharacters} />
+      </BrowserRouter>
+    );
+    
+    expect(screen.getByText("Marcus")).toBeInTheDocument();
+    expect(screen.getByText("Sarah")).toBeInTheDocument();
+  });
 });
