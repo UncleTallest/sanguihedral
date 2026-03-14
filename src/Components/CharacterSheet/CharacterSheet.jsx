@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import SheetTabs from '../SheetTabs/SheetTabs';
 import DotTracker from '../DotTracker/DotTracker';
+import DamageTracker from '../DamageTracker/DamageTracker';
 import './CharacterSheet.css';
 
 const STANDARD_CLANS = [
@@ -31,6 +32,8 @@ const CoreView = ({ draft, updateDraft }) => (
       <label className="core-view__label">Clan
         <select 
           className="core-view__input"
+          id="clan-select"
+          aria-label="Clan"
           value={STANDARD_CLANS.includes(draft.clan) ? draft.clan : 'Other'}
           onChange={(e) => updateDraft('clan', e.target.value === 'Other' ? '' : e.target.value)}
         >
@@ -49,6 +52,7 @@ const CoreView = ({ draft, updateDraft }) => (
       <label className="core-view__label">Sect
         <select 
           className="core-view__input"
+          aria-label="Sect"
           value={STANDARD_SECTS.includes(draft.sect) ? draft.sect : 'Other'}
           onChange={(e) => updateDraft('sect', e.target.value === 'Other' ? '' : e.target.value)}
         >
@@ -86,9 +90,10 @@ const CoreView = ({ draft, updateDraft }) => (
 
 const AttributesView = ({ draft, updateNestedDraft }) => {
   const attrs = draft.attributes || {};
+  const sortedKeys = Object.keys(attrs).sort();
   return (
     <div className="stats-grid">
-      {Object.keys(attrs).map(attr => (
+      {sortedKeys.map(attr => (
         <div key={attr} className="stat-row" style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '10px' }}>
           <span className="stat-label" style={{ textTransform: 'capitalize' }}>{attr}</span>
           <DotTracker 
@@ -103,9 +108,10 @@ const AttributesView = ({ draft, updateNestedDraft }) => {
 
 const SkillsView = ({ draft, updateNestedDraft }) => {
   const skills = draft.skills || {};
+  const sortedKeys = Object.keys(skills).sort();
   return (
     <div className="stats-grid">
-      {Object.keys(skills).map(skill => (
+      {sortedKeys.map(skill => (
         <div key={skill} className="stat-row" style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '10px' }}>
           <span className="stat-label" style={{ textTransform: 'capitalize' }}>{skill}</span>
           <DotTracker 
@@ -114,6 +120,44 @@ const SkillsView = ({ draft, updateNestedDraft }) => {
           />
         </div>
       ))}
+    </div>
+  );
+};
+
+const HealthView = ({ draft, updateDraft }) => {
+  const stamina = draft.attributes?.stamina || 1;
+  const composure = draft.attributes?.composure || 1;
+  const resolve = draft.attributes?.resolve || 1;
+
+  const maxHealth = stamina + 3;
+  const maxWillpower = composure + resolve;
+
+  return (
+    <div className="health-view">
+      <div className="health-view__tracker-container health-tracker">
+        <h3>Health (Max: {maxHealth})</h3>
+        <DamageTracker 
+          max={maxHealth}
+          superficial={draft.superficialDamage || 0}
+          aggravated={draft.aggravatedDamage || 0}
+          onChange={({ superficial, aggravated }) => {
+            updateDraft('superficialDamage', superficial);
+            updateDraft('aggravatedDamage', aggravated);
+          }}
+        />
+      </div>
+      <div className="health-view__tracker-container willpower-tracker">
+        <h3>Willpower (Max: {maxWillpower})</h3>
+        <DamageTracker 
+          max={maxWillpower}
+          superficial={draft.superficialWillpowerDamage || 0}
+          aggravated={draft.aggravatedWillpowerDamage || 0}
+          onChange={({ superficial, aggravated }) => {
+            updateDraft('superficialWillpowerDamage', superficial);
+            updateDraft('aggravatedWillpowerDamage', aggravated);
+          }}
+        />
+      </div>
     </div>
   );
 };
@@ -154,7 +198,7 @@ const CharacterSheet = ({ initialCharacter, onSave }) => {
         {activeTab === 'core' && <CoreView draft={draftState} updateDraft={updateDraft} />}
         {activeTab === 'attributes' && <AttributesView draft={draftState} updateNestedDraft={updateNestedDraft} />}
         {activeTab === 'skills' && <SkillsView draft={draftState} updateNestedDraft={updateNestedDraft} />}
-        {activeTab === 'health' && <div>Health View (TODO)</div>}
+        {activeTab === 'health' && <HealthView draft={draftState} updateDraft={updateDraft} />}
       </div>
 
       <SheetTabs activeTab={activeTab} onTabChange={setActiveTab} />

@@ -68,3 +68,23 @@
   cursor: pointer;
   box-shadow: 0 4px 10px rgba(0,0,0,0.5);
 }
+
+.health-view {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.health-view__tracker-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.health-view__tracker-container h3 {
+  margin: 0;
+  font-size: 16px;
+  color: #aaa;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}

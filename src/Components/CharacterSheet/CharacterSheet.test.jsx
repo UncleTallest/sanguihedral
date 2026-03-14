@@ -6,7 +6,11 @@ const mockCharacter = {
   _id: "123",
   name: "Marcus",
   clan: "Gangrel",
-  attributes: { strength: 2 },
+  attributes: {
+    strength: 2, dexterity: 1, stamina: 1,
+    charisma: 1, manipulation: 1, composure: 1,
+    intelligence: 1, wits: 1, resolve: 1
+  },
   skills: { brawl: 2 }
 };
 
@@ -73,6 +77,33 @@ describe("CharacterSheet Container", () => {
     render(<CharacterSheet initialCharacter={mockCharacter} onSave={() => {}} />);
     fireEvent.click(screen.getByRole("button", { name: /skills/i }));
     expect(screen.getByText("brawl")).toBeInTheDocument();
+  });
+
+  it("calculates Max Health and Willpower dynamically from attributes", () => {
+    render(<CharacterSheet initialCharacter={mockCharacter} onSave={() => {}} />);
+    
+    // Switch to health tab
+    fireEvent.click(screen.getByRole("button", { name: /health/i }));
+    
+    // Default Stamina(1) + 3 = 4 boxes
+    const healthSection = document.querySelector('.health-tracker');
+    const healthBoxes = healthSection.querySelectorAll('.damage-box');
+    expect(healthBoxes).toHaveLength(4);
+
+    // Switch to attributes and change Stamina
+    fireEvent.click(screen.getByRole("button", { name: /attributes/i }));
+    expect(screen.getByText(/strength/i)).toBeInTheDocument();
+    
+    const dots = screen.getAllByRole("button", { name: /set to/i });
+    // Sorted: charisma, composure, dexterity, intelligence, manipulation, resolve, stamina, strength, wits
+    // stamina is at index 6 (0-based)
+    // dots 30-34 are stamina dots.
+    fireEvent.click(dots[34]); // Set stamina to 5
+
+    // Switch back to health
+    fireEvent.click(screen.getByRole("button", { name: /health/i }));
+    const newHealthBoxes = document.querySelector('.health-tracker').querySelectorAll('.damage-box');
+    expect(newHealthBoxes).toHaveLength(8); // 5 + 3 = 8
   });
 });
 
