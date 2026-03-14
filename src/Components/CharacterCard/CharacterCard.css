@@ -1,0 +1,102 @@
+.character-card {
+  background-color: rgba(20, 20, 20, 0.9);
+  border: 1px solid #444;
+  border-radius: 12px;
+  padding: 20px;
+  cursor: pointer;
+  transition: transform 0.2s, border-color 0.2s;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+}
+
+.character-card:hover {
+  transform: translateY(-5px);
+  border-color: #d32f2f;
+}
+
+.character-card__header {
+  border-bottom: 1px solid #333;
+  padding-bottom: 10px;
+}
+
+.character-card__name {
+  margin: 0;
+  font-size: 20px;
+  color: #fff;
+  letter-spacing: 1px;
+}
+
+.character-card__identity {
+  margin: 5px 0 0 0;
+  font-size: 14px;
+  color: #aaa;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+.character-card__stats {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.character-card__stat {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.character-card__stat-label {
+  font-size: 12px;
+  color: #888;
+  width: 70px;
+  text-transform: uppercase;
+}
+
+.character-card__bar-container {
+  flex: 1;
+  height: 8px;
+  background-color: #222;
+  border-radius: 4px;
+  overflow: hidden;
+  border: 1px solid #333;
+}
+
+.character-card__bar {
+  height: 100%;
+  transition: width 0.3s ease;
+}
+
+.character-card__bar_health {
+  background-color: #d32f2f;
+}
+
+.character-card__bar_willpower {
+  background-color: #1976d2; /* Willpower blue */
+}
+
+.character-card__stat-value {
+  font-size: 12px;
+  color: #fff;
+  width: 30px;
+  text-align: right;
+  font-family: monospace;
+}
+
+.character-card__hunger-dots {
+  display: flex;
+  gap: 4px;
+}
+
+.character-card__hunger-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 1px solid #d32f2f;
+}
+
+.character-card__hunger-dot_filled {
+  background-color: #d32f2f;
+}
