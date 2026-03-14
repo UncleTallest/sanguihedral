@@ -1,0 +1,19 @@
+.dot-tracker {
+  display: flex;
+  gap: 4px;
+}
+.dot {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 2px solid #ccc;
+  background-color: transparent;
+  cursor: pointer;
+  padding: 0;
+  /* Larger hit area for mobile */
+  margin: 4px;
+}
+.dot_filled {
+  background-color: #d32f2f; /* Blood red */
+  border-color: #d32f2f;
+}
