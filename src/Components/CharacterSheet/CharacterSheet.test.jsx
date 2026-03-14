@@ -42,4 +42,28 @@ describe("CharacterSheet Container", () => {
       clan: "Gangrel"
     }));
   });
+
+  it("renders Attributes view when tab is clicked and allows editing", () => {
+    render(<CharacterSheet initialCharacter={mockCharacter} onSave={() => {}} />);
+    
+    // Switch to attributes tab
+    fireEvent.click(screen.getByRole("button", { name: /attributes/i }));
+    
+    // Should see strength label
+    expect(screen.getByText("strength")).toBeInTheDocument();
+    
+    // Check dot tracker interaction triggers draft change
+    // Using a broad check since DotTracker renders buttons without accessible names by default
+    const dots = screen.getAllByRole("button", { name: /set to/i });
+    fireEvent.click(dots[4]); // Set strength to 5
+    
+    expect(screen.getByRole("button", { name: /save changes/i })).toBeInTheDocument();
+  });
+
+  it("renders Skills view when tab is clicked", () => {
+    render(<CharacterSheet initialCharacter={mockCharacter} onSave={() => {}} />);
+    fireEvent.click(screen.getByRole("button", { name: /skills/i }));
+    expect(screen.getByText("brawl")).toBeInTheDocument();
+  });
 });
+

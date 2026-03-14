@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import SheetTabs from '../SheetTabs/SheetTabs';
+import DotTracker from '../DotTracker/DotTracker';
 
 const CoreView = ({ draft, updateDraft }) => (
   <div>
@@ -11,6 +12,40 @@ const CoreView = ({ draft, updateDraft }) => (
     </label>
   </div>
 );
+
+const AttributesView = ({ draft, updateNestedDraft }) => {
+  const attrs = draft.attributes || {};
+  return (
+    <div className="stats-grid">
+      {Object.keys(attrs).map(attr => (
+        <div key={attr} className="stat-row" style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '10px' }}>
+          <span className="stat-label" style={{ textTransform: 'capitalize' }}>{attr}</span>
+          <DotTracker 
+            value={attrs[attr]} 
+            onChange={(val) => updateNestedDraft('attributes', attr, val)} 
+          />
+        </div>
+      ))}
+    </div>
+  );
+};
+
+const SkillsView = ({ draft, updateNestedDraft }) => {
+  const skills = draft.skills || {};
+  return (
+    <div className="stats-grid">
+      {Object.keys(skills).map(skill => (
+        <div key={skill} className="stat-row" style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '10px' }}>
+          <span className="stat-label" style={{ textTransform: 'capitalize' }}>{skill}</span>
+          <DotTracker 
+            value={skills[skill]} 
+            onChange={(val) => updateNestedDraft('skills', skill, val)} 
+          />
+        </div>
+      ))}
+    </div>
+  );
+};
 
 const CharacterSheet = ({ initialCharacter, onSave }) => {
   const [activeTab, setActiveTab] = useState('core');
@@ -44,10 +79,10 @@ const CharacterSheet = ({ initialCharacter, onSave }) => {
         </div>
       )}
       
-      <div className="tab-content" style={{ padding: '20px' }}>
+      <div className="tab-content" style={{ padding: '20px', minHeight: '60vh' }}>
         {activeTab === 'core' && <CoreView draft={draftState} updateDraft={updateDraft} />}
-        {activeTab === 'attributes' && <div>Attributes View (TODO)</div>}
-        {activeTab === 'skills' && <div>Skills View (TODO)</div>}
+        {activeTab === 'attributes' && <AttributesView draft={draftState} updateNestedDraft={updateNestedDraft} />}
+        {activeTab === 'skills' && <SkillsView draft={draftState} updateNestedDraft={updateNestedDraft} />}
         {activeTab === 'health' && <div>Health View (TODO)</div>}
       </div>
 
@@ -57,3 +92,4 @@ const CharacterSheet = ({ initialCharacter, onSave }) => {
 };
 
 export default CharacterSheet;
+
