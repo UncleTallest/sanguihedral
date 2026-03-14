@@ -1,19 +1,23 @@
 .character-card {
-  background-color: rgba(20, 20, 20, 0.9);
+  background-image: linear-gradient(rgba(20, 20, 20, 0.85), rgba(20, 20, 20, 0.85)), url('/bloody_background.png');
+  background-size: cover;
+  background-position: center;
   border: 1px solid #444;
   border-radius: 12px;
   padding: 20px;
   cursor: pointer;
-  transition: transform 0.2s, border-color 0.2s;
+  transition: transform 300ms, filter 300ms, border-color 300ms;
   display: flex;
   flex-direction: column;
   gap: 15px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+  will-change: filter, transform;
 }
 
 .character-card:hover {
   transform: translateY(-5px);
-  border-color: #d32f2f;
+  border-color: #a80202;
+  filter: drop-shadow(0 0 15px #a80202);
 }
 
 .character-card__header {

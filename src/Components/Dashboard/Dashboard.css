@@ -1,7 +1,6 @@
 .dashboard {
   min-height: 100vh;
-  background-image: url('/bloody_background.png');
-  background-repeat: repeat;
+  background-color: #0a0a0a;
   padding: 20px;
   color: #fff;
 }
