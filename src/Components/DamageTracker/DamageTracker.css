@@ -1,0 +1,58 @@
+.damage-tracker {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+
+.damage-box {
+  width: 28px;
+  height: 28px;
+  border: 2px solid #ccc;
+  background-color: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 18px;
+  cursor: pointer;
+  padding: 0;
+  color: #fff;
+  /* Accessibility hit box */
+  margin: 4px;
+}
+
+.damage-box_empty {
+  border-color: #666;
+}
+
+.damage-box_superficial {
+  border-color: #d32f2f;
+  color: #d32f2f;
+}
+
+.damage-box_aggravated {
+  background-color: #d32f2f;
+  border-color: #d32f2f;
+  color: #fff;
+}
+
+.damage-status {
+  font-size: 12px;
+  font-weight: bold;
+  padding: 2px 6px;
+  border-radius: 4px;
+  margin-left: 10px;
+}
+
+.damage-status_impaired {
+  background-color: #d32f2f;
+  color: #fff;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% { opacity: 1; }
+  50% { opacity: 0.5; }
+  100% { opacity: 1; }
+}
