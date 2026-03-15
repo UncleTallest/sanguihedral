@@ -1,0 +1,150 @@
+.dice-roller {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.dice-roller__tray {
+  min-height: 200px;
+  background-color: rgba(20, 20, 20, 0.9);
+  border: 2px solid #444;
+  border-radius: 12px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.dice-roller__rolling-msg {
+  font-size: 24px;
+  font-weight: bold;
+  color: #d32f2f;
+  animation: pulse 1s infinite;
+}
+
+.dice-roller__outcome {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.dice-roller__total {
+  font-size: 28px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.dice-roller__status {
+  font-size: 20px;
+  font-weight: bold;
+  padding: 5px 15px;
+  border-radius: 4px;
+}
+
+.dice-roller__status_messy {
+  color: #d32f2f;
+  animation: flash 0.5s infinite;
+}
+
+.dice-roller__status_bestial {
+  background-color: #d32f2f;
+  color: #000;
+  animation: flash 0.5s infinite;
+}
+
+.dice-roller__status_crit {
+  color: #fbc02d;
+}
+
+.dice-roller__status_success {
+  color: #4caf50;
+}
+
+.dice-roller__dice-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.dice-roller__dice-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.dice-roller__controls {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  background-color: rgba(30, 30, 30, 0.85);
+  padding: 20px;
+  border-radius: 12px;
+}
+
+.dice-roller__input-group {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.dice-roller__stepper {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.dice-roller__stepper button {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid #d32f2f;
+  background: transparent;
+  color: #d32f2f;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.dice-roller__stepper span {
+  font-size: 20px;
+  min-width: 25px;
+  text-align: center;
+}
+
+.dice-roller__roll-button {
+  background-color: #d32f2f;
+  color: white;
+  border: none;
+  padding: 15px;
+  font-size: 20px;
+  font-weight: bold;
+  border-radius: 8px;
+  cursor: pointer;
+  letter-spacing: 2px;
+  transition: transform 0.1s;
+}
+
+.dice-roller__roll-button:active {
+  transform: scale(0.98);
+}
+
+.dice-roller__roll-button:disabled {
+  background-color: #666;
+  cursor: not-allowed;
+}
+
+@keyframes pulse {
+  0% { opacity: 1; }
+  50% { opacity: 0.5; }
+  100% { opacity: 1; }
+}
+
+@keyframes flash {
+  0% { opacity: 1; }
+  50% { opacity: 0.3; }
+  100% { opacity: 1; }
+}
