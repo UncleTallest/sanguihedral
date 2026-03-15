@@ -3,20 +3,26 @@ import DiceIcon from '../DiceIcon/DiceIcon';
 import * as api from '../../utils/api';
 import './DiceRoller.css';
 
-const DiceRoller = ({ initialHunger = 1 }) => {
+const PRESETS = [
+  { label: 'Str + Brawl', attr: 'strength', skill: 'brawl' },
+  { label: 'Dex + Firearms', attr: 'dexterity', skill: 'firearms' },
+  { label: 'Dex + Stealth', attr: 'stealth', skill: 'stealth' },
+  { label: 'Wits + Awareness', attr: 'wits', skill: 'awareness' },
+  { label: 'Res + Composure', attr: 'resolve', skill: 'composure' },
+];
+
+const DiceRoller = ({ character = {}, initialHunger = 1 }) => {
   const [totalPool, setTotalPool] = useState(5);
-  const [hungerDice, setHungerDice] = useState(initialHunger);
+  const [hungerDice, setHungerDice] = useState(character.hunger || initialHunger);
   const [difficulty, setDifficulty] = useState(1);
-  const [rollState, setRollState] = useState('idle'); // idle, rolling, resolved, error
+  const [rollState, setRollState] = useState('idle');
   const [result, setResult] = useState(null);
+  const [showAdvanced, setShowAdvanced] = useState(false);
 
   const handleRoll = async () => {
     setRollState('rolling');
     setResult(null);
-
-    // Artificial delay for "Dramatic Reveal"
     const animationPromise = new Promise(resolve => setTimeout(resolve, 800));
-
     try {
       const [apiResponse] = await Promise.all([
         api.rollDice(totalPool, hungerDice, difficulty),
@@ -28,6 +34,12 @@ const DiceRoller = ({ initialHunger = 1 }) => {
       console.error(err);
       setRollState('error');
     }
+  };
+
+  const applyPreset = (preset) => {
+    const attrValue = character.attributes?.[preset.attr] || 1;
+    const skillValue = character.skills?.[preset.skill] || 1;
+    setTotalPool(attrValue + skillValue);
   };
 
   const renderStatus = () => {
@@ -43,14 +55,12 @@ const DiceRoller = ({ initialHunger = 1 }) => {
     <div className="dice-roller">
       <div className="dice-roller__tray">
         {rollState === 'rolling' && <div className="dice-roller__rolling-msg">Rolling...</div>}
-        
         {rollState === 'resolved' && result && (
           <>
             <div className="dice-roller__outcome">
               <div className="dice-roller__total">Total Successes: {result.total_successes}</div>
               {renderStatus()}
             </div>
-            
             <div className="dice-roller__dice-grid">
               <div className="dice-roller__dice-row">
                 {result.dice_results.map((val, i) => (
@@ -68,14 +78,32 @@ const DiceRoller = ({ initialHunger = 1 }) => {
       </div>
 
       <div className="dice-roller__controls">
-        <div className="dice-roller__input-group">
-          <label>Total Pool</label>
-          <div className="dice-roller__stepper">
-            <button onClick={() => setTotalPool(Math.max(1, totalPool - 1))}>-</button>
-            <span>{totalPool}</span>
-            <button onClick={() => setTotalPool(totalPool + 1)}>+</button>
-          </div>
+        <div className="dice-roller__presets">
+          {PRESETS.map(p => (
+            <button key={p.label} className="dice-roller__preset-btn" onClick={() => applyPreset(p)}>
+              {p.label}
+            </button>
+          ))}
+          <button 
+            className="dice-roller__preset-btn dice-roller__preset-btn_alt"
+            onClick={() => setShowAdvanced(!showAdvanced)}
+          >
+            {showAdvanced ? 'Simple Mode' : 'Advanced Mode'}
+          </button>
         </div>
+
+        {showAdvanced && (
+          <div className="dice-roller__advanced">
+            <div className="dice-roller__input-group">
+              <label>Total Pool</label>
+              <div className="dice-roller__stepper">
+                <button onClick={() => setTotalPool(Math.max(1, totalPool - 1))}>-</button>
+                <span>{totalPool}</span>
+                <button onClick={() => setTotalPool(totalPool + 1)}>+</button>
+              </div>
+            </div>
+          </div>
+        )}
 
         <div className="dice-roller__input-group">
           <label>Hunger</label>
