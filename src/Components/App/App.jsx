@@ -1,12 +1,17 @@
 import { useState, useEffect } from "react";
-import { Routes, Route, Navigate, useNavigate } from "react-router-dom";
+import { Routes, Route, useNavigate } from "react-router-dom";
 import Landing from "../Landing/Landing";
 import Profile from "../Profile/Profile";
+import Header from "../Header/Header";
+import Dashboard from "../Dashboard/Dashboard";
+import CharacterSheet from "../CharacterSheet/CharacterSheet";
+import DiceRoller from "../DiceRoller/DiceRoller";
 import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
 import LoginModal from "../LoginModal/LoginModal";
 import RegisterModal from "../RegisterModal/RegisterModal";
 import * as auth from "../../utils/auth";
 import { getToken, handleToken } from "../../utils/token";
+import { CharacterProvider } from "../../contexts/CharacterContext";
 import "./App.css";
 
 function App() {
@@ -35,7 +40,7 @@ function App() {
         setCurrentUser(user);
         setIsLoggedIn(true);
         handleCloseModal();
-        navigate("/profile");
+        navigate("/characters");
       })
       .catch(console.error)
       .finally(() => setIsLoading(false));
@@ -74,34 +79,61 @@ function App() {
         .then((user) => {
           setCurrentUser(user);
           setIsLoggedIn(true);
-          navigate("/profile");
         })
         .catch(() => handleToken());
     }
   }, []);
 
   return (
-    <>
-      <Routes>
-        <Route
-          path="/"
-          element={
-            isLoggedIn ? (
-              <Navigate to="/profile" />
-            ) : (
-              <Landing onOpenModal={handleOpenModal} />
-            )
-          }
-        />
-        <Route
-          path="/profile"
-          element={
-            <ProtectedRoute isLoggedIn={isLoggedIn}>
-              <Profile currentUser={currentUser} onSignOut={handleSignOut} />
-            </ProtectedRoute>
-          }
-        />
-      </Routes>
+    <CharacterProvider isLoggedIn={isLoggedIn}>
+      <Header 
+        isLoggedIn={isLoggedIn} 
+        onOpenModal={handleOpenModal} 
+        onSignOut={handleSignOut} 
+      />
+      <div className="app-content">
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <Landing 
+                isLoggedIn={isLoggedIn} 
+                onOpenModal={handleOpenModal} 
+              />
+            }
+          />
+          <Route
+            path="/profile"
+            element={
+              <ProtectedRoute isLoggedIn={isLoggedIn}>
+                <Profile currentUser={currentUser} onSignOut={handleSignOut} />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/characters"
+            element={
+              <ProtectedRoute isLoggedIn={isLoggedIn}>
+                <Dashboard />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/characters/:id"
+            element={
+              <ProtectedRoute isLoggedIn={isLoggedIn}>
+                <CharacterSheet />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/dice"
+            element={
+              <DiceRoller />
+            }
+          />
+        </Routes>
+      </div>
       {activeModal === "login" && (
         <LoginModal
           modalName="login"
@@ -125,7 +157,7 @@ function App() {
           setIsLoading={setIsLoading}
         />
       )}
-    </>
+    </CharacterProvider>
   );
 }
 

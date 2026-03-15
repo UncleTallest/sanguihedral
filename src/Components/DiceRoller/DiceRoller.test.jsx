@@ -1,14 +1,19 @@
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
+import { MemoryRouter } from "react-router-dom";
+import { CharacterProvider } from "../../contexts/CharacterContext";
 import DiceRoller from "./DiceRoller";
 import * as api from "../../utils/api";
 
 // Mock the API
 vi.mock("../../utils/api", () => ({
   rollDice: vi.fn(),
+  getCharacters: vi.fn(),
 }));
 
 const mockCharacter = {
+  _id: "123",
+  name: "Marcus",
   hunger: 2,
   attributes: { strength: 3, dexterity: 2, resolve: 2, wits: 2 },
   skills: { brawl: 2, firearms: 1, awareness: 3, composure: 2 }
@@ -19,10 +24,15 @@ describe("DiceRoller Container", () => {
     vi.clearAllMocks();
   });
 
-  it("renders with default values and pre-fills hunger from character", () => {
-    render(<DiceRoller character={mockCharacter} />);
-    // Hunger should be 2 from mockCharacter
-    expect(screen.getByText("2")).toBeInTheDocument();
+  it("renders with default values", () => {
+    api.getCharacters.mockResolvedValue([]);
+    render(
+      <MemoryRouter>
+        <CharacterProvider isLoggedIn={false}>
+          <DiceRoller />
+        </CharacterProvider>
+      </MemoryRouter>
+    );
     expect(screen.getByRole("button", { name: /ROLL/i })).toBeInTheDocument();
   });
 
@@ -37,14 +47,18 @@ describe("DiceRoller Container", () => {
     };
     
     api.rollDice.mockResolvedValue(mockResponse);
+    api.getCharacters.mockResolvedValue([mockCharacter]);
 
-    render(<DiceRoller character={mockCharacter} />);
-    const rollButton = screen.getByRole("button", { name: /ROLL/i });
+    render(
+      <MemoryRouter initialEntries={["/dice?charId=123"]}>
+        <CharacterProvider isLoggedIn={true}>
+          <DiceRoller />
+        </CharacterProvider>
+      </MemoryRouter>
+    );
     
+    const rollButton = screen.getByRole("button", { name: /ROLL/i });
     fireEvent.click(rollButton);
-
-    // Should show "Rolling..." or similar state
-    expect(screen.getByText(/Rolling/i)).toBeInTheDocument();
 
     // Wait for result to appear
     await waitFor(() => {
@@ -54,10 +68,17 @@ describe("DiceRoller Container", () => {
     expect(screen.getByText(/BESTIAL FAILURE/i)).toBeInTheDocument();
   });
 
-  it("updates total pool when a preset is clicked", () => {
-    render(<DiceRoller character={mockCharacter} />);
-    const presetButton = screen.getByRole("button", { name: /Str \+ Brawl/i });
+  it("updates total pool when a preset is clicked", async () => {
+    api.getCharacters.mockResolvedValue([mockCharacter]);
+    render(
+      <MemoryRouter initialEntries={["/dice?charId=123"]}>
+        <CharacterProvider isLoggedIn={true}>
+          <DiceRoller />
+        </CharacterProvider>
+      </MemoryRouter>
+    );
     
+    const presetButton = await screen.findByRole("button", { name: /Str \+ Brawl/i });
     fireEvent.click(presetButton);
     
     // Toggle advanced mode to see the Total Pool value

@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
+import { useCharacters } from '../../contexts/CharacterContext';
 import DiceIcon from '../DiceIcon/DiceIcon';
 import * as api from '../../utils/api';
 import './DiceRoller.css';
@@ -11,13 +13,28 @@ const PRESETS = [
   { label: 'Res + Composure', attr: 'resolve', skill: 'composure' },
 ];
 
-const DiceRoller = ({ character = {}, initialHunger = 1 }) => {
+const DiceRoller = () => {
+  const [searchParams] = useSearchParams();
+  const { characters } = useCharacters();
+  const charId = searchParams.get('charId');
+
+  const [activeCharacter, setActiveCharacter] = useState(null);
   const [totalPool, setTotalPool] = useState(5);
-  const [hungerDice, setHungerDice] = useState(character.hunger || initialHunger);
+  const [hungerDice, setHungerDice] = useState(1);
   const [difficulty, setDifficulty] = useState(1);
   const [rollState, setRollState] = useState('idle');
   const [result, setResult] = useState(null);
   const [showAdvanced, setShowAdvanced] = useState(false);
+
+  useEffect(() => {
+    if (charId && characters.length > 0) {
+      const char = characters.find(c => c._id === charId);
+      if (char) {
+        setActiveCharacter(char);
+        setHungerDice(char.hunger || 1);
+      }
+    }
+  }, [charId, characters]);
 
   const handleRoll = async () => {
     setRollState('rolling');
@@ -37,8 +54,8 @@ const DiceRoller = ({ character = {}, initialHunger = 1 }) => {
   };
 
   const applyPreset = (preset) => {
-    const attrValue = character.attributes?.[preset.attr] || 1;
-    const skillValue = character.skills?.[preset.skill] || 1;
+    const attrValue = activeCharacter?.attributes?.[preset.attr] || 1;
+    const skillValue = activeCharacter?.skills?.[preset.skill] || 0;
     setTotalPool(attrValue + skillValue);
   };
 
@@ -78,9 +95,21 @@ const DiceRoller = ({ character = {}, initialHunger = 1 }) => {
       </div>
 
       <div className="dice-roller__controls">
+        {activeCharacter && (
+          <div className="dice-roller__char-info">
+            Rolling for: <strong>{activeCharacter.name}</strong>
+          </div>
+        )}
+
         <div className="dice-roller__presets">
           {PRESETS.map(p => (
-            <button key={p.label} className="dice-roller__preset-btn" onClick={() => applyPreset(p)}>
+            <button 
+              key={p.label} 
+              className="dice-roller__preset-btn" 
+              onClick={() => applyPreset(p)}
+              disabled={!activeCharacter}
+              title={!activeCharacter ? "Select a character first" : ""}
+            >
               {p.label}
             </button>
           ))}

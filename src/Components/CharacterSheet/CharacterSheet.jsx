@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+import { useCharacters } from '../../contexts/CharacterContext';
 import SheetTabs from '../SheetTabs/SheetTabs';
 import DotTracker from '../DotTracker/DotTracker';
 import DamageTracker from '../DamageTracker/DamageTracker';
@@ -162,14 +164,28 @@ const HealthView = ({ draft, updateDraft }) => {
   );
 };
 
-const CharacterSheet = ({ initialCharacter, onSave }) => {
+const CharacterSheet = () => {
+  const { id } = useParams();
+  const { characters, updateCharacter } = useCharacters();
+  
   const [activeTab, setActiveTab] = useState('core');
-  const [draftState, setDraftState] = useState(initialCharacter);
+  const [draftState, setDraftState] = useState(null);
+  const [initialState, setInitialState] = useState(null);
   const [hasChanges, setHasChanges] = useState(false);
 
   useEffect(() => {
-    setHasChanges(JSON.stringify(initialCharacter) !== JSON.stringify(draftState));
-  }, [draftState, initialCharacter]);
+    const char = characters.find((c) => c._id === id);
+    if (char) {
+      setInitialState(char);
+      setDraftState(JSON.parse(JSON.stringify(char))); // Deep clone
+    }
+  }, [id, characters]);
+
+  useEffect(() => {
+    if (initialState && draftState) {
+      setHasChanges(JSON.stringify(initialState) !== JSON.stringify(draftState));
+    }
+  }, [draftState, initialState]);
 
   const updateDraft = (field, value) => {
     setDraftState(prev => ({ ...prev, [field]: value }));
@@ -183,8 +199,14 @@ const CharacterSheet = ({ initialCharacter, onSave }) => {
   };
 
   const handleSave = () => {
-    onSave(draftState);
+    updateCharacter(id, draftState).then((updated) => {
+      setInitialState(updated);
+    });
   };
+
+  if (!draftState) {
+    return <div className="character-sheet">Loading character...</div>;
+  }
 
   return (
     <div className="character-sheet">

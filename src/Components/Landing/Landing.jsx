@@ -1,7 +1,11 @@
+import React from "react";
+import { useNavigate } from "react-router-dom";
 import sanguihedralLogo from "../../../public/sanguihedral.png";
 import kofiButton from "../../../public/kofi_badge_sanguihedral.png";
 
-function Landing({ onOpenModal }) {
+function Landing({ isLoggedIn, onOpenModal }) {
+  const navigate = useNavigate();
+
   return (
     <>
       <main>
@@ -22,14 +26,33 @@ function Landing({ onOpenModal }) {
           </p>
         </div>
         <div className="buttonContainer">
-          <button
-            name="login"
-            className="entryButton"
-            type="button"
-            onClick={() => onOpenModal("login")}
-          >
-            Register or Log In
-          </button>
+          {isLoggedIn ? (
+            <>
+              <button
+                className="entryButton"
+                type="button"
+                onClick={() => navigate("/characters")}
+              >
+                Go to Dashboard
+              </button>
+              <button
+                className="entryButton"
+                type="button"
+                onClick={() => navigate("/profile")}
+              >
+                View Profile
+              </button>
+            </>
+          ) : (
+            <button
+              name="login"
+              className="entryButton"
+              type="button"
+              onClick={() => onOpenModal("login")}
+            >
+              Register or Log In
+            </button>
+          )}
         </div>
       </main>
       <footer>
