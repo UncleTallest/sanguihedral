@@ -109,6 +109,7 @@ export const mapGridToCharacter = (grid) => {
   Object.entries(FIELD_MAPPINGS).forEach(([field, regexList]) => {
     const isNum = ["generation", "humanity", "bloodPotency", "hunger"].includes(field);
     let val = getValueForLabel(regexList, isNum);
+    
     if (field === "generation" && val < 4) val = 13;
     if (field === "clan" && val) {
       const slug = (text) => text.toLowerCase().replace("the ", "").replace(/\s+/g, "");
@@ -116,8 +117,14 @@ export const mapGridToCharacter = (grid) => {
       const match = v5data.clans.find(c => slug(c) === targetSlug);
       if (match) val = match;
     }
+    
     if (val !== undefined) character[field] = val;
   });
+
+  // Ensure default values for vital stats if not found
+  if (character.humanity === undefined) character.humanity = 7;
+  if (character.bloodPotency === undefined) character.bloodPotency = 1;
+  if (character.hunger === undefined) character.hunger = 1;
 
   // Map Attributes
   Object.entries(ATTRIBUTE_MAPPINGS).forEach(([attr, regexList]) => {
