@@ -38,8 +38,6 @@ const RegisterModal = ({
     setIsLoading(true);
     const user = { email, password, name, avatar };
     onRegistration({ user });
-    console.log("registered user, now logging in ", user);
-    onLogin({ email, password });
   };
 
   const handleToggleModal = () => {

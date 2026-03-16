@@ -40,12 +40,16 @@
   align-items: center;
   justify-content: center;
   position: relative;
+  box-shadow: inset 0 0 20px rgba(0,0,0,0.8);
 }
 
 .dice-roller__rolling-msg {
-  font-size: 24px;
+  font-family: var(--font-stats);
+  font-size: 28px;
   font-weight: bold;
   color: #d32f2f;
+  text-transform: uppercase;
+  letter-spacing: 3px;
   animation: pulse 1s infinite;
 }
 
@@ -55,16 +59,20 @@
 }
 
 .dice-roller__total {
-  font-size: 28px;
+  font-family: var(--font-header);
+  font-size: 32px;
   font-weight: bold;
   margin-bottom: 10px;
+  color: #fff;
 }
 
 .dice-roller__status {
-  font-size: 20px;
+  font-family: var(--font-stats);
+  font-size: 24px;
   font-weight: bold;
   padding: 5px 15px;
   border-radius: 4px;
+  letter-spacing: 1px;
 }
 
 .dice-roller__status_messy {
@@ -80,6 +88,7 @@
 
 .dice-roller__status_crit {
   color: #fbc02d;
+  text-shadow: 0 0 10px rgba(251, 192, 45, 0.5);
 }
 
 .dice-roller__status_success {
@@ -106,6 +115,19 @@
   background-color: rgba(30, 30, 30, 0.85);
   padding: 20px;
   border-radius: 12px;
+  border: 1px solid #333;
+}
+
+.dice-roller__char-info {
+  font-family: var(--font-flavor);
+  text-align: center;
+  font-size: 1.1em;
+  color: #aaa;
+  margin-bottom: 10px;
+}
+
+.dice-roller__char-info strong {
+  color: #d32f2f;
 }
 
 .dice-roller__presets {
@@ -113,9 +135,11 @@
   flex-wrap: wrap;
   gap: 10px;
   margin-bottom: 10px;
+  justify-content: center;
 }
 
 .dice-roller__preset-btn {
+  font-family: var(--font-stats);
   background-color: rgba(60, 60, 60, 0.5);
   border: 1px solid #444;
   color: #fff;
@@ -124,9 +148,10 @@
   font-size: 14px;
   cursor: pointer;
   transition: all 0.2s;
+  text-transform: uppercase;
 }
 
-.dice-roller__preset-btn:hover {
+.dice-roller__preset-btn:hover:not(:disabled) {
   background-color: #444;
   border-color: #d32f2f;
 }
@@ -146,6 +171,9 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  font-family: var(--font-stats);
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
 .dice-roller__stepper {
@@ -163,25 +191,40 @@
   color: #d32f2f;
   font-size: 20px;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  line-height: 1;
 }
 
 .dice-roller__stepper span {
-  font-size: 20px;
+  font-size: 22px;
   min-width: 25px;
   text-align: center;
+  color: #fff;
 }
 
 .dice-roller__roll-button {
+  font-family: var(--font-stats);
   background-color: #d32f2f;
   color: white;
   border: none;
   padding: 15px;
-  font-size: 20px;
+  font-size: 24px;
   font-weight: bold;
   border-radius: 8px;
   cursor: pointer;
-  letter-spacing: 2px;
-  transition: transform 0.1s;
+  letter-spacing: 4px;
+  transition: all 0.2s;
+  text-transform: uppercase;
+  box-shadow: 0 4px 15px rgba(211, 47, 47, 0.3);
+}
+
+.dice-roller__roll-button:hover:not(:disabled) {
+  background-color: #f44336;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(211, 47, 47, 0.4);
 }
 
 .dice-roller__roll-button:active {
@@ -189,8 +232,10 @@
 }
 
 .dice-roller__roll-button:disabled {
-  background-color: #666;
+  background-color: #444;
+  color: #888;
   cursor: not-allowed;
+  box-shadow: none;
 }
 
 @keyframes pulse {

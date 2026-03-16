@@ -1,7 +1,11 @@
+import React from "react";
 import kofiButton from "../../../public/kofi_badge_sanguihedral.png";
+import { useCharacters } from "../../contexts/CharacterContext";
 import "./Profile.css";
 
 function Profile({ currentUser, onSignOut }) {
+  const { characters } = useCharacters();
+
   return (
     <>
       <main className="profile">
@@ -14,9 +18,24 @@ function Profile({ currentUser, onSignOut }) {
         )}
         <h1>Welcome, {currentUser?.name}</h1>
         <p className="profile__email">{currentUser?.email}</p>
-        <div className="profile__characters">
-          <p>No characters yet.</p>
+        
+        <div className="profile__characters-section">
+          <h2>My Character List</h2>
+          <div className="profile__characters">
+            {characters.length > 0 ? (
+              <ul className="profile__character-list">
+                {characters.map((char) => (
+                  <li key={char._id} className="profile__character-item">
+                    <strong>{char.name}</strong> - {char.clan} ({char.sect})
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p>No characters yet.</p>
+            )}
+          </div>
         </div>
+
         <div className="buttonContainer">
           <button
             className="entryButton"

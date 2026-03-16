@@ -17,13 +17,15 @@
 }
 
 .dashboard__header h1 {
+  font-family: var(--font-header);
   margin: 0;
-  font-size: 24px;
+  font-size: 28px;
   text-transform: uppercase;
   letter-spacing: 2px;
 }
 
 .dashboard__new-button {
+  font-family: var(--font-stats);
   background-color: #d32f2f;
   color: white;
   border: none;
@@ -39,6 +41,7 @@
 }
 
 .dashboard__empty-state {
+  font-family: var(--font-flavor);
   background-color: rgba(20, 20, 20, 0.9);
   padding: 40px;
   border-radius: 12px;
@@ -48,12 +51,13 @@
 }
 
 .dashboard__empty-state p {
-  font-size: 18px;
+  font-size: 20px;
   color: #aaa;
   margin-bottom: 20px;
 }
 
 .dashboard__create-button {
+  font-family: var(--font-stats);
   background-color: transparent;
   color: #d32f2f;
   border: 2px solid #d32f2f;
@@ -97,6 +101,7 @@
 }
 
 .dashboard__menu button {
+  font-family: var(--font-stats);
   background-color: transparent;
   border: 1px solid #444;
   color: #fff;
@@ -105,6 +110,7 @@
   cursor: pointer;
   font-weight: bold;
   transition: all 0.2s;
+  letter-spacing: 1px;
 }
 
 .dashboard__menu button:hover {

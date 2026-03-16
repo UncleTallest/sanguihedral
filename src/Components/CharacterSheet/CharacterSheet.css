@@ -14,26 +14,33 @@
 }
 
 .core-view__section legend {
+  font-family: var(--font-header);
   padding: 0 10px;
   font-weight: bold;
+  font-size: 1.2em;
   color: #d32f2f;
+  letter-spacing: 1px;
 }
 
 .core-view__label {
+  font-family: var(--font-stats);
   display: flex;
   flex-direction: column;
   gap: 5px;
-  font-size: 14px;
+  font-size: 16px;
   color: #aaa;
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
 .core-view__input {
+  font-family: var(--font-flavor);
   background-color: #222;
   border: 1px solid #444;
   color: #fff;
-  padding: 8px;
+  padding: 10px;
   border-radius: 4px;
-  font-size: 16px;
+  font-size: 18px;
 }
 
 .core-view__input_margin-top {
@@ -41,50 +48,63 @@
 }
 
 .core-view__tracker {
+  font-family: var(--font-stats);
   display: flex;
   justify-content: space-between;
   align-items: center;
   color: #fff;
+  font-size: 16px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.stats-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.stat-label {
+  font-family: var(--font-stats);
+  font-size: 18px;
+  color: #ccc;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.health-view h3 {
+  font-family: var(--font-header);
+  font-size: 22px;
+  color: #d32f2f;
 }
 
 .sticky-header {
   position: sticky;
   top: 0;
-  background-color: #111;
-  padding: 10px;
+  background-color: rgba(10, 10, 10, 0.95);
+  padding: 15px;
   z-index: 50;
   display: flex;
   justify-content: center;
   border-bottom: 1px solid #d32f2f;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.5);
 }
 
 .save-button {
+  font-family: var(--font-stats);
   background-color: #d32f2f;
   color: white;
   border: none;
-  padding: 10px 20px;
-  border-radius: 20px;
+  padding: 12px 30px;
+  border-radius: 30px;
   font-weight: bold;
+  font-size: 1.2em;
   cursor: pointer;
   box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+  transition: all 0.2s;
 }
 
-.health-view {
-  display: flex;
-  flex-direction: column;
-  gap: 30px;
-}
-
-.health-view__tracker-container {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.health-view__tracker-container h3 {
-  margin: 0;
-  font-size: 16px;
-  color: #aaa;
-  text-transform: uppercase;
-  letter-spacing: 1px;
+.save-button:hover {
+  background-color: #f44336;
+  transform: scale(1.05);
 }
