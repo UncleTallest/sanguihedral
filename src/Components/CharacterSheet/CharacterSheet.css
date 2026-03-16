@@ -239,10 +239,26 @@
   margin-top: 10px;
 }
 
+/* Health View Fixes */
+.health-view {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  text-align: center;
+}
+
 .health-view h3 {
   font-family: var(--font-header);
-  font-size: 22px;
+  font-size: 24px;
   color: #d32f2f;
+  margin-bottom: 15px;
+}
+
+.health-view__tracker-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
 }
 
 .sticky-header {

@@ -49,6 +49,7 @@ const CoreView = ({ draft, updateDraft }) => (
           value={STANDARD_CLANS.includes(draft.clan) ? draft.clan : 'Other'}
           onChange={(e) => updateDraft('clan', e.target.value === 'Other' ? '' : e.target.value)}
         >
+          <option value="">-- Select Clan --</option>
           {STANDARD_CLANS.map(clan => <option key={clan} value={clan}>{clan}</option>)}
           <option value="Other">Other</option>
         </select>
@@ -351,7 +352,6 @@ const AdvantagesView = ({ draft, updateDraft }) => {
         </div>
 
         <div className="trait-list">
-          {/* Advantages */}
           {advantages.map((adv, i) => (
             <div key={`adv-${i}`} className="trait-card">
               <div className="trait-card__header">
@@ -368,7 +368,6 @@ const AdvantagesView = ({ draft, updateDraft }) => {
             </div>
           ))}
 
-          {/* Lore Sheets */}
           {loreSheets.map((ls, i) => (
             <div key={`ls-${i}`} className="trait-card trait-card_lore">
               <div className="trait-card__header">
@@ -436,30 +435,41 @@ const CharacterSheet = () => {
     const char = characters.find((c) => c._id === id);
     if (char) {
       setInitialState(char);
-      setDraftState(JSON.parse(JSON.stringify(char))); // Deep clone
+      setDraftState(JSON.parse(JSON.stringify(char)));
     }
   }, [id, characters]);
 
   useEffect(() => {
     if (initialState && draftState) {
-      setHasChanges(JSON.stringify(initialState) !== JSON.stringify(draftState));
+      const isDifferent = JSON.stringify(initialState) !== JSON.stringify(draftState);
+      setHasChanges(isDifferent);
     }
   }, [draftState, initialState]);
 
   const updateDraft = (field, value) => {
-    setDraftState(prev => ({ ...prev, [field]: value }));
+    setDraftState(prev => {
+      const updated = { ...prev, [field]: value };
+      return updated;
+    });
   };
 
   const updateNestedDraft = (category, field, value) => {
-    setDraftState(prev => ({
-      ...prev,
-      [category]: { ...prev[category], [field]: value }
-    }));
+    setDraftState(prev => {
+      const updated = {
+        ...prev,
+        [category]: { ...prev[category], [field]: value }
+      };
+      return updated;
+    });
   };
 
   const handleSave = () => {
     updateCharacter(id, draftState).then((updated) => {
       setInitialState(updated);
+      setHasChanges(false);
+    }).catch(err => {
+      console.error("Save failed:", err);
+      alert("Failed to save changes. Check console for details.");
     });
   };
 

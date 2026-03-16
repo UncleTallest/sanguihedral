@@ -69,9 +69,6 @@ const ALL_LABELS = [
   /specialities/i, /health/i, /willpower/i, /date of birth/i, /protean/i, /disciplines/i, /resonance/i, /lores/i, /advantages/i, /rituals/i, /merits and flaws/i
 ];
 
-/**
- * Scans a 2D array (CSV grid) for labels and extracts values to their right.
- */
 export const mapGridToCharacter = (grid) => {
   const character = {
     attributes: {},
@@ -82,9 +79,7 @@ export const mapGridToCharacter = (grid) => {
     rituals: []
   };
 
-  const isLabel = (text) => {
-    return ALL_LABELS.some(re => re.test(text));
-  };
+  const isLabel = (text) => ALL_LABELS.some(re => re.test(text));
 
   const cleanNumeric = (val) => {
     if (typeof val !== 'string') return val;
@@ -114,23 +109,18 @@ export const mapGridToCharacter = (grid) => {
     const isNum = ["generation", "humanity", "bloodPotency", "hunger"].includes(field);
     let val = getValueForLabel(regexList, isNum);
     if (field === "generation" && val < 4) val = 13;
-    
-    // Fuzzy match Clan against standard list
     if (field === "clan" && val) {
-      const match = v5data.clans.find(c => 
-        c.toLowerCase() === val.toLowerCase() || 
-        c.toLowerCase().replace("the ", "") === val.toLowerCase()
-      );
+      const slug = (text) => text.toLowerCase().replace("the ", "").replace(/\s+/g, "");
+      const targetSlug = slug(val);
+      const match = v5data.clans.find(c => slug(c) === targetSlug);
       if (match) val = match;
     }
-
     if (val !== undefined) character[field] = val;
   });
 
   // Map Attributes
   Object.entries(ATTRIBUTE_MAPPINGS).forEach(([attr, regexList]) => {
-    const val = getValueForLabel(regexList, true);
-    character.attributes[attr] = Math.max(1, val);
+    character.attributes[attr] = Math.max(1, getValueForLabel(regexList, true));
   });
 
   // Map Skills
@@ -154,45 +144,42 @@ export const mapGridToCharacter = (grid) => {
   character.maxHealth = findValueBelow(/health/i);
   character.maxWillpower = findValueBelow(/willpower/i);
 
-  // Scan for Disciplines
-  const foundDisciplines = new Map(); // Name -> dots
-  const foundPowers = new Map(); // DisciplineName -> [power names]
-
-  for (let r = 0; r < grid.length; r++) {
-    for (let c = 0; c < grid[r].length; c++) {
-      const cell = grid[r][c]?.trim();
-      if (/disciplines/i.test(cell)) {
-        for (let rowOffset = 1; rowOffset <= 5; rowOffset++) {
-          const discRow = grid[r + rowOffset];
-          if (!discRow) continue;
-          
-          const discName = discRow[c]?.trim();
-          const dots = cleanNumeric(discRow[c + 1]);
-          const powerText = discRow[c + 2]?.trim();
-
-          if (discName && !isLabel(discName)) {
-            const match = v5data.disciplines.find(vd => vd.name.toLowerCase() === discName.toLowerCase());
-            if (match) {
-              foundDisciplines.set(match.name, dots);
-              if (powerText && !isLabel(powerText)) {
-                const powers = foundPowers.get(match.name) || [];
-                const powerName = powerText.split(/[-–,]/)[0].trim();
-                powers.push(powerName);
-                foundPowers.set(match.name, powers);
-              }
-            }
+  // GREEDY DATA MINE for Disciplines and Powers
+  const flatGrid = grid.flat().map(cell => cell?.toString().trim()).filter(Boolean);
+  
+  v5data.disciplines.forEach(vDisc => {
+    const hasDisc = flatGrid.some(cell => cell.toLowerCase() === vDisc.name.toLowerCase());
+    
+    if (hasDisc) {
+      console.log(`Found Discipline: ${vDisc.name}`);
+      let dots = 1;
+      for (let r = 0; r < grid.length; r++) {
+        for (let c = 0; c < grid[r].length; c++) {
+          if (grid[r][c]?.toString().trim().toLowerCase() === vDisc.name.toLowerCase()) {
+            const possibleDots = cleanNumeric(grid[r][c+1]);
+            if (possibleDots > 0) dots = possibleDots;
           }
         }
       }
-    }
-  }
 
-  foundDisciplines.forEach((dots, name) => {
-    character.disciplines.push({
-      name,
-      dots,
-      powers: foundPowers.get(name) || []
-    });
+      // Check for each defined power
+      const ownedPowers = vDisc.powers?.filter(vPower => {
+        const found = flatGrid.some(cell => {
+          const normalized = cell.toLowerCase();
+          const powerName = vPower.name.toLowerCase();
+          // Match exactly or as part of a list
+          return normalized === powerName || normalized.startsWith(powerName + " ") || normalized.includes(" " + powerName);
+        });
+        if (found) console.log(`  Found Power: ${vPower.name}`);
+        return found;
+      }).map(p => p.name) || [];
+
+      character.disciplines.push({
+        name: vDisc.name,
+        dots: dots,
+        powers: ownedPowers
+      });
+    }
   });
 
   return character;

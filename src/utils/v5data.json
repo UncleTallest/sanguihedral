@@ -1,7 +1,7 @@
 {
   "clans": [
     "Banu Haqim", "Brujah", "Gangrel", "Hecata", "Lasombra", "Malkavian", 
-    "The Ministry", "Nosferatu", "Ravnos", "Salubri", "Toreador", "Tremere", 
+    "The Ministry", "Ministry", "Nosferatu", "Ravnos", "Salubri", "Toreador", "Tremere", 
     "Tzimisce", "Ventrue"
   ],
   "disciplines": [
@@ -11,40 +11,96 @@
         { "name": "Bond Famulus", "level": 1, "cost": "Free", "summary": "Form a bond with an animal.", "page": "V5 Core p. 244" },
         { "name": "Sense the Beast", "level": 1, "cost": "Free", "summary": "Sense the predatory nature of others.", "page": "V5 Core p. 244", "dice_pool": ["wits", "animalKen"] },
         { "name": "Feral Whispers", "level": 2, "cost": "1 Rouse Check", "summary": "Communicate with animals.", "page": "V5 Core p. 245", "dice_pool": ["manipulation", "animalKen"] },
-        { "name": "Quell the Beast", "level": 3, "cost": "1 Rouse Check", "summary": "Suppress emotional outbursts.", "page": "V5 Core p. 245", "dice_pool": ["charisma", "animalKen"] }
-      ]
-    },
-    {
-      "name": "Celerity",
-      "powers": [
-        { "name": "Cat's Grace", "level": 1, "cost": "Free", "summary": "Perfect balance and grace.", "page": "V5 Core p. 252" },
-        { "name": "Blink", "level": 2, "cost": "1 Rouse Check", "summary": "Move rapidly a short distance.", "page": "V5 Core p. 253" }
-      ]
-    },
-    {
-      "name": "Potence",
-      "powers": [
-        { "name": "Lethal Body", "level": 1, "cost": "Free", "summary": "Your unarmed attacks are deadly.", "page": "V5 Core p. 264" },
-        { "name": "Soaring Leap", "level": 1, "cost": "Free", "summary": "Jump incredible distances.", "page": "V5 Core p. 264", "dice_pool": ["strength", "athletics"] }
-      ]
-    },
-    {
-      "name": "Protean",
-      "powers": [
-        { "name": "Weight of the Feather", "level": 1, "cost": "Free", "summary": "User can become nearly weightless.", "page": "V5 Core p. 269" },
-        { "name": "Feral Weapons", "level": 2, "cost": "1 Rouse Check", "summary": "Grow claws or teeth.", "page": "V5 Core p. 270" },
-        { "name": "Earth Meld", "level": 3, "cost": "1 Rouse Check", "summary": "Merge with the earth.", "page": "V5 Core p. 270" }
+        { "name": "Quell the Beast", "level": 3, "cost": "1 Rouse Check", "summary": "Suppress emotional outbursts.", "page": "V5 Core p. 245", "dice_pool": ["charisma", "animalKen"] },
+        { "name": "Unliving Hive", "level": 3, "summary": "Extend powers to insect swarms.", "page": "V5 Core p. 246" },
+        { "name": "Subsume the Spirit", "level": 4, "summary": "Possess an animal.", "page": "V5 Core p. 246" },
+        { "name": "Animal Dominion", "level": 5, "summary": "Control large groups of animals.", "page": "V5 Core p. 247" }
       ]
     },
     {
       "name": "Auspex",
       "powers": [
-        { "name": "Heightened Senses", "level": 1, "cost": "Free", "summary": "Greatly enhance one sense.", "page": "V5 Core p. 249", "dice_pool": ["wits", "awareness"] },
-        { "name": "Sense the Unseen", "level": 1, "cost": "Free", "summary": "Detect supernatural presence.", "page": "V5 Core p. 249", "dice_pool": ["wits", "awareness"] }
+        { "name": "Heightened Senses", "level": 1, "summary": "Greatly enhance one sense.", "page": "V5 Core p. 249", "dice_pool": ["wits", "awareness"] },
+        { "name": "Sense the Unseen", "level": 1, "summary": "Detect supernatural presence.", "page": "V5 Core p. 249", "dice_pool": ["wits", "awareness"] },
+        { "name": "Premonition", "level": 2, "summary": "Receive flashes of the future.", "page": "V5 Core p. 249" },
+        { "name": "Scry the Soul", "level": 3, "summary": "Read an individual's aura.", "page": "V5 Core p. 250" },
+        { "name": "Share the Senses", "level": 3, "summary": "Project senses into another.", "page": "V5 Core p. 250" },
+        { "name": "Spirit's Touch", "level": 4, "summary": "Read impressions from objects.", "page": "V5 Core p. 251" },
+        { "name": "Clairvoyance", "level": 5, "summary": "Sense distant locations.", "page": "V5 Core p. 251" }
+      ]
+    },
+    {
+      "name": "Celerity",
+      "powers": [
+        { "name": "Cat's Grace", "level": 1, "summary": "Perfect balance and grace.", "page": "V5 Core p. 252" },
+        { "name": "Rapid Reflexes", "level": 1, "summary": "Respond instantly to stimuli.", "page": "V5 Core p. 253" },
+        { "name": "Blink", "level": 2, "summary": "Move rapidly a short distance.", "page": "V5 Core p. 253" },
+        { "name": "Traversal", "level": 3, "summary": "Run across liquids or walls.", "page": "V5 Core p. 253" },
+        { "name": "Unerring Aim", "level": 4, "summary": "Time slows down for your strikes.", "page": "V5 Core p. 254" },
+        { "name": "Split Second", "level": 5, "summary": "Take a full turn in an instant.", "page": "V5 Core p. 255" }
+      ]
+    },
+    {
+      "name": "Fortitude",
+      "powers": [
+        { "name": "Resilience", "level": 1, "summary": "Add dots to Health.", "page": "V5 Core p. 258" },
+        { "name": "Unswayable Mind", "level": 1, "summary": "Resist mental influence.", "page": "V5 Core p. 258" },
+        { "name": "Toughness", "level": 2, "summary": "Subract dots from superficial damage.", "page": "V5 Core p. 258" },
+        { "name": "Defy Bane", "level": 3, "summary": "Convert aggravated to superficial damage.", "page": "V5 Core p. 259" },
+        { "name": "Shatter", "level": 4, "summary": "Break weapons that strike you.", "page": "V5 Core p. 259" },
+        { "name": "Prowess from Pain", "level": 5, "summary": "Injury increases your power.", "page": "V5 Core p. 260" }
+      ]
+    },
+    {
+      "name": "Obfuscate",
+      "powers": [
+        { "name": "Cloak of Shadows", "level": 1, "summary": "Remain unseen while still.", "page": "V5 Core p. 261" },
+        { "name": "Silence of Death", "level": 1, "summary": "Mute all sound around you.", "page": "V5 Core p. 261" },
+        { "name": "Unseen Passage", "level": 2, "summary": "Move unseen.", "page": "V5 Core p. 261" },
+        { "name": "Ghost in the Machine", "level": 3, "summary": "Obfuscate works on cameras.", "page": "V5 Core p. 262" },
+        { "name": "Conceal", "level": 4, "summary": "Hide a large object or person.", "page": "V5 Core p. 262" },
+        { "name": "Vanish", "level": 5, "summary": "Disappear from sight instantly.", "page": "V5 Core p. 263" }
+      ]
+    },
+    {
+      "name": "Potence",
+      "powers": [
+        { "name": "Lethal Body", "level": 1, "summary": "Unarmed attacks are deadly.", "page": "V5 Core p. 264" },
+        { "name": "Soaring Leap", "level": 1, "summary": "Jump incredible distances.", "page": "V5 Core p. 264", "dice_pool": ["strength", "athletics"] },
+        { "name": "Prowess", "level": 2, "summary": "Add dots to unarmed damage.", "page": "V5 Core p. 264" },
+        { "name": "Brutal Clout", "level": 3, "summary": "Knock back foes with impact.", "page": "V5 Core p. 265" },
+        { "name": "Uncanny Grip", "level": 4, "summary": "Climb walls like a spider.", "page": "V5 Core p. 266" },
+        { "name": "Earthshock", "level": 5, "summary": "Strike the ground to create a shockwave.", "page": "V5 Core p. 266" }
+      ]
+    },
+    {
+      "name": "Presence",
+      "powers": [
+        { "name": "Awe", "level": 1, "summary": "Center of attention.", "page": "V5 Core p. 267", "dice_pool": ["manipulation", "presence"] },
+        { "name": "Daunt", "level": 1, "summary": "Appear terrifying.", "page": "V5 Core p. 267" },
+        { "name": "Lingering Kiss", "level": 2, "summary": "Your bite creates obsession.", "page": "V5 Core p. 267" },
+        { "name": "Dread Gaze", "level": 3, "summary": "Paralyze with a stare.", "page": "V5 Core p. 268" },
+        { "name": "Entrancement", "level": 3, "summary": "Make a person your devoted servant.", "page": "V5 Core p. 268" },
+        { "name": "Summon", "level": 4, "summary": "Call someone to you from distance.", "page": "V5 Core p. 269" },
+        { "name": "Majesty", "level": 5, "summary": "None can raise a hand against you.", "page": "V5 Core p. 269" }
+      ]
+    },
+    {
+      "name": "Protean",
+      "powers": [
+        { "name": "Weight of the Feather", "level": 1, "summary": "Become nearly weightless.", "page": "V5 Core p. 269" },
+        { "name": "Feral Weapons", "level": 2, "summary": "Grow claws or teeth.", "page": "V5 Core p. 270" },
+        { "name": "Earth Meld", "level": 3, "summary": "Merge with the earth.", "page": "V5 Core p. 270" },
+        { "name": "Metamorphosis", "level": 4, "summary": "Transform into an animal.", "page": "V5 Core p. 270" },
+        { "name": "Mist Form", "level": 5, "summary": "Transform into a cloud of mist.", "page": "V5 Core p. 271" }
       ]
     },
     {
       "name": "Blood Sorcery",
+      "powers": [
+        { "name": "Corrosive Vitae", "level": 1, "summary": "Your blood becomes acid.", "page": "V5 Core p. 272" },
+        { "name": "Extinguish Vitae", "level": 2, "summary": "Drain another's blood power.", "page": "V5 Core p. 273" }
+      ],
       "rituals": []
     }
   ],
