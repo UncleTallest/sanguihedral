@@ -18,11 +18,12 @@
   --color-accent: #daa520; /* Goldenrod */
   --color-accent-hover: #ffcf40;
   --color-blood: #a80202;
+  --color-blood-bright: #d32f2f;
 }
 
 a {
   font-weight: 600;
-  color: var(--color-blood);
+  color: var(--color-blood-bright);
   text-decoration: inherit;
 }
 a:hover {

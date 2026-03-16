@@ -78,7 +78,14 @@ export const mapGridToCharacter = (grid) => {
     advantages: [],
     flaws: [],
     rituals: [],
-    loreSheets: []
+    loreSheets: [],
+    hunger: 1,
+    bloodPotency: 1,
+    humanity: 7,
+    superficialDamage: 0,
+    aggravatedDamage: 0,
+    superficialWillpowerDamage: 0,
+    aggravatedWillpowerDamage: 0
   };
 
   const isLabel = (text) => {
@@ -123,6 +130,7 @@ export const mapGridToCharacter = (grid) => {
   Object.entries(FIELD_MAPPINGS).forEach(([field, regexList]) => {
     const isNum = ["generation", "humanity", "bloodPotency", "hunger"].includes(field);
     let val = getValueForLabel(regexList, isNum);
+    
     if (field === "generation" && val < 4) val = 13;
     if (field === "clan" && val) {
       const slug = (text) => text.toLowerCase().replace("the ", "").replace(/\s+/g, "");
@@ -130,14 +138,11 @@ export const mapGridToCharacter = (grid) => {
       const match = v5data.clans.find(c => slug(c) === targetSlug);
       if (match) val = match;
     }
+    
     if (val !== undefined && val !== 0) character[field] = val;
   });
 
-  if (!character.humanity) character.humanity = 7;
-  if (!character.bloodPotency) character.bloodPotency = 1;
-  if (!character.hunger) character.hunger = 1;
-
-  // Attributes & Skills
+  // Map Attributes & Skills
   Object.entries(ATTRIBUTE_MAPPINGS).forEach(([attr, regexList]) => {
     character.attributes[attr] = Math.max(1, getValueForLabel(regexList, true));
   });
@@ -145,12 +150,9 @@ export const mapGridToCharacter = (grid) => {
     character.skills[skill] = getValueForLabel(regexList, true);
   });
 
-  character.maxHealth = findValueBelow(grid, /health/i);
-  character.maxWillpower = findValueBelow(grid, /willpower/i);
-
   const flatGrid = grid.flat().map(cell => cell?.toString().trim()).filter(Boolean);
   
-  // GREEDY Disciplines
+  // Disciplines
   v5data.disciplines.forEach(vDisc => {
     const hasDisc = flatGrid.some(cell => cell.toLowerCase() === vDisc.name.toLowerCase());
     if (hasDisc) {
@@ -178,7 +180,7 @@ export const mapGridToCharacter = (grid) => {
     }
   });
 
-  // EXHAUSTIVE FUZZY GREEDY for Merits, Flaws, and Backgrounds
+  // FUZZY Multiline Miner for Backgrounds
   const mineTrait = (traitList, targetArray, isBackground = false) => {
     traitList.forEach(vTrait => {
       for (let r = 0; r < grid.length; r++) {
@@ -189,38 +191,28 @@ export const mapGridToCharacter = (grid) => {
           const lowerCell = cell.toLowerCase();
           const target = vTrait.name.toLowerCase();
 
-          // Check if the cell CONTAINS the trait name at all
           if (lowerCell.includes(target)) {
             let dots = 0;
             let specLines = [];
 
-            // 1. Check right for dots
             for (let offset = 1; offset <= 4; offset++) {
               const val = cleanNumeric(grid[r][c+offset], true);
-              if (val > 0) { 
-                dots = val; 
-                break; 
-              }
+              if (val > 0) { dots = val; break; }
             }
-            // 2. Check current cell for dots
             if (dots === 0) dots = cleanNumeric(cell, true);
-            
-            // 3. Check BELOW current cell for dots (some sheets put dots under name)
             if (dots === 0 && grid[r+1]) dots = cleanNumeric(grid[r+1][c], true);
 
-            // CAPTURE DESCRIPTION
-            const cellParts = cell.split(/[-–()\[\]]/);
-            if (cellParts.length > 1) specLines.push(cellParts.pop().trim());
-
-            for (let rowOffset = 1; rowOffset <= 5; rowOffset++) {
-              const nextRowCell = grid[r + rowOffset] ? grid[r + rowOffset][c]?.toString().trim() : "";
-              if (!nextRowCell || isLabel(nextRowCell)) break;
-              // If it's just a number we already used, skip it
-              if (cleanNumeric(nextRowCell, true) === dots) continue;
-              specLines.push(nextRowCell);
-            }
-
             if (dots > 0) {
+              const cellParts = cell.split(/[-–()\[\]]/);
+              if (cellParts.length > 1) specLines.push(cellParts.pop().trim());
+
+              for (let rowOffset = 1; rowOffset <= 5; rowOffset++) {
+                const nextRowCell = grid[r + rowOffset] ? grid[r + rowOffset][c]?.toString().trim() : "";
+                if (!nextRowCell || isLabel(nextRowCell)) break;
+                if (cleanNumeric(nextRowCell, true) === dots) continue;
+                specLines.push(nextRowCell);
+              }
+
               const entry = { 
                 name: vTrait.name, 
                 dots, 
@@ -229,6 +221,7 @@ export const mapGridToCharacter = (grid) => {
               if (isBackground) entry.type = "Background";
               else if (vTrait.type) entry.type = vTrait.type;
               targetArray.push(entry);
+              console.log(`Mined Trait: ${entry.name} (${entry.dots} dots)`);
               return;
             }
           }
@@ -258,20 +251,6 @@ export const mapGridToCharacter = (grid) => {
   });
 
   return character;
-};
-
-const findValueBelow = (grid, labelRegex) => {
-  for (let r = 0; r < grid.length; r++) {
-    for (let c = 0; c < grid[r].length; c++) {
-      const cell = grid[r][c]?.trim();
-      if (cell && cell.length < 15 && labelRegex.test(cell)) {
-        const val = grid[r+1] ? grid[r+1][c] : undefined;
-        if (!val) return cleanNumeric(grid[r][c+1], true);
-        return cleanNumeric(val, true);
-      }
-    }
-  }
-  return 0;
 };
 
 const cleanNumeric = (val, isStrict = false) => {
