@@ -31,16 +31,20 @@
   margin: 0;
   width: 12rem;
   height: 4rem;
-  border: none;
+  border: 1px solid #000;
   border-radius: 2rem;
-  color: #0e0e0e;
+  color: var(--color-accent); /* Goldenrod text */
+  font-weight: 900;
+  text-shadow: 1px 1px 2px #000;
   background-image: url(/public/bloody_background_128px_height.png);
   background-position: center;
   will-change: filter;
-  transition: filter 300ms;
+  transition: all 300ms;
 }
 .entryButton:hover {
-  filter: drop-shadow(0 0 15px #a80202);
+  filter: drop-shadow(0 0 15px var(--color-accent));
+  color: var(--color-accent-hover);
+  transform: scale(1.05);
 }
 
 .copyright {
@@ -55,23 +59,8 @@
   transition: filter 300ms;
 }
 .kofiButton:hover {
-  filter: drop-shadow(0 0 12px #a80202);
+  filter: drop-shadow(0 0 12px var(--color-accent));
 }
-
-/* @keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
-} */
 
 .card {
   padding: 2em;
