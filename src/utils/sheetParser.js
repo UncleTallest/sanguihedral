@@ -3,8 +3,6 @@ import Papa from "papaparse";
 export const convertToCsvUrl = (url) => {
   if (!url) return "";
   if (url.includes("/export?format=csv")) return url;
-  
-  // Convert /edit... to /export?format=csv
   return url.replace(/\/edit.*$/, "/export?format=csv");
 };
 
@@ -63,36 +61,92 @@ const SKILL_MAPPINGS = {
   technology: [/technology/i, /tech/i],
 };
 
-export const mapHeadersToCharacter = (headers, rowData) => {
+const ALL_LABELS = [
+  ...Object.values(FIELD_MAPPINGS).flat(),
+  ...Object.values(ATTRIBUTE_MAPPINGS).flat(),
+  ...Object.values(SKILL_MAPPINGS).flat(),
+  /specialities/i, /health/i, /willpower/i, /date of birth/i, /protean/i, /disciplines/i, /resonance/i, /lores/i
+];
+
+/**
+ * Scans a 2D array (CSV grid) for labels and extracts values to their right.
+ */
+export const mapGridToCharacter = (grid) => {
   const character = {
     attributes: {},
     skills: {},
+    disciplines: [],
+    advantages: [],
+    flaws: [],
+    rituals: []
   };
 
-  const findValue = (regexList) => {
-    const index = headers.findIndex(h => regexList.some(re => re.test(h.trim())));
-    if (index === -1) return undefined;
-    const val = rowData[index];
-    return isNaN(val) ? val : Number(val);
+  const isLabel = (text) => {
+    return ALL_LABELS.some(re => re.test(text));
+  };
+
+  const cleanNumeric = (val) => {
+    if (typeof val !== 'string') return val;
+    // Strip "12th" -> "12"
+    const cleaned = val.replace(/[^0-9]/g, '');
+    return cleaned === "" ? 0 : Number(cleaned);
+  };
+
+  const getValueForLabel = (regexList, isNumeric = false) => {
+    for (let r = 0; r < grid.length; r++) {
+      for (let c = 0; c < grid[r].length; c++) {
+        const cell = grid[r][c]?.toString().trim();
+        if (regexList.some(re => re.test(cell))) {
+          // Found the label, check the next few cells
+          for (let offset = 1; offset <= 2; offset++) {
+            const nextCell = grid[r][c + offset]?.toString().trim();
+            if (nextCell && !isLabel(nextCell)) {
+              return isNumeric ? cleanNumeric(nextCell) : nextCell;
+            }
+          }
+        }
+      }
+    }
+    return isNumeric ? 0 : undefined;
   };
 
   // Map Top Level Fields
   Object.entries(FIELD_MAPPINGS).forEach(([field, regexList]) => {
-    const val = findValue(regexList);
+    const isNum = ["generation", "humanity", "bloodPotency", "hunger"].includes(field);
+    let val = getValueForLabel(regexList, isNum);
+    
+    // Schema constraints
+    if (field === "generation" && val < 4) val = 13; // Default to 13th if weird
+    
     if (val !== undefined) character[field] = val;
   });
 
-  // Map Attributes
+  // Map Attributes - MIN 1
   Object.entries(ATTRIBUTE_MAPPINGS).forEach(([attr, regexList]) => {
-    const val = findValue(regexList);
-    if (val !== undefined) character.attributes[attr] = val;
+    const val = getValueForLabel(regexList, true);
+    character.attributes[attr] = Math.max(1, val);
   });
 
   // Map Skills
   Object.entries(SKILL_MAPPINGS).forEach(([skill, regexList]) => {
-    const val = findValue(regexList);
-    if (val !== undefined) character.skills[skill] = val;
+    character.skills[skill] = getValueForLabel(regexList, true);
   });
+
+  // Special scan for Health/Willpower
+  const findValueBelow = (labelRegex) => {
+    for (let r = 0; r < grid.length; r++) {
+      for (let c = 0; c < grid[r].length; c++) {
+        if (labelRegex.test(grid[r][c]?.trim())) {
+          const val = grid[r+1] ? grid[r+1][c] : undefined;
+          return cleanNumeric(val);
+        }
+      }
+    }
+    return 0;
+  };
+
+  character.maxHealth = findValueBelow(/health/i);
+  character.maxWillpower = findValueBelow(/willpower/i);
 
   return character;
 };
@@ -103,13 +157,11 @@ export const parseCSVData = (csvString) => {
       header: false,
       skipEmptyLines: true,
       complete: (results) => {
-        if (results.data.length < 2) {
-          reject(new Error("Sheet must contain at least a header row and one data row."));
+        if (results.data.length < 1) {
+          reject(new Error("Sheet appears to be empty."));
           return;
         }
-        const headers = results.data[0];
-        const firstDataRow = results.data[1];
-        resolve(mapHeadersToCharacter(headers, firstDataRow));
+        resolve(mapGridToCharacter(results.data));
       },
       error: (error) => {
         reject(error);
@@ -122,7 +174,7 @@ export const fetchAndParseSheet = async (url) => {
   const csvUrl = convertToCsvUrl(url);
   const response = await fetch(csvUrl);
   if (!response.ok) {
-    throw new Error("Failed to fetch sheet data. Ensure the sheet is 'Published to Web' as CSV.");
+    throw new Error("Failed to fetch. Ensure the sheet is 'Published to Web' as CSV.");
   }
   const csvText = await response.text();
   return parseCSVData(csvText);
