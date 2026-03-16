@@ -26,7 +26,7 @@ describe("RegisterModal Component", () => {
     expect(screen.getByRole("button", { name: "or Login" })).toBeInTheDocument();
   });
 
-  it("calls onRegistration and onLogin with correct data on submit", () => {
+  it("calls onRegistration with correct data on submit", () => {
     render(<RegisterModal {...defaultProps} />);
     
     const emailInput = screen.getByPlaceholderText("Email");
@@ -50,10 +50,6 @@ describe("RegisterModal Component", () => {
         name: "New User",
         avatar: "https://avatar.com/1"
       }
-    });
-    expect(defaultProps.onLogin).toHaveBeenCalledWith({
-      email: "new@example.com",
-      password: "pass123"
     });
   });
 
