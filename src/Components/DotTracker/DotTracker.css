@@ -28,12 +28,12 @@
 }
 
 .dot_empty {
-  border-color: #444;
-  background-color: rgba(20, 20, 20, 0.5);
+  border-color: #444 !important;
+  background-color: #111 !important; /* Explicit dark background */
 }
 
 .dot_filled {
-  background-color: #d32f2f; /* Blood red */
-  border-color: #d32f2f;
+  background-color: #d32f2f !important; /* Blood red */
+  border-color: #d32f2f !important;
   box-shadow: 0 0 8px rgba(211, 47, 47, 0.4);
 }

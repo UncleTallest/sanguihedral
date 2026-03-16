@@ -104,7 +104,6 @@ export const mapGridToCharacter = (grid) => {
     return false;
   };
 
-  // Helper to check if a cell contains a new trait name (to stop multiline grab)
   const isAnotherTrait = (text) => {
     if (!text) return false;
     const lower = text.toLowerCase();
@@ -114,9 +113,7 @@ export const mapGridToCharacter = (grid) => {
   const cleanNumeric = (val, isStrict = false) => {
     if (!val) return 0;
     const s = val.toString().trim();
-    // In strict mode (looking at neighbor cells), ignore long text
     if (isStrict && s.length > 3) return 0; 
-    
     const cleaned = s.replace(/[^0-9]/g, '');
     if (cleaned === "") return 0;
     const num = Number(cleaned);
@@ -146,7 +143,6 @@ export const mapGridToCharacter = (grid) => {
     return isNumeric ? 0 : undefined;
   };
 
-  // Map Top Level Fields
   Object.entries(FIELD_MAPPINGS).forEach(([field, regexList]) => {
     const isNum = ["generation", "humanity", "bloodPotency", "hunger"].includes(field);
     let val = getValueForLabel(regexList, isNum);
@@ -164,7 +160,6 @@ export const mapGridToCharacter = (grid) => {
   if (!character.bloodPotency) character.bloodPotency = 1;
   if (!character.hunger) character.hunger = 1;
 
-  // Map Attributes & Skills
   Object.entries(ATTRIBUTE_MAPPINGS).forEach(([attr, regexList]) => {
     character.attributes[attr] = Math.max(1, getValueForLabel(regexList, true));
   });
@@ -174,7 +169,6 @@ export const mapGridToCharacter = (grid) => {
 
   const flatGrid = grid.flat().map(cell => cell?.toString().trim()).filter(Boolean);
   
-  // Disciplines
   v5data.disciplines.forEach(vDisc => {
     const hasDisc = flatGrid.some(cell => cell.toLowerCase() === vDisc.name.toLowerCase());
     if (hasDisc) {
@@ -202,7 +196,6 @@ export const mapGridToCharacter = (grid) => {
     }
   });
 
-  // FUZZY Multiline Miner
   const mineTrait = (traitList, targetArray) => {
     traitList.forEach(vTrait => {
       for (let r = 0; r < grid.length; r++) {
@@ -217,13 +210,11 @@ export const mapGridToCharacter = (grid) => {
             let dots = 0;
             let specLines = [];
 
-            // 1. Check right for dots
             for (let offset = 1; offset <= 4; offset++) {
               const val = cleanNumeric(grid[r][c+offset], true);
               if (val > 0) { dots = val; break; }
             }
-            // 2. Check current cell or below
-            if (dots === 0) dots = cleanNumeric(cell); // Not strict here so it can find "Contacts 2"
+            if (dots === 0) dots = cleanNumeric(cell); 
             if (dots === 0 && grid[r+1]) dots = cleanNumeric(grid[r+1][c], true);
 
             if (dots > 0) {
@@ -239,11 +230,13 @@ export const mapGridToCharacter = (grid) => {
                 specLines.push(nextRowCell);
               }
 
-              targetArray.push({ 
+              const entry = { 
                 name: vTrait.name, 
                 dots, 
                 specification: specLines.filter(Boolean).join(" | ").substring(0, 500) 
-              });
+              };
+              targetArray.push(entry);
+              console.log(`[DEBUG] FOUND TRAIT: ${entry.name}, DOTS: ${entry.dots}, SPEC: ${entry.specification}`);
               return;
             }
           }
@@ -256,7 +249,6 @@ export const mapGridToCharacter = (grid) => {
   mineTrait(v5data.backgrounds, character.backgrounds.advantages);
   mineTrait(v5data.flaws, character.backgrounds.flaws);
 
-  // Rituals
   v5data.disciplines.forEach(d => {
     d.rituals?.forEach(r => {
       if (flatGrid.some(cell => cell.toLowerCase().includes(r.name.toLowerCase()))) {
@@ -265,7 +257,6 @@ export const mapGridToCharacter = (grid) => {
     });
   });
 
-  // LoreSheets
   v5data.loreSheets.forEach(ls => {
     if (flatGrid.some(cell => cell.toLowerCase().includes(ls.name.toLowerCase()))) {
       character.backgrounds.loreSheets.push({ name: ls.name, dots: 1, specification: "" });
@@ -273,20 +264,6 @@ export const mapGridToCharacter = (grid) => {
   });
 
   return character;
-};
-
-const findValueBelow = (grid, labelRegex) => {
-  for (let r = 0; r < grid.length; r++) {
-    for (let c = 0; c < grid[r].length; c++) {
-      const cell = grid[r][c]?.trim();
-      if (cell && cell.length < 15 && labelRegex.test(cell)) {
-        const val = grid[r+1] ? grid[r+1][c] : undefined;
-        if (!val) return cleanNumeric(grid[r][c+1], true);
-        return cleanNumeric(val, true);
-      }
-    }
-  }
-  return 0;
 };
 
 export const parseCSVData = (csvString) => {

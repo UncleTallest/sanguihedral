@@ -1,6 +1,6 @@
 .header {
   background-color: rgba(15, 15, 15, 0.95);
-  border-bottom: 1px solid #d32f2f;
+  border-bottom: 1px solid var(--color-blood);
   padding: 10px 20px;
   position: sticky;
   top: 0;
@@ -35,7 +35,7 @@
   font-weight: bold;
   text-transform: uppercase;
   letter-spacing: 2px;
-  color: #a80202;
+  color: var(--color-blood);
 }
 
 .header__nav {
@@ -56,35 +56,25 @@
 }
 
 .header__link:hover {
-  color: #d32f2f;
+  color: var(--color-accent);
 }
 
 .header__button {
   font-family: var(--font-stats);
-  background: transparent;
-  border: 1px solid #444;
-  color: #fff;
+  background-color: var(--color-accent) !important;
+  border: none !important;
+  color: #000 !important;
   padding: 6px 15px;
   border-radius: 4px;
   font-size: 14px;
-  font-weight: bold;
+  font-weight: 800;
   cursor: pointer;
   transition: all 0.2s;
 }
 
-.header__button_login:hover {
-  border-color: #d32f2f;
-  background-color: rgba(211, 47, 47, 0.1);
-}
-
-.header__button_signout {
-  border-color: rgba(211, 47, 47, 0.3);
-  color: #d32f2f;
-}
-
-.header__button_signout:hover {
-  background-color: rgba(211, 47, 47, 0.1);
-  border-color: #d32f2f;
+.header__button:hover {
+  background-color: var(--color-accent-hover) !important;
+  transform: translateY(-1px);
 }
 
 @media (max-width: 600px) {

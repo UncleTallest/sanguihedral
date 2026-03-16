@@ -31,10 +31,10 @@
   margin: 0;
   width: 12rem;
   height: 4rem;
-  border: none;
+  border: none !important;
   border-radius: 2rem;
   background-color: var(--color-accent) !important;
-  background-image: none !important;
+  background-image: none !important; /* Force remove blood splash */
   color: #000 !important; /* Solid Black text */
   font-weight: 900;
   text-transform: uppercase;
