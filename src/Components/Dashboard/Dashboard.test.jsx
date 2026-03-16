@@ -74,6 +74,6 @@ describe("Dashboard Component", () => {
     fireEvent.click(screen.getByRole("button", { name: /Import Character/i }));
 
     expect(await screen.findByText(/Review Parsed Data/i)).toBeInTheDocument();
-    expect(screen.getByText(/Imported Marcus/i)).toBeInTheDocument();
+    expect(screen.getByDisplayValue(/Imported Marcus/i)).toBeInTheDocument();
   });
 });

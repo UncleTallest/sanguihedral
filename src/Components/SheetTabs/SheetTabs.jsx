@@ -7,22 +7,23 @@ const TABS = [
   { id: 'skills', label: 'Skills' },
   { id: 'supernatural', label: 'Supernatural' },
   { id: 'advantages', label: 'Advantages' },
-  { id: 'health', label: 'Health' },
 ];
 
 const SheetTabs = ({ activeTab, onTabChange }) => {
   return (
     <nav className="sheet-tabs">
-      {TABS.map((tab) => (
-        <button
-          key={tab.id}
-          type="button"
-          className={`sheet-tab ${activeTab === tab.id ? 'sheet-tab_active' : ''}`}
-          onClick={() => onTabChange(tab.id)}
-        >
-          {tab.label}
-        </button>
-      ))}
+      <div className="sheet-tabs__scroll-container">
+        {TABS.map((tab) => (
+          <button
+            key={tab.id}
+            type="button"
+            className={`sheet-tab ${activeTab === tab.id ? 'sheet-tab_active' : ''}`}
+            onClick={() => onTabChange(tab.id)}
+          >
+            {tab.label}
+          </button>
+        ))}
+      </div>
     </nav>
   );
 };

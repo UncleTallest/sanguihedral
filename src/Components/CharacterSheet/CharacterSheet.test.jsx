@@ -1,4 +1,4 @@
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { describe, it, expect, vi } from "vitest";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
 import { CharacterProvider } from "../../contexts/CharacterContext";
@@ -22,7 +22,9 @@ const mockCharacter = {
   skills: { brawl: 2 },
   hunger: 1,
   bloodPotency: 1,
-  humanity: 7
+  humanity: 7,
+  superficialDamage: 0,
+  aggravatedDamage: 0
 };
 
 describe("CharacterSheet Container", () => {
@@ -40,7 +42,7 @@ describe("CharacterSheet Container", () => {
     expect(screen.getByText(/Loading character/i)).toBeInTheDocument();
   });
 
-  it("renders core tab and displays character name when character is found", async () => {
+  it("renders core tab and displays health/willpower (now merged into Core)", async () => {
     api.getCharacters.mockResolvedValue([mockCharacter]);
     render(
       <MemoryRouter initialEntries={["/characters/123"]}>
@@ -53,6 +55,9 @@ describe("CharacterSheet Container", () => {
     );
     
     expect(await screen.findByDisplayValue("Marcus")).toBeInTheDocument();
+    // Health and Willpower should be visible in Core tab now
+    expect(screen.getByText(/Health \(Max: 4\)/i)).toBeInTheDocument();
+    expect(screen.getByText(/Willpower \(Max: 2\)/i)).toBeInTheDocument();
   });
 
   it("shows save button only when changes are made", async () => {
@@ -68,14 +73,9 @@ describe("CharacterSheet Container", () => {
     );
     
     const nameInput = await screen.findByDisplayValue("Marcus");
-    
-    // Save button should not exist initially
     expect(screen.queryByRole("button", { name: /save changes/i })).not.toBeInTheDocument();
 
-    // Modify name
     fireEvent.change(nameInput, { target: { value: "Marcus Modified" } });
-
-    // Save button should appear
     expect(screen.getByRole("button", { name: /save changes/i })).toBeInTheDocument();
   });
 });

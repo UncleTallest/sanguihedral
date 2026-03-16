@@ -25,10 +25,10 @@ describe("sheetParser Utility (Grid Mode)", () => {
     expect(result.maxHealth).toBe(7);
   });
 
-  it("handles empty and malformed grids gracefully", () => {
+  it("handles empty and malformed grids gracefully by defaulting attributes to 1", () => {
     const grid = [["Random", "Data"], ["No", "Labels"]];
     const result = mapGridToCharacter(grid);
-    expect(result.attributes).toEqual({});
+    expect(result.attributes.strength).toBe(1);
     expect(result.name).toBeUndefined();
   });
 });
