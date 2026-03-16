@@ -19,6 +19,9 @@ const DiceRoller = () => {
   const [searchParams] = useSearchParams();
   const { characters } = useCharacters();
   const charId = searchParams.get('charId');
+  const poolFromParam = searchParams.get('pool');
+  const nameFromParam = searchParams.get('name');
+  
   const { history, addRoll, deleteRoll, clearHistory } = useRollHistory();
 
   const [activeCharacter, setActiveCharacter] = useState(null);
@@ -36,9 +39,20 @@ const DiceRoller = () => {
       if (char) {
         setActiveCharacter(char);
         setHungerDice(char.hunger || 1);
+
+        // If a specific pool was passed in the URL (e.g., from a Power Roll button)
+        if (poolFromParam) {
+          const stats = poolFromParam.split(',');
+          let calculatedPool = 0;
+          stats.forEach(stat => {
+            // Check attributes first, then skills
+            calculatedPool += (char.attributes?.[stat] || char.skills?.[stat] || 0);
+          });
+          if (calculatedPool > 0) setTotalPool(calculatedPool);
+        }
       }
     }
-  }, [charId, characters]);
+  }, [charId, characters, poolFromParam]);
 
   const handleRoll = async () => {
     setRollState('rolling');
@@ -130,7 +144,7 @@ const DiceRoller = () => {
       <div className="dice-roller__controls">
         {activeCharacter && (
           <div className="dice-roller__char-info">
-            Rolling for: <strong>{activeCharacter.name}</strong>
+            Rolling{nameFromParam ? ` ${nameFromParam}` : ""} for: <strong>{activeCharacter.name}</strong>
           </div>
         )}
 

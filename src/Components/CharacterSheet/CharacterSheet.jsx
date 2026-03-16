@@ -157,6 +157,7 @@ const SkillsView = ({ draft, updateNestedDraft }) => {
 const SupernaturalView = ({ draft, updateDraft }) => {
   const navigate = useNavigate();
   const disciplines = draft.disciplines || [];
+  const rituals = draft.rituals || [];
   
   const handleAddDiscipline = (e) => {
     const name = e.target.value;
@@ -187,6 +188,14 @@ const SupernaturalView = ({ draft, updateDraft }) => {
       updated[discIndex].powers = [...powerList, powerName];
     }
     updateDraft('disciplines', updated);
+  };
+
+  const toggleRitual = (name) => {
+    if (rituals.includes(name)) {
+      updateDraft('rituals', rituals.filter(r => r !== name));
+    } else {
+      updateDraft('rituals', [...rituals, name]);
+    }
   };
 
   return (
@@ -229,7 +238,10 @@ const SupernaturalView = ({ draft, updateDraft }) => {
                           {p.dice_pool && (
                             <button 
                               className="roll-btn-small"
-                              onClick={() => navigate(`/dice?charId=${draft._id}`)}
+                              onClick={() => {
+                                const poolParam = p.dice_pool.join(',');
+                                navigate(`/dice?charId=${draft._id}&pool=${poolParam}&name=${p.name}`);
+                              }}
                             >
                               Roll
                             </button>
@@ -244,63 +256,124 @@ const SupernaturalView = ({ draft, updateDraft }) => {
           })}
         </div>
       </div>
+
+      <div className="view-section" style={{marginTop: '40px'}}>
+        <h3>Rituals</h3>
+        <div className="trait-card">
+          <div className="power-selector">
+            {v5data.disciplines.find(d => d.name === "Blood Sorcery")?.rituals?.map(r => (
+              <div key={r.name} className="power-item">
+                <label className="power-item__label">
+                  <input 
+                    type="checkbox" 
+                    checked={rituals.includes(r.name)} 
+                    onChange={() => toggleRitual(r.name)}
+                  />
+                  {r.name} (Lvl {r.level})
+                </label>
+                {rituals.includes(r.name) && (
+                  <div className="power-summary">
+                    <p>{r.summary}</p>
+                    <small>{r.page}</small>
+                    {r.dice_pool && (
+                      <button 
+                        className="roll-btn-small"
+                        onClick={() => {
+                          const poolParam = r.dice_pool.join(',');
+                          navigate(`/dice?charId=${draft._id}&pool=${poolParam}&name=${r.name}`);
+                        }}
+                      >
+                        Roll
+                      </button>
+                    )}
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
 
 const AdvantagesView = ({ draft, updateDraft }) => {
+  const navigate = useNavigate();
   const advantages = draft.advantages || [];
   const flaws = draft.flaws || [];
+  const loreSheets = draft.loreSheets || [];
 
   const handleAddAdvantage = (e) => {
     const val = e.target.value;
     if (val) {
       const [type, name] = val.split(':');
-      const updated = [...advantages, { name, type, dots: 1, specification: "" }];
-      updateDraft('advantages', updated);
+      if (type === "LoreSheet") {
+        updateDraft('loreSheets', [...loreSheets, { name, dots: 1, specification: "" }]);
+      } else if (type === "Flaw") {
+        updateDraft('flaws', [...flaws, { name, dots: 1, specification: "" }]);
+      } else {
+        updateDraft('advantages', [...advantages, { name, type, dots: 1, specification: "" }]);
+      }
     }
     e.target.value = "";
   };
 
-  const updateAdv = (index, field, value) => {
-    const updated = [...advantages];
+  const updateTrait = (listName, index, field, value) => {
+    const updated = [...draft[listName]];
     updated[index] = { ...updated[index], [field]: value };
-    updateDraft('advantages', updated);
+    updateDraft(listName, updated);
+  };
+
+  const removeTrait = (listName, index) => {
+    updateDraft(listName, draft[listName].filter((_, i) => i !== index));
   };
 
   return (
     <div className="advantages-view">
       <div className="view-section">
         <div className="view-section__header">
-          <h3>Advantages</h3>
+          <h3>Advantages & Lore Sheets</h3>
           <select className="add-select" onChange={handleAddAdvantage}>
-            <option value="">+ Add Advantage</option>
+            <option value="">+ Add Trait</option>
             <optgroup label="Merits">
               {v5data.merits.map(m => <option key={m.name} value={`Merit:${m.name}`}>{m.name}</option>)}
             </optgroup>
             <optgroup label="Backgrounds">
               {v5data.backgrounds.map(b => <option key={b.name} value={`Background:${b.name}`}>{b.name}</option>)}
             </optgroup>
+            <optgroup label="Lore Sheets">
+              {v5data.loreSheets.map(l => <option key={l.name} value={`LoreSheet:${l.name}`}>{l.name}</option>)}
+            </optgroup>
           </select>
         </div>
 
         <div className="trait-list">
+          {/* Advantages */}
           {advantages.map((adv, i) => (
-            <div key={`${adv.name}-${i}`} className="trait-card">
+            <div key={`adv-${i}`} className="trait-card">
               <div className="trait-card__header">
                 <h4>{adv.name} <small>({adv.type})</small></h4>
-                <DotTracker value={adv.dots} onChange={(val) => updateAdv(i, 'dots', val)} />
-                <button className="remove-btn" onClick={() => {
-                  const updated = advantages.filter((_, idx) => idx !== i);
-                  updateDraft('advantages', updated);
-                }}>&times;</button>
+                <DotTracker value={adv.dots} onChange={(val) => updateTrait('advantages', i, 'dots', val)} />
+                <button className="remove-btn" onClick={() => removeTrait('advantages', i)}>&times;</button>
               </div>
               <input 
                 className="spec-input" 
-                placeholder="Specification (e.g. Police Contact)"
+                placeholder="Details..."
                 value={adv.specification || ""}
-                onChange={(e) => updateAdv(i, 'specification', e.target.value)}
+                onChange={(e) => updateTrait('advantages', i, 'specification', e.target.value)}
               />
+            </div>
+          ))}
+
+          {/* Lore Sheets */}
+          {loreSheets.map((ls, i) => (
+            <div key={`ls-${i}`} className="trait-card trait-card_lore">
+              <div className="trait-card__header">
+                <h4>{ls.name} <small>(Lore Sheet)</small></h4>
+                <DotTracker value={ls.dots} onChange={(val) => updateTrait('loreSheets', i, 'dots', val)} />
+                <button className="remove-btn" onClick={() => removeTrait('loreSheets', i)}>&times;</button>
+              </div>
+              <p className="trait-summary">{v5data.loreSheets.find(v => v.name === ls.name)?.summary}</p>
             </div>
           ))}
         </div>
