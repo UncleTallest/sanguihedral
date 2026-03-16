@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import sanguihedralLogo from "../../../public/sanguihedral.png";
-import kofiButton from "../../../public/kofi_badge_sanguihedral.png";
+import kofiSticker from "../../../public/kofi-sticker.gif";
 
 function Landing({ isLoggedIn, onOpenModal }) {
   const navigate = useNavigate();
@@ -57,11 +57,12 @@ function Landing({ isLoggedIn, onOpenModal }) {
       </main>
       <footer>
         <p className="copyright">Copyright 2024-2026 -- Jerry W Jackson</p>
-        <a href="https://ko-fi.com/uncletallest" target="_blank">
+        <a href="https://ko-fi.com/uncletallest" target="_blank" rel="noreferrer">
           <img
-            src={kofiButton}
+            src={kofiSticker}
             className="kofiButton"
-            alt="Buy me a coffee on Ko-fi"
+            alt="Support me on Ko-fi"
+            style={{ height: 'auto', maxWidth: '150px' }}
           />
         </a>
       </footer>
