@@ -10,7 +10,7 @@ import './DiceRoller.css';
 const PRESETS = [
   { label: 'Str + Brawl', attr: 'strength', skill: 'brawl' },
   { label: 'Dex + Firearms', attr: 'dexterity', skill: 'firearms' },
-  { label: 'Dex + Stealth', attr: 'stealth', skill: 'stealth' },
+  { label: 'Dex + Stealth', attr: 'dexterity', skill: 'stealth' },
   { label: 'Wits + Awareness', attr: 'wits', skill: 'awareness' },
   { label: 'Res + Composure', attr: 'resolve', skill: 'composure' },
 ];
@@ -40,12 +40,10 @@ const DiceRoller = () => {
         setActiveCharacter(char);
         setHungerDice(char.hunger || 1);
 
-        // If a specific pool was passed in the URL (e.g., from a Power Roll button)
         if (poolFromParam) {
           const stats = poolFromParam.split(',');
           let calculatedPool = 0;
           stats.forEach(stat => {
-            // Check attributes first, then skills
             calculatedPool += (char.attributes?.[stat] || char.skills?.[stat] || 0);
           });
           if (calculatedPool > 0) setTotalPool(calculatedPool);
@@ -75,7 +73,6 @@ const DiceRoller = () => {
       setResult(mappedResult);
       setRollState('resolved');
 
-      // Add to history
       addRoll({
         charName: activeCharacter?.name || null,
         pool: totalPool,
@@ -89,8 +86,9 @@ const DiceRoller = () => {
   };
 
   const applyPreset = (preset) => {
-    const attrValue = activeCharacter?.attributes?.[preset.attr] || 1;
-    const skillValue = activeCharacter?.skills?.[preset.skill] || 0;
+    if (!activeCharacter) return;
+    const attrValue = activeCharacter.attributes?.[preset.attr] || 0;
+    const skillValue = activeCharacter.skills?.[preset.skill] || 0;
     setTotalPool(attrValue + skillValue);
   };
 
