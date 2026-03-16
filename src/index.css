@@ -63,26 +63,30 @@ h1 {
 
 button {
   border-radius: 8px;
-  border: 1px solid var(--color-accent) !important;
+  border: none !important;
   padding: 0.6em 1.2em;
   font-size: 1.1em;
-  font-weight: 700;
+  font-weight: 800;
   font-family: var(--font-stats);
   text-transform: uppercase;
-  letter-spacing: 1px;
-  background-color: #1a1a1a;
-  color: var(--color-accent) !important; /* Golden text */
+  letter-spacing: 1.5px;
+  background-color: var(--color-accent) !important;
+  color: #000 !important; /* Solid Black text */
   cursor: pointer;
-  transition: all 0.25s;
+  transition: all 0.2s ease-in-out;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
 }
 button:hover {
-  border-color: var(--color-accent-hover) !important;
-  color: var(--color-accent-hover) !important;
-  background-color: #222;
+  background-color: var(--color-accent-hover) !important;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(218, 165, 32, 0.4);
+}
+button:active {
+  transform: translateY(0);
 }
 button:focus,
 button:focus-visible {
-  outline: 4px auto rgba(218, 165, 32, 0.5);
+  outline: 3px solid rgba(218, 165, 32, 0.6);
 }
 
 footer {
