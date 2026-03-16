@@ -100,7 +100,7 @@ export const mapGridToCharacter = (grid) => {
               return isNumeric ? cleanNumeric(nextCell) : nextCell;
             }
           }
-          // Look down (backup)
+          // Look down
           if (grid[r+1] && grid[r+1][c]) {
             const downCell = grid[r+1][c].toString().trim();
             if (downCell && !isLabel(downCell)) {
@@ -131,7 +131,6 @@ export const mapGridToCharacter = (grid) => {
     }
   });
 
-  // Ensure default values for vital stats if still missing
   if (!character.humanity) character.humanity = 7;
   if (!character.bloodPotency) character.bloodPotency = 1;
   if (!character.hunger) character.hunger = 1;
@@ -164,7 +163,7 @@ export const mapGridToCharacter = (grid) => {
 
   const flatGrid = grid.flat().map(cell => cell?.toString().trim()).filter(Boolean);
   
-  // GREEDY DATA MINE for Disciplines and Powers
+  // GREEDY DATA MINE for Disciplines
   v5data.disciplines.forEach(vDisc => {
     const hasDisc = flatGrid.some(cell => cell.toLowerCase() === vDisc.name.toLowerCase());
     if (hasDisc) {
@@ -172,6 +171,7 @@ export const mapGridToCharacter = (grid) => {
       for (let r = 0; r < grid.length; r++) {
         for (let c = 0; c < grid[r].length; c++) {
           if (grid[r][c]?.toString().trim().toLowerCase() === vDisc.name.toLowerCase()) {
+            // Check right for dots
             const possibleDots = cleanNumeric(grid[r][c+1]);
             if (possibleDots > 0) dots = possibleDots;
           }
@@ -192,21 +192,27 @@ export const mapGridToCharacter = (grid) => {
   // GREEDY DATA MINE for Merits, Flaws, and Backgrounds
   const mineTrait = (traitList, targetArray, isBackground = false) => {
     traitList.forEach(vTrait => {
-      const found = flatGrid.some(cell => cell.toLowerCase() === vTrait.name.toLowerCase());
-      if (found) {
-        let dots = 1;
-        for (let r = 0; r < grid.length; r++) {
-          for (let c = 0; c < grid[r].length; c++) {
-            if (grid[r][c]?.toString().trim().toLowerCase() === vTrait.name.toLowerCase()) {
-              const possibleDots = cleanNumeric(grid[r][c+1]);
-              if (possibleDots > 0) dots = possibleDots;
-            }
+      // Find exact match or "Trait Name :" format
+      for (let r = 0; r < grid.length; r++) {
+        for (let c = 0; c < grid[r].length; c++) {
+          const cell = grid[r][c]?.toString().trim().toLowerCase();
+          if (cell === vTrait.name.toLowerCase() || cell.startsWith(vTrait.name.toLowerCase() + ":")) {
+            // Found it! Now find dots
+            let dots = 1;
+            // Check right
+            const rightVal = cleanNumeric(grid[r][c+1]);
+            if (rightVal > 0) dots = rightVal;
+            // Check right-right (sometimes there's a spacer)
+            const rightRightVal = cleanNumeric(grid[r][c+2]);
+            if (rightRightVal > 0) dots = rightRightVal;
+
+            const entry = { name: vTrait.name, dots, specification: "" };
+            if (isBackground) entry.type = "Background";
+            else if (vTrait.type) entry.type = vTrait.type;
+            targetArray.push(entry);
+            return; // Move to next trait
           }
         }
-        const entry = { name: vTrait.name, dots, specification: "" };
-        if (isBackground) entry.type = "Background";
-        else if (vTrait.type) entry.type = vTrait.type;
-        targetArray.push(entry);
       }
     });
   };
