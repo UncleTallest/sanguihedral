@@ -1,4 +1,5 @@
 import Papa from "papaparse";
+import v5data from "./v5data.json";
 
 export const convertToCsvUrl = (url) => {
   if (!url) return "";
@@ -65,7 +66,7 @@ const ALL_LABELS = [
   ...Object.values(FIELD_MAPPINGS).flat(),
   ...Object.values(ATTRIBUTE_MAPPINGS).flat(),
   ...Object.values(SKILL_MAPPINGS).flat(),
-  /specialities/i, /health/i, /willpower/i, /date of birth/i, /protean/i, /disciplines/i, /resonance/i, /lores/i
+  /specialities/i, /health/i, /willpower/i, /date of birth/i, /protean/i, /disciplines/i, /resonance/i, /lores/i, /advantages/i, /rituals/i, /merits and flaws/i
 ];
 
 /**
@@ -87,7 +88,6 @@ export const mapGridToCharacter = (grid) => {
 
   const cleanNumeric = (val) => {
     if (typeof val !== 'string') return val;
-    // Strip "12th" -> "12"
     const cleaned = val.replace(/[^0-9]/g, '');
     return cleaned === "" ? 0 : Number(cleaned);
   };
@@ -97,7 +97,6 @@ export const mapGridToCharacter = (grid) => {
       for (let c = 0; c < grid[r].length; c++) {
         const cell = grid[r][c]?.toString().trim();
         if (regexList.some(re => re.test(cell))) {
-          // Found the label, check the next few cells
           for (let offset = 1; offset <= 2; offset++) {
             const nextCell = grid[r][c + offset]?.toString().trim();
             if (nextCell && !isLabel(nextCell)) {
@@ -114,14 +113,11 @@ export const mapGridToCharacter = (grid) => {
   Object.entries(FIELD_MAPPINGS).forEach(([field, regexList]) => {
     const isNum = ["generation", "humanity", "bloodPotency", "hunger"].includes(field);
     let val = getValueForLabel(regexList, isNum);
-    
-    // Schema constraints
-    if (field === "generation" && val < 4) val = 13; // Default to 13th if weird
-    
+    if (field === "generation" && val < 4) val = 13;
     if (val !== undefined) character[field] = val;
   });
 
-  // Map Attributes - MIN 1
+  // Map Attributes
   Object.entries(ATTRIBUTE_MAPPINGS).forEach(([attr, regexList]) => {
     const val = getValueForLabel(regexList, true);
     character.attributes[attr] = Math.max(1, val);
@@ -132,7 +128,7 @@ export const mapGridToCharacter = (grid) => {
     character.skills[skill] = getValueForLabel(regexList, true);
   });
 
-  // Special scan for Health/Willpower
+  // Health/Willpower
   const findValueBelow = (labelRegex) => {
     for (let r = 0; r < grid.length; r++) {
       for (let c = 0; c < grid[r].length; c++) {
@@ -147,6 +143,50 @@ export const mapGridToCharacter = (grid) => {
 
   character.maxHealth = findValueBelow(/health/i);
   character.maxWillpower = findValueBelow(/willpower/i);
+
+  // Scan for Disciplines
+  const foundDisciplines = new Map(); // Name -> dots
+  const foundPowers = new Map(); // DisciplineName -> [power names]
+
+  for (let r = 0; r < grid.length; r++) {
+    for (let c = 0; c < grid[r].length; c++) {
+      const cell = grid[r][c]?.trim();
+      if (/disciplines/i.test(cell)) {
+        // Look at the rows immediately below this label
+        for (let rowOffset = 1; rowOffset <= 5; rowOffset++) {
+          const discRow = grid[r + rowOffset];
+          if (!discRow) continue;
+          
+          const discName = discRow[c]?.trim();
+          const dots = cleanNumeric(discRow[c + 1]);
+          const powerText = discRow[c + 2]?.trim();
+
+          if (discName && !isLabel(discName)) {
+            // Validate against our data repo
+            const isValid = v5data.disciplines.some(vd => vd.name.toLowerCase() === discName.toLowerCase());
+            if (isValid) {
+              foundDisciplines.set(discName, dots);
+              if (powerText && !isLabel(powerText)) {
+                const powers = foundPowers.get(discName) || [];
+                // Only take the name part of the power text (split on dash or comma)
+                const powerName = powerText.split(/[-–,]/)[0].trim();
+                powers.push(powerName);
+                foundPowers.set(discName, powers);
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  foundDisciplines.forEach((dots, name) => {
+    character.disciplines.push({
+      name,
+      dots,
+      powers: foundPowers.get(name) || []
+    });
+  });
 
   return character;
 };
