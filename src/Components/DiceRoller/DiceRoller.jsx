@@ -26,7 +26,7 @@ const DiceRoller = () => {
   const { history, addRoll, deleteRoll, clearHistory } = useRollHistory();
 
   const [activeCharacter, setActiveCharacter] = useState(null);
-  const [totalPool, setTotalPool] = useState(5);
+  const [totalPool, setTotalPool] = useState(0); // Default to 0
   const [modifier, setModifier] = useState(0);
   const [hungerDice, setHungerDice] = useState(1);
   const [difficulty, setDifficulty] = useState(1);
@@ -36,7 +36,6 @@ const DiceRoller = () => {
   const [isHistoryOpen, setIsHistoryOpen] = useState(false);
   const [selectedPowerName, setSelectedPowerName] = useState("");
 
-  // Helper to calculate pool from power name
   const getPoolForPower = (powerName, char) => {
     if (!char) return 0;
     let powerData = null;
@@ -52,7 +51,7 @@ const DiceRoller = () => {
       });
       return calculatedPool;
     }
-    return 0;
+    return 0; // Explicitly return 0 if no dice pool defined
   };
 
   useEffect(() => {
@@ -71,11 +70,13 @@ const DiceRoller = () => {
           if (calculatedPool > 0) setTotalPool(calculatedPool);
           if (nameFromParam) setSelectedPowerName(nameFromParam);
         } else if (nameFromParam) {
-          // If only name is passed (Discipline selector)
           const pool = getPoolForPower(nameFromParam, char);
-          if (pool > 0) setTotalPool(pool);
+          setTotalPool(pool); // Will set to 0 if no pool defined
           setSelectedPowerName(nameFromParam);
         }
+      } else if (!charId) {
+        setActiveCharacter(null);
+        setTotalPool(0);
       }
     }
   }, [charId, characters, poolFromParam, nameFromParam]);
@@ -87,14 +88,18 @@ const DiceRoller = () => {
     } else {
       setSearchParams({});
       setActiveCharacter(null);
+      setTotalPool(0);
+      setSelectedPowerName("");
     }
   };
 
   const handleRoll = async () => {
+    const finalPool = Math.max(0, totalPool + modifier);
+    if (finalPool <= 0) return;
+
     setRollState('rolling');
     setResult(null);
     const animationPromise = new Promise(resolve => setTimeout(resolve, 800));
-    const finalPool = Math.max(1, totalPool + modifier);
 
     try {
       const apiResponse = await api.rollDice(finalPool, hungerDice, difficulty);
@@ -139,17 +144,14 @@ const DiceRoller = () => {
     const powerName = e.target.value;
     if (!powerName) {
       setSelectedPowerName("");
+      setTotalPool(0);
       return;
     }
 
     const pool = getPoolForPower(powerName, activeCharacter);
-    if (pool > 0) {
-      setTotalPool(pool);
-      setSelectedPowerName(powerName);
-      setModifier(0);
-    } else {
-      setSelectedPowerName(powerName);
-    }
+    setTotalPool(pool); // Correctly resets to 0 if no pool is defined for the power
+    setSelectedPowerName(powerName);
+    setModifier(0);
   };
 
   const getAllAvailablePowers = () => {
@@ -186,6 +188,7 @@ const DiceRoller = () => {
   };
 
   const availablePowers = getAllAvailablePowers();
+  const finalPoolCount = Math.max(0, totalPool + modifier);
 
   return (
     <div className="dice-roller">
@@ -293,7 +296,7 @@ const DiceRoller = () => {
             <div className="dice-roller__input-group">
               <label>Base Pool</label>
               <div className="dice-roller__stepper">
-                <button onClick={() => setTotalPool(Math.max(1, totalPool - 1))}>-</button>
+                <button onClick={() => setTotalPool(Math.max(0, totalPool - 1))}>-</button>
                 <span>{totalPool}</span>
                 <button onClick={() => setTotalPool(totalPool + 1)}>+</button>
               </div>
@@ -322,9 +325,9 @@ const DiceRoller = () => {
         <button 
           className="dice-roller__roll-button" 
           onClick={handleRoll}
-          disabled={rollState === 'rolling'}
+          disabled={rollState === 'rolling' || finalPoolCount <= 0}
         >
-          ROLL ({Math.max(1, totalPool + modifier)} DICE)
+          {finalPoolCount > 0 ? `ROLL (${finalPoolCount} DICE)` : 'NO POOL'}
         </button>
       </div>
 
