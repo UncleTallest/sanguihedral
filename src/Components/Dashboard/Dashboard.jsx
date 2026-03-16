@@ -1,12 +1,19 @@
 import React, { useState } from 'react';
 import CharacterCard from '../CharacterCard/CharacterCard';
+import ImportForm from '../ImportForm/ImportForm';
 import { useCharacters } from '../../contexts/CharacterContext';
 import { useNavigate } from 'react-router-dom';
+import { fetchAndParseSheet } from '../../utils/sheetParser';
 import './Dashboard.css';
 
 const Dashboard = () => {
-  const { characters, addCharacter, deleteCharacter, isLoading } = useCharacters();
+  const { characters, addCharacter, deleteCharacter, isLoading: isContextLoading } = useCharacters();
   const [activeMenu, setActiveMenu] = useState(null);
+  const [showImport, setShowImport] = useState(false);
+  const [isParsing, setIsParsing] = useState(false);
+  const [parsedCharacter, setParsedCharacter] = useState(null);
+  const [importError, setImportError] = useState(null);
+  
   const navigate = useNavigate();
 
   const handleCardClick = (charId) => {
@@ -14,6 +21,10 @@ const Dashboard = () => {
   };
 
   const handleNewCharacter = () => {
+    setShowImport(true);
+  };
+
+  const handleCreateEmpty = () => {
     const newCharData = {
       name: "New Character",
       clan: "Brujah",
@@ -34,13 +45,34 @@ const Dashboard = () => {
     });
   };
 
+  const handleImport = async (url) => {
+    setIsParsing(true);
+    setImportError(null);
+    try {
+      const char = await fetchAndParseSheet(url);
+      setParsedCharacter(char);
+    } catch (err) {
+      setImportError(err.message);
+    } finally {
+      setIsParsing(false);
+    }
+  };
+
+  const handleConfirmImport = () => {
+    addCharacter(parsedCharacter).then((newChar) => {
+      setParsedCharacter(null);
+      setShowImport(false);
+      navigate(`/characters/${newChar._id}`);
+    });
+  };
+
   const handleDelete = (id) => {
     if (window.confirm("Are you sure you want to delete this character?")) {
       deleteCharacter(id);
     }
   };
 
-  if (isLoading && characters.length === 0) {
+  if (isContextLoading && characters.length === 0) {
     return <div className="dashboard">Loading characters...</div>;
   }
 
@@ -57,9 +89,14 @@ const Dashboard = () => {
         {characters.length === 0 ? (
           <div className="dashboard__empty-state">
             <p>No characters found. Create your first one!</p>
-            <button className="dashboard__create-button" onClick={handleNewCharacter}>
-              Create Character
-            </button>
+            <div className="dashboard__empty-actions">
+              <button className="dashboard__create-button" onClick={handleCreateEmpty}>
+                Create Empty Character
+              </button>
+              <button className="dashboard__import-button" onClick={() => setShowImport(true)}>
+                Import from Google Sheet
+              </button>
+            </div>
           </div>
         ) : (
           <div className="dashboard__grid">
@@ -86,6 +123,53 @@ const Dashboard = () => {
           </div>
         )}
       </main>
+
+      {showImport && (
+        <div className="dashboard__modal-overlay">
+          {!parsedCharacter ? (
+            <div className="dashboard__modal-content">
+              <ImportForm 
+                onImport={handleImport} 
+                onCancel={() => setShowImport(false)} 
+                isLoading={isParsing}
+              />
+              {importError && <p className="dashboard__error">{importError}</p>}
+              <div className="dashboard__modal-alt">
+                <span>or</span>
+                <button className="dashboard__link-btn" onClick={handleCreateEmpty}>
+                  Create character from scratch
+                </button>
+              </div>
+            </div>
+          ) : (
+            <div className="dashboard__modal-content dashboard__review">
+              <h2>Review Parsed Data</h2>
+              <div className="dashboard__review-data">
+                <p><strong>Name:</strong> {parsedCharacter.name || 'Not found'}</p>
+                <p><strong>Clan:</strong> {parsedCharacter.clan || 'Not found'}</p>
+                <p><strong>Sect:</strong> {parsedCharacter.sect || 'Not found'}</p>
+                <p><strong>Attributes found:</strong> {Object.keys(parsedCharacter.attributes || {}).length}</p>
+                <p><strong>Skills found:</strong> {Object.keys(parsedCharacter.skills || {}).length}</p>
+              </div>
+              <div className="dashboard__review-actions">
+                <button 
+                  className="dashboard__btn dashboard__btn_secondary" 
+                  onClick={() => setParsedCharacter(null)}
+                >
+                  Back
+                </button>
+                <button 
+                  className="dashboard__btn dashboard__btn_primary" 
+                  onClick={handleConfirmImport}
+                  disabled={isContextLoading}
+                >
+                  {isContextLoading ? 'Saving...' : 'Confirm & Save'}
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 };

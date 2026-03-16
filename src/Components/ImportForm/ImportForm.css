@@ -1,0 +1,112 @@
+.import-form {
+  background-color: rgba(20, 20, 20, 0.95);
+  border: 2px solid #d32f2f;
+  border-radius: 12px;
+  padding: 30px;
+  max-width: 500px;
+  width: 100%;
+  color: #fff;
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.8);
+}
+
+.import-form__title {
+  font-family: var(--font-header);
+  margin-top: 0;
+  margin-bottom: 15px;
+  color: #d32f2f;
+}
+
+.import-form__description {
+  font-family: var(--font-body);
+  font-size: 14px;
+  color: #aaa;
+  margin-bottom: 25px;
+  line-height: 1.5;
+}
+
+.import-form__input {
+  width: 100%;
+  background-color: #111;
+  border: 1px solid #444;
+  color: #fff;
+  padding: 12px;
+  border-radius: 4px;
+  margin-bottom: 20px;
+  font-family: var(--font-flavor);
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+.import-form__actions {
+  display: flex;
+  gap: 15px;
+  justify-content: flex-end;
+  margin-bottom: 30px;
+}
+
+.import-form__btn {
+  padding: 10px 20px;
+  border-radius: 4px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: var(--font-stats);
+  text-transform: uppercase;
+}
+
+.import-form__btn_primary {
+  background-color: #d32f2f;
+  color: white;
+  border: none;
+}
+
+.import-form__btn_primary:hover:not(:disabled) {
+  background-color: #f44336;
+}
+
+.import-form__btn_primary:disabled {
+  background-color: #444;
+  cursor: not-allowed;
+}
+
+.import-form__btn_secondary {
+  background-color: transparent;
+  color: #aaa;
+  border: 1px solid #444;
+}
+
+.import-form__btn_secondary:hover:not(:disabled) {
+  border-color: #888;
+  color: #fff;
+}
+
+.import-form__instructions {
+  border-top: 1px solid #333;
+  padding-top: 20px;
+}
+
+.import-form__instructions h3 {
+  font-family: var(--font-stats);
+  font-size: 16px;
+  color: #888;
+  margin-bottom: 15px;
+  text-transform: uppercase;
+}
+
+.import-form__instructions ol {
+  padding-left: 20px;
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 13px;
+  color: #888;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.import-form__instructions code {
+  background-color: #222;
+  padding: 2px 4px;
+  border-radius: 3px;
+  color: #d32f2f;
+}
