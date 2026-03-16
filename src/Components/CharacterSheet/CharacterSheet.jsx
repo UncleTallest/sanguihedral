@@ -13,6 +13,18 @@ const STANDARD_CLANS = [
 
 const STANDARD_SECTS = ["Camarilla", "Anarch", "Autarkis", "Sabbat"];
 
+const ATTR_GROUPS = {
+  Physical: ["strength", "dexterity", "stamina"],
+  Social: ["charisma", "manipulation", "composure"],
+  Mental: ["intelligence", "wits", "resolve"]
+};
+
+const SKILL_GROUPS = {
+  Physical: ["athletics", "brawl", "craft", "drive", "firearms", "larceny", "melee", "stealth", "survival"],
+  Social: ["animalKen", "etiquette", "insight", "intimidation", "leadership", "performance", "persuasion", "streetwise", "subterfuge"],
+  Mental: ["academics", "awareness", "finance", "investigation", "medicine", "occult", "politics", "science", "technology"]
+};
+
 const CoreView = ({ draft, updateDraft }) => (
   <div className="core-view">
     <fieldset className="core-view__section">
@@ -90,19 +102,35 @@ const CoreView = ({ draft, updateDraft }) => (
   </div>
 );
 
-const AttributesView = ({ draft, updateNestedDraft }) => {
-  const attrs = draft.attributes || {};
-  const sortedKeys = Object.keys(attrs).sort();
-  return (
+const StatSection = ({ title, items, values, onChange }) => (
+  <div className="stat-section">
+    <h3 className="stat-section__title">{title}</h3>
     <div className="stats-grid">
-      {sortedKeys.map(attr => (
-        <div key={attr} className="stat-row" style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '10px' }}>
-          <span className="stat-label" style={{ textTransform: 'capitalize' }}>{attr}</span>
+      {items.map(item => (
+        <div key={item} className="stat-row">
+          <span className="stat-label">{item}</span>
           <DotTracker 
-            value={attrs[attr]} 
-            onChange={(val) => updateNestedDraft('attributes', attr, val)} 
+            value={values[item] || 0} 
+            onChange={(val) => onChange(item, val)} 
           />
         </div>
+      ))}
+    </div>
+  </div>
+);
+
+const AttributesView = ({ draft, updateNestedDraft }) => {
+  const attrs = draft.attributes || {};
+  return (
+    <div className="tab-view_grouped">
+      {Object.entries(ATTR_GROUPS).map(([group, fields]) => (
+        <StatSection 
+          key={group}
+          title={group}
+          items={fields}
+          values={attrs}
+          onChange={(field, val) => updateNestedDraft('attributes', field, val)}
+        />
       ))}
     </div>
   );
@@ -110,17 +138,16 @@ const AttributesView = ({ draft, updateNestedDraft }) => {
 
 const SkillsView = ({ draft, updateNestedDraft }) => {
   const skills = draft.skills || {};
-  const sortedKeys = Object.keys(skills).sort();
   return (
-    <div className="stats-grid">
-      {sortedKeys.map(skill => (
-        <div key={skill} className="stat-row" style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '10px' }}>
-          <span className="stat-label" style={{ textTransform: 'capitalize' }}>{skill}</span>
-          <DotTracker 
-            value={skills[skill]} 
-            onChange={(val) => updateNestedDraft('skills', skill, val)} 
-          />
-        </div>
+    <div className="tab-view_grouped">
+      {Object.entries(SKILL_GROUPS).map(([group, fields]) => (
+        <StatSection 
+          key={group}
+          title={group}
+          items={fields}
+          values={skills}
+          onChange={(field, val) => updateNestedDraft('skills', field, val)}
+        />
       ))}
     </div>
   );
