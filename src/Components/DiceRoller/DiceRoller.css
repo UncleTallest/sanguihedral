@@ -1,10 +1,32 @@
 .dice-roller {
   display: flex;
   flex-direction: column;
-  gap: 30px;
+  gap: 20px;
   max-width: 500px;
   margin: 0 auto;
   padding: 20px;
+}
+
+.dice-roller__header-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.dice-roller__history-toggle {
+  background: transparent;
+  border: 1px solid #444;
+  color: #aaa;
+  font-family: var(--font-stats);
+  font-size: 14px;
+  padding: 5px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.dice-roller__history-toggle:hover {
+  border-color: #d32f2f;
+  color: #d32f2f;
 }
 
 .dice-roller__tray {

@@ -22,9 +22,10 @@ const mockCharacter = {
 describe("DiceRoller Container", () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    localStorage.clear();
   });
 
-  it("renders with default values", () => {
+  it("renders with default values and pre-fills hunger from character", () => {
     api.getCharacters.mockResolvedValue([]);
     render(
       <MemoryRouter>
@@ -38,12 +39,12 @@ describe("DiceRoller Container", () => {
 
   it("triggers a roll and shows results after animation", async () => {
     const mockResponse = {
-      total_successes: 3,
-      dice_results: [10, 8, 2],
-      hunger_results: [1, 1],
-      messy_critical: false,
-      bestial_failure: true,
-      critical_success: false,
+      totalSuccesses: 3,
+      regularResults: [10, 8, 2],
+      hungerResults: [1, 1],
+      messyCritical: false,
+      bestialFailure: true,
+      criticalSuccesses: 0,
     };
     
     api.rollDice.mockResolvedValue(mockResponse);

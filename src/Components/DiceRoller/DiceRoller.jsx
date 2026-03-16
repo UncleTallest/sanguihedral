@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useCharacters } from '../../contexts/CharacterContext';
+import useRollHistory from '../../hooks/useRollHistory';
 import DiceIcon from '../DiceIcon/DiceIcon';
+import HistoryDrawer from '../HistoryDrawer/HistoryDrawer';
 import * as api from '../../utils/api';
 import './DiceRoller.css';
 
@@ -17,6 +19,7 @@ const DiceRoller = () => {
   const [searchParams] = useSearchParams();
   const { characters } = useCharacters();
   const charId = searchParams.get('charId');
+  const { history, addRoll, deleteRoll, clearHistory } = useRollHistory();
 
   const [activeCharacter, setActiveCharacter] = useState(null);
   const [totalPool, setTotalPool] = useState(5);
@@ -25,6 +28,7 @@ const DiceRoller = () => {
   const [rollState, setRollState] = useState('idle');
   const [result, setResult] = useState(null);
   const [showAdvanced, setShowAdvanced] = useState(false);
+  const [isHistoryOpen, setIsHistoryOpen] = useState(false);
 
   useEffect(() => {
     if (charId && characters.length > 0) {
@@ -41,12 +45,29 @@ const DiceRoller = () => {
     setResult(null);
     const animationPromise = new Promise(resolve => setTimeout(resolve, 800));
     try {
-      const [apiResponse] = await Promise.all([
-        api.rollDice(totalPool, hungerDice, difficulty),
-        animationPromise
-      ]);
-      setResult(apiResponse);
+      const apiResponse = await api.rollDice(totalPool, hungerDice, difficulty);
+      await animationPromise;
+      
+      const mappedResult = {
+        totalSuccesses: apiResponse.totalSuccesses ?? 0,
+        regularResults: apiResponse.regularResults ?? [],
+        hungerResults: apiResponse.hungerResults ?? [],
+        messyCritical: apiResponse.messyCritical ?? false,
+        bestialFailure: apiResponse.bestialFailure ?? false,
+        criticalSuccesses: apiResponse.criticalSuccesses ?? 0,
+        success: (apiResponse.totalSuccesses ?? 0) >= (parseInt(difficulty) || 1)
+      };
+      
+      setResult(mappedResult);
       setRollState('resolved');
+
+      // Add to history
+      addRoll({
+        charName: activeCharacter?.name || null,
+        pool: totalPool,
+        difficulty: difficulty,
+        result: mappedResult
+      });
     } catch (err) {
       console.error(err);
       setRollState('error');
@@ -61,31 +82,43 @@ const DiceRoller = () => {
 
   const renderStatus = () => {
     if (!result) return null;
-    if (result.messy_critical) return <span className="dice-roller__status dice-roller__status_messy">MESSY CRITICAL</span>;
-    if (result.bestial_failure) return <span className="dice-roller__status dice-roller__status_bestial">BESTIAL FAILURE</span>;
-    if (result.critical_success) return <span className="dice-roller__status dice-roller__status_crit">CRITICAL SUCCESS</span>;
+    if (result.messyCritical) return <span className="dice-roller__status dice-roller__status_messy">MESSY CRITICAL</span>;
+    if (result.bestialFailure) return <span className="dice-roller__status dice-roller__status_bestial">BESTIAL FAILURE</span>;
+    if (result.criticalSuccesses > 0) return <span className="dice-roller__status dice-roller__status_crit">CRITICAL SUCCESS</span>;
     if (result.success) return <span className="dice-roller__status dice-roller__status_success">SUCCESS</span>;
     return <span className="dice-roller__status dice-roller__status_failure">FAILURE</span>;
   };
 
   return (
     <div className="dice-roller">
+      <div className="dice-roller__header-actions">
+        <button 
+          className="dice-roller__history-toggle" 
+          onClick={() => setIsHistoryOpen(true)}
+          title="Roll History"
+        >
+          🕒 History {history.length > 0 && `(${history.length})`}
+        </button>
+      </div>
+
       <div className="dice-roller__tray">
         {rollState === 'rolling' && <div className="dice-roller__rolling-msg">Rolling...</div>}
+        {rollState === 'error' && <div className="dice-roller__error-msg">Dice roll service unavailable</div>}
+        
         {rollState === 'resolved' && result && (
           <>
             <div className="dice-roller__outcome">
-              <div className="dice-roller__total">Total Successes: {result.total_successes}</div>
+              <div className="dice-roller__total">Total Successes: {result.totalSuccesses}</div>
               {renderStatus()}
             </div>
             <div className="dice-roller__dice-grid">
               <div className="dice-roller__dice-row">
-                {result.dice_results.map((val, i) => (
+                {(result.regularResults || []).map((val, i) => (
                   <DiceIcon key={`std-${i}`} value={val} isHunger={false} />
                 ))}
               </div>
               <div className="dice-roller__dice-row">
-                {result.hunger_results.map((val, i) => (
+                {(result.hungerResults || []).map((val, i) => (
                   <DiceIcon key={`hng-${i}`} value={val} isHunger={true} />
                 ))}
               </div>
@@ -160,6 +193,14 @@ const DiceRoller = () => {
           ROLL
         </button>
       </div>
+
+      <HistoryDrawer 
+        isOpen={isHistoryOpen}
+        onClose={() => setIsHistoryOpen(false)}
+        history={history}
+        onDeleteRoll={deleteRoll}
+        onClearHistory={clearHistory}
+      />
     </div>
   );
 };
