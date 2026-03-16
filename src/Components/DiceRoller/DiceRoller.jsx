@@ -26,6 +26,7 @@ const DiceRoller = () => {
 
   const [activeCharacter, setActiveCharacter] = useState(null);
   const [totalPool, setTotalPool] = useState(5);
+  const [modifier, setModifier] = useState(0);
   const [hungerDice, setHungerDice] = useState(1);
   const [difficulty, setDifficulty] = useState(1);
   const [rollState, setRollState] = useState('idle');
@@ -56,8 +57,12 @@ const DiceRoller = () => {
     setRollState('rolling');
     setResult(null);
     const animationPromise = new Promise(resolve => setTimeout(resolve, 800));
+    
+    // Total Pool includes the base pool + manual modifier
+    const finalPool = Math.max(1, totalPool + modifier);
+
     try {
-      const apiResponse = await api.rollDice(totalPool, hungerDice, difficulty);
+      const apiResponse = await api.rollDice(finalPool, hungerDice, difficulty);
       await animationPromise;
       
       const mappedResult = {
@@ -75,7 +80,7 @@ const DiceRoller = () => {
 
       addRoll({
         charName: activeCharacter?.name || null,
-        pool: totalPool,
+        pool: finalPool,
         difficulty: difficulty,
         result: mappedResult
       });
@@ -90,6 +95,7 @@ const DiceRoller = () => {
     const attrValue = activeCharacter.attributes?.[preset.attr] || 0;
     const skillValue = activeCharacter.skills?.[preset.skill] || 0;
     setTotalPool(attrValue + skillValue);
+    setModifier(0); // Reset modifier when picking a new preset
   };
 
   const renderStatus = () => {
@@ -166,10 +172,21 @@ const DiceRoller = () => {
           </button>
         </div>
 
+        <div className="dice-roller__input-group">
+          <label>Modifier (+/-)</label>
+          <div className="dice-roller__stepper">
+            <button onClick={() => setModifier(modifier - 1)}>-</button>
+            <span className={modifier !== 0 ? 'dice-roller__value_highlight' : ''}>
+              {modifier > 0 ? `+${modifier}` : modifier}
+            </span>
+            <button onClick={() => setModifier(modifier + 1)}>+</button>
+          </div>
+        </div>
+
         {showAdvanced && (
           <div className="dice-roller__advanced">
             <div className="dice-roller__input-group">
-              <label>Total Pool</label>
+              <label>Base Pool</label>
               <div className="dice-roller__stepper">
                 <button onClick={() => setTotalPool(Math.max(1, totalPool - 1))}>-</button>
                 <span>{totalPool}</span>
@@ -202,7 +219,7 @@ const DiceRoller = () => {
           onClick={handleRoll}
           disabled={rollState === 'rolling'}
         >
-          ROLL
+          ROLL ({Math.max(1, totalPool + modifier)} DICE)
         </button>
       </div>
 

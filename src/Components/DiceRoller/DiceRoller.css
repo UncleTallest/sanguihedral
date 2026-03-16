@@ -145,7 +145,7 @@
   background-color: rgba(60, 60, 60, 0.5);
   border: 1px solid #444;
   color: #fff;
-  padding: 10px 15px; /* Larger for mobile */
+  padding: 10px 15px;
   border-radius: 4px;
   font-size: 14px;
   cursor: pointer;
@@ -185,7 +185,7 @@
 }
 
 .dice-roller__stepper button {
-  width: 48px; /* Mobile standard */
+  width: 48px;
   height: 48px;
   border-radius: 50%;
   border: 1px solid #d32f2f;
@@ -205,6 +205,11 @@
   min-width: 30px;
   text-align: center;
   color: #fff;
+}
+
+.dice-roller__value_highlight {
+  color: #d32f2f !important;
+  font-weight: bold;
 }
 
 .dice-roller__roll-button {
