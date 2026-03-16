@@ -26,7 +26,7 @@ const DiceRoller = () => {
   const { history, addRoll, deleteRoll, clearHistory } = useRollHistory();
 
   const [activeCharacter, setActiveCharacter] = useState(null);
-  const [totalPool, setTotalPool] = useState(0); // Default to 0
+  const [totalPool, setTotalPool] = useState(0); 
   const [modifier, setModifier] = useState(0);
   const [hungerDice, setHungerDice] = useState(1);
   const [difficulty, setDifficulty] = useState(1);
@@ -51,7 +51,7 @@ const DiceRoller = () => {
       });
       return calculatedPool;
     }
-    return 0; // Explicitly return 0 if no dice pool defined
+    return 0; 
   };
 
   useEffect(() => {
@@ -71,7 +71,7 @@ const DiceRoller = () => {
           if (nameFromParam) setSelectedPowerName(nameFromParam);
         } else if (nameFromParam) {
           const pool = getPoolForPower(nameFromParam, char);
-          setTotalPool(pool); // Will set to 0 if no pool defined
+          setTotalPool(pool); 
           setSelectedPowerName(nameFromParam);
         }
       } else if (!charId) {
@@ -149,7 +149,7 @@ const DiceRoller = () => {
     }
 
     const pool = getPoolForPower(powerName, activeCharacter);
-    setTotalPool(pool); // Correctly resets to 0 if no pool is defined for the power
+    setTotalPool(pool); 
     setSelectedPowerName(powerName);
     setModifier(0);
   };
@@ -194,7 +194,7 @@ const DiceRoller = () => {
     <div className="dice-roller">
       <div className="dice-roller__header-actions">
         <button 
-          className="dice-roller__history-toggle" 
+          className="dice-roller__history-toggle btn_primary" 
           onClick={() => setIsHistoryOpen(true)}
           title="Roll History"
         >
@@ -323,7 +323,7 @@ const DiceRoller = () => {
         </div>
 
         <button 
-          className="dice-roller__roll-button" 
+          className="dice-roller__roll-button btn_primary" 
           onClick={handleRoll}
           disabled={rollState === 'rolling' || finalPoolCount <= 0}
         >

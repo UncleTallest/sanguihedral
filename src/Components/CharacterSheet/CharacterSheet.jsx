@@ -250,7 +250,7 @@ const SupernaturalView = ({ draft, updateDraft }) => {
                 <div className="trait-card__header">
                   <h4>{d.name}</h4>
                   <DotTracker value={d.dots} onChange={(val) => updateDiscDots(i, val)} />
-                  <button className="remove-btn" onClick={() => removeDiscipline(i)}>&times;</button>
+                  <button className="remove-btn btn_icon-only" onClick={() => removeDiscipline(i)}>&times;</button>
                 </div>
                 
                 <div className="power-selector">
@@ -372,7 +372,7 @@ const BackgroundsView = ({ draft, updateDraft }) => {
       <div className="trait-card__header">
         <h4>{trait.name} <small>({label})</small></h4>
         <DotTracker value={trait.dots} onChange={(val) => updateTrait(category, index, 'dots', val)} />
-        <button className="remove-btn" onClick={() => removeTrait(category, index)}>&times;</button>
+        <button className="remove-btn btn_icon-only" onClick={() => removeTrait(category, index)}>&times;</button>
       </div>
       <input 
         className="spec-input" 
@@ -511,7 +511,7 @@ const CharacterSheet = () => {
     <div className="character-sheet">
       {hasChanges && (
         <div className="sticky-header">
-          <button className="save-button" onClick={handleSave}>Save Changes</button>
+          <button className="save-button btn_primary" onClick={handleSave}>Save Changes</button>
         </div>
       )}
       

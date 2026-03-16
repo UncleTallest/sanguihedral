@@ -29,14 +29,14 @@ function Landing({ isLoggedIn, onOpenModal }) {
           {isLoggedIn ? (
             <>
               <button
-                className="entryButton"
+                className="entryButton btn_primary"
                 type="button"
                 onClick={() => navigate("/characters")}
               >
                 Go to Dashboard
               </button>
               <button
-                className="entryButton"
+                className="entryButton btn_primary"
                 type="button"
                 onClick={() => navigate("/profile")}
               >
@@ -46,7 +46,7 @@ function Landing({ isLoggedIn, onOpenModal }) {
           ) : (
             <button
               name="login"
-              className="entryButton"
+              className="entryButton btn_primary"
               type="button"
               onClick={() => onOpenModal("login")}
             >

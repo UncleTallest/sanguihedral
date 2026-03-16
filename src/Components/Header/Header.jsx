@@ -38,7 +38,7 @@ const Header = ({ isLoggedIn, onOpenModal, onSignOut }) => {
                 Profile
               </Link>
               <button
-                className="header__button header__button_signout"
+                className="header__button header__button_signout btn_primary"
                 onClick={onSignOut}
               >
                 Sign Out
@@ -46,7 +46,7 @@ const Header = ({ isLoggedIn, onOpenModal, onSignOut }) => {
             </>
           ) : (
             <button
-              className="header__button header__button_login"
+              className="header__button header__button_login btn_primary"
               onClick={() => onOpenModal("login")}
             >
               Log In

@@ -38,7 +38,7 @@ function Profile({ currentUser, onSignOut }) {
 
         <div className="buttonContainer">
           <button
-            className="entryButton"
+            className="entryButton btn_primary"
             type="button"
             onClick={onSignOut}
           >

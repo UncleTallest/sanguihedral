@@ -19,6 +19,7 @@
   --color-accent-hover: #ffcf40;
   --color-blood: #a80202;
   --color-blood-bright: #d32f2f;
+  --color-bg: #050505;
 }
 
 a {
@@ -37,7 +38,7 @@ body {
   line-height: 1.4em;
   font-weight: 400;
   color-scheme: light dark;
-  background-color: #050505;
+  background-color: var(--color-bg);
   color: #f8f8f8;
 }
 
@@ -62,32 +63,56 @@ h1 {
   font-size: 3.5em;
 }
 
+/* Default Button Style: Outline */
 button {
   border-radius: 8px;
-  border: none !important;
+  border: 1px solid var(--color-accent) !important;
   padding: 0.6em 1.2em;
   font-size: 1.1em;
-  font-weight: 800;
+  font-weight: 700;
   font-family: var(--font-stats);
   text-transform: uppercase;
-  letter-spacing: 1.5px;
-  background-color: var(--color-accent) !important;
-  color: #000 !important; /* Solid Black text */
+  letter-spacing: 1px;
+  background-color: transparent !important;
+  color: var(--color-accent) !important;
   cursor: pointer;
   transition: all 0.2s ease-in-out;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
 }
+
 button:hover {
+  background-color: rgba(218, 165, 32, 0.1) !important;
+  border-color: var(--color-accent-hover) !important;
+  color: var(--color-accent-hover) !important;
+}
+
+/* Primary Button Style: Solid Gold (Used for special actions) */
+.btn_primary {
+  background-color: var(--color-accent) !important;
+  color: #000 !important;
+  border: none !important;
+  font-weight: 800;
+}
+
+.btn_primary:hover {
   background-color: var(--color-accent-hover) !important;
-  transform: translateY(-2px);
-  box-shadow: 0 6px 12px rgba(218, 165, 32, 0.4);
+  color: #000 !important;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(218, 165, 32, 0.3);
 }
-button:active {
-  transform: translateY(0);
+
+/* Close/Remove Buttons: No border, Gold X */
+.btn_icon-only {
+  border: none !important;
+  background: transparent !important;
+  color: var(--color-accent) !important;
+  padding: 4px !important;
+  font-size: 24px !important;
+  line-height: 1 !important;
 }
-button:focus,
-button:focus-visible {
-  outline: 3px solid rgba(218, 165, 32, 0.6);
+
+.btn_icon-only:hover {
+  color: var(--color-accent-hover) !important;
+  background: transparent !important;
 }
 
 footer {
