@@ -194,16 +194,35 @@ const Dashboard = () => {
                 </label>
                 
                 <div className="dashboard__review-stats-summary">
-                  <p>Attributes found: <strong>{Object.keys(parsedCharacter.attributes || {}).length}</strong></p>
-                  <p>Skills found: <strong>{Object.keys(parsedCharacter.skills || {}).length}</strong></p>
-                  <p>Disciplines found: <strong>{parsedCharacter.disciplines?.length || 0}</strong></p>
-                  {parsedCharacter.disciplines?.length > 0 && (
-                    <ul className="dashboard__review-list">
-                      {parsedCharacter.disciplines.map(d => (
-                        <li key={d.name}>{d.name} ({d.dots}) - {d.powers.length} powers</li>
-                      ))}
-                    </ul>
-                  )}
+                  <p>Attributes: <strong>{Object.keys(parsedCharacter.attributes || {}).length}</strong></p>
+                  <p>Skills: <strong>{Object.keys(parsedCharacter.skills || {}).length}</strong></p>
+                  <p>Disciplines: <strong>{parsedCharacter.disciplines?.length || 0}</strong></p>
+                  <p>Advantages: <strong>{parsedCharacter.advantages?.length || 0}</strong></p>
+                  <p>Flaws: <strong>{parsedCharacter.flaws?.length || 0}</strong></p>
+                  <p>LoreSheets: <strong>{parsedCharacter.loreSheets?.length || 0}</strong></p>
+                  
+                  <div className="dashboard__review-lists">
+                    {parsedCharacter.disciplines?.length > 0 && (
+                      <div className="dashboard__review-list-section">
+                        <span className="dashboard__review-list-title">Disciplines</span>
+                        <ul className="dashboard__review-list">
+                          {parsedCharacter.disciplines.map(d => (
+                            <li key={d.name}>{d.name} ({d.dots})</li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+                    {parsedCharacter.advantages?.length > 0 && (
+                      <div className="dashboard__review-list-section">
+                        <span className="dashboard__review-list-title">Advantages</span>
+                        <ul className="dashboard__review-list">
+                          {parsedCharacter.advantages.map(a => (
+                            <li key={a.name}>{a.name} ({a.dots})</li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+                  </div>
                 </div>
               </div>
 
