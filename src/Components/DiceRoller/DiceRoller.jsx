@@ -108,7 +108,6 @@ const DiceRoller = () => {
       return;
     }
 
-    // Find power metadata
     let powerData = null;
     v5data.disciplines.forEach(d => {
       const found = d.powers?.find(p => p.name === powerName) || d.rituals?.find(r => r.name === powerName);
@@ -123,17 +122,37 @@ const DiceRoller = () => {
       setTotalPool(calculatedPool);
       setSelectedPowerName(powerName);
       setModifier(0);
+    } else {
+      // Fallback for powers without defined pools - keep current pool
+      setSelectedPowerName(powerName);
     }
   };
 
   const getAllAvailablePowers = () => {
     if (!activeCharacter) return [];
-    const ownedPowerNames = [];
-    activeCharacter.disciplines?.forEach(d => {
-      d.powers?.forEach(p => ownedPowerNames.push(p));
-    });
-    activeCharacter.rituals?.forEach(r => ownedPowerNames.push(r));
-    return ownedPowerNames;
+    const ownedPowerNames = new Set();
+
+    // Modern Array format
+    if (Array.isArray(activeCharacter.disciplines)) {
+      activeCharacter.disciplines.forEach(d => {
+        d.powers?.forEach(p => ownedPowerNames.add(p));
+      });
+    } 
+    // Legacy Object format
+    else if (activeCharacter.disciplines && typeof activeCharacter.disciplines === 'object') {
+      Object.values(activeCharacter.disciplines).forEach(pList => {
+        if (typeof pList === 'string') {
+          pList.split(',').forEach(p => ownedPowerNames.add(p.trim()));
+        }
+      });
+    }
+
+    // Rituals
+    if (Array.isArray(activeCharacter.rituals)) {
+      activeCharacter.rituals.forEach(r => ownedPowerNames.add(r));
+    }
+
+    return Array.from(ownedPowerNames).filter(Boolean);
   };
 
   const renderStatus = () => {
@@ -144,6 +163,8 @@ const DiceRoller = () => {
     if (result.success) return <span className="dice-roller__status dice-roller__status_success">SUCCESS</span>;
     return <span className="dice-roller__status dice-roller__status_failure">FAILURE</span>;
   };
+
+  const availablePowers = getAllAvailablePowers();
 
   return (
     <div className="dice-roller">
@@ -191,19 +212,20 @@ const DiceRoller = () => {
           </div>
         )}
 
-        <div className="dice-roller__power-selection">
-          <select 
-            className="dice-roller__dropdown" 
-            value={selectedPowerName}
-            onChange={handlePowerSelect}
-            disabled={!activeCharacter}
-          >
-            <option value="">-- Use Discipline Power --</option>
-            {getAllAvailablePowers().map(pName => (
-              <option key={pName} value={pName}>{pName}</option>
-            ))}
-          </select>
-        </div>
+        {availablePowers.length > 0 && (
+          <div className="dice-roller__power-selection">
+            <select 
+              className="dice-roller__dropdown" 
+              value={selectedPowerName}
+              onChange={handlePowerSelect}
+            >
+              <option value="">-- Use Discipline Power --</option>
+              {availablePowers.map(pName => (
+                <option key={pName} value={pName}>{pName}</option>
+              ))}
+            </select>
+          </div>
+        )}
 
         <div className="dice-roller__presets">
           {PRESETS.map(p => (
