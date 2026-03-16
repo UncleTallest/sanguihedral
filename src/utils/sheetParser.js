@@ -7,6 +7,7 @@ export const convertToCsvUrl = (url) => {
   return url.replace(/\/edit.*$/, "/export?format=csv");
 };
 
+// Strict labels: word boundaries
 const FIELD_MAPPINGS = {
   name: [/\bname\b/i, /^n$/i],
   clan: [/\bclan\b/i, /\bcln\b/i],
@@ -177,27 +178,23 @@ export const mapGridToCharacter = (grid) => {
     }
   });
 
-  // MULTILINE FUZZY GREEDY for Merits, Flaws, and Backgrounds
+  // EXHAUSTIVE FUZZY GREEDY for Merits, Flaws, and Backgrounds
   const mineTrait = (traitList, targetArray, isBackground = false) => {
     traitList.forEach(vTrait => {
       for (let r = 0; r < grid.length; r++) {
         for (let c = 0; c < grid[r].length; c++) {
           const cell = grid[r][c]?.toString().trim();
-          if (!cell || cell.length > 50) continue;
+          if (!cell || cell.length > 60) continue;
 
           const lowerCell = cell.toLowerCase();
           const target = vTrait.name.toLowerCase();
 
-          if (lowerCell === target || 
-              lowerCell.startsWith(target + " ") || 
-              lowerCell.includes(target + " (") ||
-              lowerCell.includes(target + " [") ||
-              lowerCell.includes(target + " -")) {
-            
+          // Check if the cell CONTAINS the trait name at all
+          if (lowerCell.includes(target)) {
             let dots = 0;
             let specLines = [];
 
-            // Find dots
+            // 1. Check right for dots
             for (let offset = 1; offset <= 4; offset++) {
               const val = cleanNumeric(grid[r][c+offset], true);
               if (val > 0) { 
@@ -205,18 +202,21 @@ export const mapGridToCharacter = (grid) => {
                 break; 
               }
             }
+            // 2. Check current cell for dots
             if (dots === 0) dots = cleanNumeric(cell, true);
+            
+            // 3. Check BELOW current cell for dots (some sheets put dots under name)
+            if (dots === 0 && grid[r+1]) dots = cleanNumeric(grid[r+1][c], true);
 
-            // Capture Multiline Specifications
-            // Look at the current cell first
+            // CAPTURE DESCRIPTION
             const cellParts = cell.split(/[-–()\[\]]/);
             if (cellParts.length > 1) specLines.push(cellParts.pop().trim());
 
-            // Check up to 4 rows below for descriptive text
-            for (let rowOffset = 1; rowOffset <= 4; rowOffset++) {
+            for (let rowOffset = 1; rowOffset <= 5; rowOffset++) {
               const nextRowCell = grid[r + rowOffset] ? grid[r + rowOffset][c]?.toString().trim() : "";
-              // If the next row starts a new trait or label, stop
               if (!nextRowCell || isLabel(nextRowCell)) break;
+              // If it's just a number we already used, skip it
+              if (cleanNumeric(nextRowCell, true) === dots) continue;
               specLines.push(nextRowCell);
             }
 
@@ -224,7 +224,7 @@ export const mapGridToCharacter = (grid) => {
               const entry = { 
                 name: vTrait.name, 
                 dots, 
-                specification: specLines.filter(Boolean).join(" | ") 
+                specification: specLines.filter(Boolean).join(" | ").substring(0, 500) 
               };
               if (isBackground) entry.type = "Background";
               else if (vTrait.type) entry.type = vTrait.type;
