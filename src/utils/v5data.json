@@ -143,6 +143,7 @@
   "backgrounds": [
     { "name": "Allies", "type": "Background", "dots": 1, "summary": "Mortal associates who help you.", "page": "V5 Core p. 184" },
     { "name": "Contacts", "type": "Background", "dots": 1, "summary": "Information sources in the city.", "page": "V5 Core p. 185" },
+    { "name": "Fame", "type": "Background", "dots": 1, "summary": "How well known you are in the mortal world.", "page": "V5 Core p. 185" },
     { "name": "Haven", "type": "Background", "dots": 1, "summary": "A safe place to sleep.", "page": "V5 Core p. 188" },
     { "name": "Herd", "type": "Background", "dots": 1, "summary": "A group of mortals you can feed from safely.", "page": "V5 Core p. 189" },
     { "name": "Influence", "type": "Background", "dots": 1, "summary": "Your power in mortal society.", "page": "V5 Core p. 187" },
@@ -155,6 +156,8 @@
   "loreSheets": [
     { "name": "The Firstlight", "summary": "Information on the Second Inquisition.", "page": "V5 Core p. 384" },
     { "name": "Descendant of Helena", "summary": "Connection to the legendary Toreador.", "page": "V5 Core p. 386" },
-    { "name": "Carna's Rebellion", "summary": "Tremere who follow the path of Carna.", "page": "V5 Core p. 388" }
+    { "name": "Carna's Rebellion", "summary": "Tremere who follow the path of Carna.", "page": "V5 Core p. 388" },
+    { "name": "The Circulatory System", "summary": "The Kindred black market for blood.", "page": "V5 Core p. 390" },
+    { "name": "Week of Nightmares", "summary": "The return of Ravnos.", "page": "V5 Core p. 392" }
   ]
 }

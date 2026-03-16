@@ -76,7 +76,8 @@ export const mapGridToCharacter = (grid) => {
     disciplines: [],
     advantages: [],
     flaws: [],
-    rituals: []
+    rituals: [],
+    loreSheets: []
   };
 
   const isLabel = (text) => ALL_LABELS.some(re => re.test(text));
@@ -144,14 +145,12 @@ export const mapGridToCharacter = (grid) => {
   character.maxHealth = findValueBelow(/health/i);
   character.maxWillpower = findValueBelow(/willpower/i);
 
-  // GREEDY DATA MINE for Disciplines and Powers
   const flatGrid = grid.flat().map(cell => cell?.toString().trim()).filter(Boolean);
   
+  // GREEDY DATA MINE for Disciplines and Powers
   v5data.disciplines.forEach(vDisc => {
     const hasDisc = flatGrid.some(cell => cell.toLowerCase() === vDisc.name.toLowerCase());
-    
     if (hasDisc) {
-      console.log(`Found Discipline: ${vDisc.name}`);
       let dots = 1;
       for (let r = 0; r < grid.length; r++) {
         for (let c = 0; c < grid[r].length; c++) {
@@ -161,24 +160,57 @@ export const mapGridToCharacter = (grid) => {
           }
         }
       }
-
-      // Check for each defined power
-      const ownedPowers = vDisc.powers?.filter(vPower => {
-        const found = flatGrid.some(cell => {
+      const ownedPowers = vDisc.powers?.filter(vPower => 
+        flatGrid.some(cell => {
           const normalized = cell.toLowerCase();
           const powerName = vPower.name.toLowerCase();
-          // Match exactly or as part of a list
           return normalized === powerName || normalized.startsWith(powerName + " ") || normalized.includes(" " + powerName);
-        });
-        if (found) console.log(`  Found Power: ${vPower.name}`);
-        return found;
-      }).map(p => p.name) || [];
+        })
+      ).map(p => p.name) || [];
 
-      character.disciplines.push({
-        name: vDisc.name,
-        dots: dots,
-        powers: ownedPowers
-      });
+      character.disciplines.push({ name: vDisc.name, dots, powers: ownedPowers });
+    }
+  });
+
+  // GREEDY DATA MINE for Merits, Flaws, and Backgrounds
+  const mineTrait = (traitList, targetArray, isBackground = false) => {
+    traitList.forEach(vTrait => {
+      const found = flatGrid.some(cell => cell.toLowerCase() === vTrait.name.toLowerCase());
+      if (found) {
+        let dots = 1;
+        for (let r = 0; r < grid.length; r++) {
+          for (let c = 0; c < grid[r].length; c++) {
+            if (grid[r][c]?.toString().trim().toLowerCase() === vTrait.name.toLowerCase()) {
+              const possibleDots = cleanNumeric(grid[r][c+1]);
+              if (possibleDots > 0) dots = possibleDots;
+            }
+          }
+        }
+        const entry = { name: vTrait.name, dots, specification: "" };
+        if (isBackground) entry.type = "Background";
+        else if (vTrait.type) entry.type = vTrait.type;
+        targetArray.push(entry);
+      }
+    });
+  };
+
+  mineTrait(v5data.merits, character.advantages);
+  mineTrait(v5data.backgrounds, character.advantages, true);
+  mineTrait(v5data.flaws, character.flaws);
+
+  // Rituals
+  v5data.disciplines.forEach(d => {
+    d.rituals?.forEach(r => {
+      if (flatGrid.some(cell => cell.toLowerCase().includes(r.name.toLowerCase()))) {
+        character.rituals.push(r.name);
+      }
+    });
+  });
+
+  // LoreSheets
+  v5data.loreSheets.forEach(ls => {
+    if (flatGrid.some(cell => cell.toLowerCase().includes(ls.name.toLowerCase()))) {
+      character.loreSheets.push({ name: ls.name, dots: 1, specification: "" });
     }
   });
 
