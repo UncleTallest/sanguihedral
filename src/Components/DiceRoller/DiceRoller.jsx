@@ -36,6 +36,25 @@ const DiceRoller = () => {
   const [isHistoryOpen, setIsHistoryOpen] = useState(false);
   const [selectedPowerName, setSelectedPowerName] = useState("");
 
+  // Helper to calculate pool from power name
+  const getPoolForPower = (powerName, char) => {
+    if (!char) return 0;
+    let powerData = null;
+    v5data.disciplines.forEach(d => {
+      const found = d.powers?.find(p => p.name === powerName) || d.rituals?.find(r => r.name === powerName);
+      if (found) powerData = found;
+    });
+
+    if (powerData && powerData.dice_pool) {
+      let calculatedPool = 0;
+      powerData.dice_pool.forEach(stat => {
+        calculatedPool += (char.attributes?.[stat] || char.skills?.[stat] || 0);
+      });
+      return calculatedPool;
+    }
+    return 0;
+  };
+
   useEffect(() => {
     if (characters.length > 0) {
       const char = charId ? characters.find(c => c._id === charId) : null;
@@ -51,13 +70,15 @@ const DiceRoller = () => {
           });
           if (calculatedPool > 0) setTotalPool(calculatedPool);
           if (nameFromParam) setSelectedPowerName(nameFromParam);
+        } else if (nameFromParam) {
+          // If only name is passed (Discipline selector)
+          const pool = getPoolForPower(nameFromParam, char);
+          if (pool > 0) setTotalPool(pool);
+          setSelectedPowerName(nameFromParam);
         }
-      } else if (!charId && !activeCharacter) {
-        // If no charId in URL, we stay in "No Character Selected" mode
-        setActiveCharacter(null);
       }
     }
-  }, [charId, characters, poolFromParam, nameFromParam, activeCharacter]);
+  }, [charId, characters, poolFromParam, nameFromParam]);
 
   const handleCharChange = (e) => {
     const id = e.target.value;
@@ -121,18 +142,9 @@ const DiceRoller = () => {
       return;
     }
 
-    let powerData = null;
-    v5data.disciplines.forEach(d => {
-      const found = d.powers?.find(p => p.name === powerName) || d.rituals?.find(r => r.name === powerName);
-      if (found) powerData = found;
-    });
-
-    if (powerData && powerData.dice_pool) {
-      let calculatedPool = 0;
-      powerData.dice_pool.forEach(stat => {
-        calculatedPool += (activeCharacter.attributes?.[stat] || activeCharacter.skills?.[stat] || 0);
-      });
-      setTotalPool(calculatedPool);
+    const pool = getPoolForPower(powerName, activeCharacter);
+    if (pool > 0) {
+      setTotalPool(pool);
       setSelectedPowerName(powerName);
       setModifier(0);
     } else {
