@@ -419,6 +419,41 @@ const AdvantagesView = ({ draft, updateDraft }) => {
   );
 };
 
+const VitalsBar = ({ draft, onJumpToCore }) => {
+  const stamina = draft.attributes?.stamina || 1;
+  const composure = draft.attributes?.composure || 1;
+  const resolve = draft.attributes?.resolve || 1;
+
+  const maxHealth = stamina + 3;
+  const maxWillpower = composure + resolve;
+  
+  const healthDmg = (draft.superficialDamage || 0) + (draft.aggravatedDamage || 0);
+  const wpDmg = (draft.superficialWillpowerDamage || 0) + (draft.aggravatedWillpowerDamage || 0);
+
+  return (
+    <div className="vitals-bar" onClick={onJumpToCore}>
+      <div className="vitals-bar__item">
+        <span className="vitals-bar__label">Hunger</span>
+        <span className={`vitals-bar__value ${draft.hunger >= 4 ? 'vitals-bar__value_danger' : ''}`}>
+          {draft.hunger}
+        </span>
+      </div>
+      <div className="vitals-bar__item">
+        <span className="vitals-bar__label">Health</span>
+        <span className={`vitals-bar__value ${healthDmg >= maxHealth ? 'vitals-bar__value_danger' : ''}`}>
+          {healthDmg}/{maxHealth}
+        </span>
+      </div>
+      <div className="vitals-bar__item">
+        <span className="vitals-bar__label">Willpower</span>
+        <span className={`vitals-bar__value ${wpDmg >= maxWillpower ? 'vitals-bar__value_danger' : ''}`}>
+          {wpDmg}/{maxWillpower}
+        </span>
+      </div>
+    </div>
+  );
+};
+
 const CharacterSheet = () => {
   const { id } = useParams();
   const { characters, updateCharacter } = useCharacters();
@@ -488,6 +523,7 @@ const CharacterSheet = () => {
         {activeTab === 'advantages' && <AdvantagesView draft={draftState} updateDraft={updateDraft} />}
       </div>
 
+      <VitalsBar draft={draftState} onJumpToCore={() => setActiveTab('core')} />
       <SheetTabs activeTab={activeTab} onTabChange={setActiveTab} />
     </div>
   );

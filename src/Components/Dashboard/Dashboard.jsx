@@ -51,6 +51,7 @@ const Dashboard = () => {
     setImportError(null);
     try {
       const char = await fetchAndParseSheet(url);
+      console.log("Parsed Character Data:", char);
       setParsedCharacter(char);
     } catch (err) {
       setImportError(err.message);
@@ -68,6 +69,9 @@ const Dashboard = () => {
       alert("Name and Clan are required to save.");
       return;
     }
+    
+    console.log("Saving Imported Character:", parsedCharacter);
+    
     addCharacter(parsedCharacter).then((newChar) => {
       setParsedCharacter(null);
       setShowImport(false);
@@ -193,6 +197,13 @@ const Dashboard = () => {
                   <p>Attributes found: <strong>{Object.keys(parsedCharacter.attributes || {}).length}</strong></p>
                   <p>Skills found: <strong>{Object.keys(parsedCharacter.skills || {}).length}</strong></p>
                   <p>Disciplines found: <strong>{parsedCharacter.disciplines?.length || 0}</strong></p>
+                  {parsedCharacter.disciplines?.length > 0 && (
+                    <ul className="dashboard__review-list">
+                      {parsedCharacter.disciplines.map(d => (
+                        <li key={d.name}>{d.name} ({d.dots}) - {d.powers.length} powers</li>
+                      ))}
+                    </ul>
+                  )}
                 </div>
               </div>
 

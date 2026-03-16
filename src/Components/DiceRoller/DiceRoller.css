@@ -5,6 +5,7 @@
   max-width: 500px;
   margin: 0 auto;
   padding: 20px;
+  padding-bottom: 150px; /* Space for footer */
 }
 
 .dice-roller__header-actions {
@@ -30,17 +31,19 @@
 }
 
 .dice-roller__tray {
-  min-height: 200px;
-  background-color: rgba(20, 20, 20, 0.9);
-  border: 2px solid #444;
+  position: sticky;
+  top: 60px; /* Below Header */
+  z-index: 100;
+  min-height: 150px;
+  background-color: rgba(10, 10, 10, 0.95);
+  border: 2px solid #d32f2f;
   border-radius: 12px;
-  padding: 20px;
+  padding: 15px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  position: relative;
-  box-shadow: inset 0 0 20px rgba(0,0,0,0.8);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.8);
 }
 
 .dice-roller__rolling-msg {
@@ -55,22 +58,21 @@
 
 .dice-roller__outcome {
   text-align: center;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 }
 
 .dice-roller__total {
   font-family: var(--font-header);
-  font-size: 32px;
+  font-size: 28px;
   font-weight: bold;
-  margin-bottom: 10px;
   color: #fff;
 }
 
 .dice-roller__status {
   font-family: var(--font-stats);
-  font-size: 24px;
+  font-size: 20px;
   font-weight: bold;
-  padding: 5px 15px;
+  padding: 3px 10px;
   border-radius: 4px;
   letter-spacing: 1px;
 }
@@ -98,12 +100,12 @@
 .dice-roller__dice-grid {
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 10px;
 }
 
 .dice-roller__dice-row {
   display: flex;
-  gap: 8px;
+  gap: 6px;
   flex-wrap: wrap;
   justify-content: center;
 }
@@ -143,7 +145,7 @@
   background-color: rgba(60, 60, 60, 0.5);
   border: 1px solid #444;
   color: #fff;
-  padding: 8px 12px;
+  padding: 10px 15px; /* Larger for mobile */
   border-radius: 4px;
   font-size: 14px;
   cursor: pointer;
@@ -183,13 +185,13 @@
 }
 
 .dice-roller__stepper button {
-  width: 36px;
-  height: 36px;
+  width: 48px; /* Mobile standard */
+  height: 48px;
   border-radius: 50%;
   border: 1px solid #d32f2f;
   background: transparent;
   color: #d32f2f;
-  font-size: 20px;
+  font-size: 24px;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -199,8 +201,8 @@
 }
 
 .dice-roller__stepper span {
-  font-size: 22px;
-  min-width: 25px;
+  font-size: 24px;
+  min-width: 30px;
   text-align: center;
   color: #fff;
 }
@@ -210,8 +212,8 @@
   background-color: #d32f2f;
   color: white;
   border: none;
-  padding: 15px;
-  font-size: 24px;
+  padding: 18px;
+  font-size: 26px;
   font-weight: bold;
   border-radius: 8px;
   cursor: pointer;
@@ -223,19 +225,6 @@
 
 .dice-roller__roll-button:hover:not(:disabled) {
   background-color: #f44336;
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(211, 47, 47, 0.4);
-}
-
-.dice-roller__roll-button:active {
-  transform: scale(0.98);
-}
-
-.dice-roller__roll-button:disabled {
-  background-color: #444;
-  color: #888;
-  cursor: not-allowed;
-  box-shadow: none;
 }
 
 @keyframes pulse {

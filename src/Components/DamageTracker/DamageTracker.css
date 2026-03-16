@@ -3,6 +3,7 @@
   align-items: center;
   gap: 4px;
   flex-wrap: wrap;
+  justify-content: center;
 }
 
 .damage-box {
@@ -18,8 +19,19 @@
   cursor: pointer;
   padding: 0;
   color: #fff;
-  /* Accessibility hit box */
-  margin: 4px;
+  /* Larger hit area for mobile */
+  margin: 10px 4px;
+  position: relative;
+}
+
+/* Invisible hitbox expansion */
+.damage-box::after {
+  content: "";
+  position: absolute;
+  top: -10px;
+  left: -10px;
+  right: -10px;
+  bottom: -10px;
 }
 
 .damage-box_empty {

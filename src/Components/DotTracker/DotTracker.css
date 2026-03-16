@@ -1,6 +1,8 @@
 .dot-tracker {
   display: flex;
-  gap: 4px;
+  gap: 2px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
 }
 .dot {
   width: 24px;
@@ -11,8 +13,20 @@
   cursor: pointer;
   padding: 0;
   /* Larger hit area for mobile */
-  margin: 4px;
+  margin: 12px 4px; /* Increases vertical tap zone */
+  position: relative;
 }
+
+/* Invisible hitbox expansion */
+.dot::after {
+  content: "";
+  position: absolute;
+  top: -12px;
+  left: -12px;
+  right: -12px;
+  bottom: -12px;
+}
+
 .dot_filled {
   background-color: #d32f2f; /* Blood red */
   border-color: #d32f2f;
