@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, NavLink, useLocation } from "react-router-dom";
 import sanguihedralLogo from "../../../public/sanguihedral.png";
 import "./Header.css";
 
@@ -25,18 +25,24 @@ const Header = ({ isLoggedIn, onOpenModal, onSignOut }) => {
         <nav className="header__nav">
           {isLoggedIn ? (
             <>
-              <Link to="/characters" className="header__link">
+              <NavLink 
+                to="/characters" 
+                className={({ isActive }) => isActive ? "header__link header__link_active" : "header__link"}
+              >
                 Dashboard
-              </Link>
-              <Link 
+              </NavLink>
+              <NavLink 
                 to={currentCharId ? `/dice?charId=${currentCharId}` : "/dice"} 
-                className="header__link"
+                className={({ isActive }) => isActive ? "header__link header__link_active" : "header__link"}
               >
                 Dice Roller
-              </Link>
-              <Link to="/profile" className="header__link">
+              </NavLink>
+              <NavLink 
+                to="/profile" 
+                className={({ isActive }) => isActive ? "header__link header__link_active" : "header__link"}
+              >
                 Profile
-              </Link>
+              </NavLink>
               <button
                 className="header__button header__button_signout btn_primary"
                 onClick={onSignOut}
