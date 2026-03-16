@@ -10,7 +10,7 @@
   width: 28px;
   height: 28px;
   border: 2px solid #ccc;
-  background-color: transparent;
+  background-color: #111 !important; /* Force dark background */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -18,10 +18,10 @@
   font-size: 18px;
   cursor: pointer;
   padding: 0;
-  color: #fff;
-  /* Larger hit area for mobile */
+  color: #fff !important;
   margin: 10px 4px;
   position: relative;
+  transition: all 0.2s;
 }
 
 /* Invisible hitbox expansion */
@@ -35,18 +35,20 @@
 }
 
 .damage-box_empty {
-  border-color: #666;
+  border-color: #666 !important;
+  background-color: #111 !important;
 }
 
 .damage-box_superficial {
-  border-color: #d32f2f;
-  color: #d32f2f;
+  border-color: #d32f2f !important;
+  color: #d32f2f !important;
+  background-color: #111 !important;
 }
 
 .damage-box_aggravated {
-  background-color: #d32f2f;
-  border-color: #d32f2f;
-  color: #fff;
+  background-color: #d32f2f !important;
+  border-color: #d32f2f !important;
+  color: #fff !important;
 }
 
 .damage-status {

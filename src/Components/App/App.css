@@ -31,16 +31,24 @@
   margin: 0;
   width: 12rem;
   height: 4rem;
-  border: none;
+  border: none !important;
   border-radius: 2rem;
-  color: #0e0e0e;
-  background-image: url(/public/bloody_background_128px_height.png);
-  background-position: center;
-  will-change: filter;
-  transition: filter 300ms;
+  background-color: var(--color-accent) !important;
+  background-image: none !important;
+  color: #000 !important;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  will-change: transform, filter;
+  transition: all 200ms;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
 }
 .entryButton:hover {
-  filter: drop-shadow(0 0 15px #a80202);
+  background-color: var(--color-accent-hover) !important;
+  filter: drop-shadow(0 0 15px var(--color-accent));
+  transform: scale(1.05) translateY(-2px);
+  box-shadow: 0 6px 15px rgba(218, 165, 32, 0.4);
 }
 
 .copyright {
@@ -55,23 +63,8 @@
   transition: filter 300ms;
 }
 .kofiButton:hover {
-  filter: drop-shadow(0 0 12px #a80202);
+  filter: drop-shadow(0 0 12px var(--color-accent));
 }
-
-/* @keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
-} */
 
 .card {
   padding: 2em;
