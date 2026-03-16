@@ -7,66 +7,67 @@ export const convertToCsvUrl = (url) => {
   return url.replace(/\/edit.*$/, "/export?format=csv");
 };
 
+// Strict labels: word boundaries and optional trailing colon
 const FIELD_MAPPINGS = {
-  name: [/name/i, /^n$/i],
-  clan: [/clan/i, /cln/i],
-  sect: [/sect/i, /sct/i],
-  concept: [/concept/i, /conc/i],
-  predator: [/predator/i, /pred/i],
-  sire: [/sire/i],
-  generation: [/generation/i, /gen/i],
-  humanity: [/humanity/i, /hum/i, /^h$/i, /humanity track/i],
-  bloodPotency: [/blood potency/i, /bp/i],
-  hunger: [/hunger/i, /hng/i],
+  name: [/\bname\b/i, /^n$/i],
+  clan: [/\bclan\b/i, /\bcln\b/i],
+  sect: [/\bsect\b/i, /\bsct\b/i],
+  concept: [/\bconcept\b/i],
+  predator: [/\bpredator\b/i, /\bpred\b/i],
+  sire: [/\bsire\b/i],
+  generation: [/\bgeneration\b/i, /\bgen\b/i],
+  humanity: [/\bhumanity\b/i, /\bhum\b/i, /^h$/i, /\bhumanity track\b/i],
+  bloodPotency: [/\bblood potency\b/i, /\bbp\b/i],
+  hunger: [/\bhunger\b/i, /\bhng\b/i],
 };
 
 const ATTRIBUTE_MAPPINGS = {
-  strength: [/strength/i, /str/i],
-  dexterity: [/dexterity/i, /dex/i],
-  stamina: [/stamina/i, /sta/i],
-  charisma: [/charisma/i, /cha/i],
-  manipulation: [/manipulation/i, /man/i],
-  composure: [/composure/i, /com/i],
-  intelligence: [/intelligence/i, /int/i],
-  wits: [/wits/i, /wit/i],
-  resolve: [/resolve/i, /res/i],
+  strength: [/\bstrength\b/i, /^str\b/i],
+  dexterity: [/\bdexterity\b/i, /^dex\b/i],
+  stamina: [/\bstamina\b/i, /^sta\b/i],
+  charisma: [/\bcharisma\b/i, /^cha\b/i],
+  manipulation: [/\bmanipulation\b/i, /^man\b/i],
+  composure: [/\bcomposure\b/i, /^com\b/i],
+  intelligence: [/\bintelligence\b/i, /^int\b/i],
+  wits: [/\bwits\b/i, /^wit\b/i],
+  resolve: [/\bresolve\b/i, /^res\b/i],
 };
 
 const SKILL_MAPPINGS = {
-  athletics: [/athletics/i, /athl/i],
-  brawl: [/brawl/i, /brwl/i],
-  craft: [/craft/i, /crft/i],
-  drive: [/drive/i, /drv/i],
-  firearms: [/firearms/i, /fir/i],
-  larceny: [/larceny/i, /larc/i],
-  melee: [/melee/i, /mle/i],
-  stealth: [/stealth/i, /stl/i],
-  survival: [/survival/i, /surv/i],
-  animalKen: [/animal ken/i, /anim/i],
-  etiquette: [/etiquette/i, /etiq/i],
-  insight: [/insight/i, /ins/i],
-  intimidation: [/intimidation/i, /intm/i],
-  leadership: [/leadership/i, /lead/i],
-  performance: [/performance/i, /perf/i],
-  persuasion: [/persuasion/i, /pers/i],
-  streetwise: [/streetwise/i, /strt/i],
-  subterfuge: [/subterfuge/i, /subt/i],
-  academics: [/academics/i, /acad/i],
-  awareness: [/awareness/i, /awar/i],
-  finance: [/finance/i, /fin/i],
-  investigation: [/investigation/i, /inv/i],
-  medicine: [/medicine/i, /med/i],
-  occult: [/occult/i, /occ/i],
-  politics: [/politics/i, /pol/i],
-  science: [/science/i, /sci/i],
-  technology: [/technology/i, /tech/i],
+  athletics: [/\bathletics\b/i, /^athl\b/i],
+  brawl: [/\bbrawl\b/i, /^brwl\b/i],
+  craft: [/\bcraft\b/i, /^crft\b/i],
+  drive: [/\bdrive\b/i, /^drv\b/i],
+  firearms: [/\bfirearms\b/i, /^fir\b/i],
+  larceny: [/\blarceny\b/i, /^larc\b/i],
+  melee: [/\bmelee\b/i, /^mle\b/i],
+  stealth: [/\bstealth\b/i, /^stl\b/i],
+  survival: [/\bsurvival\b/i, /^surv\b/i],
+  animalKen: [/\banimal ken\b/i, /^anim\b/i],
+  etiquette: [/\betiquette\b/i, /^etiq\b/i],
+  insight: [/\binsight\b/i, /^ins\b/i],
+  intimidation: [/\bintimidation\b/i, /^intm\b/i],
+  leadership: [/\bleadership\b/i, /^lead\b/i],
+  performance: [/\bperformance\b/i, /^perf\b/i],
+  persuasion: [/\bpersuasion\b/i, /^pers\b/i],
+  streetwise: [/\bstreetwise\b/i, /^strt\b/i],
+  subterfuge: [/\bsubterfuge\b/i, /^subt\b/i],
+  academics: [/\bacademics\b/i, /^acad\b/i],
+  awareness: [/\bawareness\b/i, /^awar\b/i],
+  finance: [/\bfinance\b/i, /^fin\b/i],
+  investigation: [/\binvestigation\b/i, /^inv\b/i],
+  medicine: [/\bmedicine\b/i, /^med\b/i],
+  occult: [/\boccult\b/i, /^occ\b/i],
+  politics: [/\bpolitics\b/i, /^pol\b/i],
+  science: [/\bscience\b/i, /^sci\b/i],
+  technology: [/\btechnology\b/i, /^tech\b/i],
 };
 
 const ALL_LABELS = [
   ...Object.values(FIELD_MAPPINGS).flat(),
   ...Object.values(ATTRIBUTE_MAPPINGS).flat(),
   ...Object.values(SKILL_MAPPINGS).flat(),
-  /specialities/i, /health/i, /willpower/i, /date of birth/i, /protean/i, /disciplines/i, /resonance/i, /lores/i, /advantages/i, /rituals/i, /merits and flaws/i
+  /\bspecialities\b/i, /\bhealth\b/i, /\bwillpower\b/i, /\bdisciplines\b/i, /\advantages\b/i, /\rituals\b/i
 ];
 
 export const mapGridToCharacter = (grid) => {
@@ -80,31 +81,40 @@ export const mapGridToCharacter = (grid) => {
     loreSheets: []
   };
 
-  const isLabel = (text) => ALL_LABELS.some(re => re.test(text));
+  const isLabel = (text) => {
+    if (!text || text.length > 25) return false; // Labels are usually short
+    return ALL_LABELS.some(re => re.test(text));
+  };
 
-  const cleanNumeric = (val) => {
+  const cleanNumeric = (val, isStrict = false) => {
     if (typeof val !== 'string') return val;
+    // If strict (like Skill dots), if the cell is long text, it's not a number
+    if (isStrict && val.length > 2) return 0; 
+    
     const cleaned = val.replace(/[^0-9]/g, '');
-    return cleaned === "" ? 0 : Number(cleaned);
+    if (cleaned === "") return 0;
+    const num = Number(cleaned);
+    return isStrict ? Math.min(5, num) : num;
   };
 
   const getValueForLabel = (regexList, isNumeric = false) => {
     for (let r = 0; r < grid.length; r++) {
       for (let c = 0; c < grid[r].length; c++) {
         const cell = grid[r][c]?.toString().trim();
-        if (regexList.some(re => re.test(cell))) {
+        // Match label only if it's not buried in a long sentence
+        if (cell && cell.length < 25 && regexList.some(re => re.test(cell))) {
           // Look right
           for (let offset = 1; offset <= 3; offset++) {
             const nextCell = grid[r][c + offset]?.toString().trim();
             if (nextCell && !isLabel(nextCell)) {
-              return isNumeric ? cleanNumeric(nextCell) : nextCell;
+              return isNumeric ? cleanNumeric(nextCell, true) : nextCell;
             }
           }
           // Look down
           if (grid[r+1] && grid[r+1][c]) {
             const downCell = grid[r+1][c].toString().trim();
             if (downCell && !isLabel(downCell)) {
-              return isNumeric ? cleanNumeric(downCell) : downCell;
+              return isNumeric ? cleanNumeric(downCell, true) : downCell;
             }
           }
         }
@@ -149,9 +159,10 @@ export const mapGridToCharacter = (grid) => {
   const findValueBelow = (labelRegex) => {
     for (let r = 0; r < grid.length; r++) {
       for (let c = 0; c < grid[r].length; c++) {
-        if (labelRegex.test(grid[r][c]?.trim())) {
+        const cell = grid[r][c]?.trim();
+        if (cell && cell.length < 15 && labelRegex.test(cell)) {
           const val = grid[r+1] ? grid[r+1][c] : undefined;
-          return cleanNumeric(val);
+          return cleanNumeric(val, true);
         }
       }
     }
@@ -170,10 +181,10 @@ export const mapGridToCharacter = (grid) => {
       let dots = 1;
       for (let r = 0; r < grid.length; r++) {
         for (let c = 0; c < grid[r].length; c++) {
-          if (grid[r][c]?.toString().trim().toLowerCase() === vDisc.name.toLowerCase()) {
-            // Check right for dots (up to 3 cells)
+          const cell = grid[r][c]?.toString().trim().toLowerCase();
+          if (cell === vDisc.name.toLowerCase()) {
             for (let offset = 1; offset <= 3; offset++) {
-              const val = cleanNumeric(grid[r][c+offset]);
+              const val = cleanNumeric(grid[r][c+offset], true);
               if (val > 0) { dots = val; break; }
             }
           }
@@ -197,9 +208,8 @@ export const mapGridToCharacter = (grid) => {
       for (let r = 0; r < grid.length; r++) {
         for (let c = 0; c < grid[r].length; c++) {
           const cell = grid[r][c]?.toString().trim().toLowerCase();
-          if (!cell) continue;
+          if (!cell || cell.length > 40) continue;
 
-          // Match if cell CONTAINS the trait name (e.g., "Contacts Network" matches "Contacts")
           if (cell === vTrait.name.toLowerCase() || 
               cell.startsWith(vTrait.name.toLowerCase() + " ") || 
               cell.includes(vTrait.name.toLowerCase() + " (") ||
@@ -207,15 +217,12 @@ export const mapGridToCharacter = (grid) => {
               cell.startsWith(vTrait.name.toLowerCase() + ":")) {
             
             let dots = 1;
-            // Scan right for dots
             for (let offset = 1; offset <= 4; offset++) {
-              const val = cleanNumeric(grid[r][c+offset]);
+              const val = cleanNumeric(grid[r][c+offset], true);
               if (val > 0) { dots = val; break; }
             }
-            
-            // If dots still 1, maybe it's in the same cell? (e.g. "Contacts 2")
             if (dots === 1) {
-              dots = cleanNumeric(grid[r][c]) || 1;
+              dots = cleanNumeric(grid[r][c], true) || 1;
             }
 
             const entry = { name: vTrait.name, dots, specification: "" };
