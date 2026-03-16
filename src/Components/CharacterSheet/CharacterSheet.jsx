@@ -335,34 +335,53 @@ const SupernaturalView = ({ draft, updateDraft }) => {
 };
 
 const BackgroundsView = ({ draft, updateDraft }) => {
-  const advantages = draft.advantages || [];
-  const flaws = draft.flaws || [];
-  const loreSheets = draft.loreSheets || [];
+  const backgrounds = draft.backgrounds || { merits: [], flaws: [], advantages: [], loreSheets: [] };
 
   const handleAddTrait = (e) => {
     const val = e.target.value;
     if (val) {
       const [type, name] = val.split(':');
-      if (type === "LoreSheet") {
-        updateDraft('loreSheets', [...loreSheets, { name, dots: 1, specification: "" }]);
-      } else if (type === "Flaw") {
-        updateDraft('flaws', [...flaws, { name, dots: 1, specification: "" }]);
-      } else {
-        updateDraft('advantages', [...advantages, { name, type, dots: 1, specification: "" }]);
-      }
+      const updatedBackgrounds = { ...backgrounds };
+      
+      const newTrait = { name, dots: 1, specification: "" };
+      
+      if (type === "LoreSheet") updatedBackgrounds.loreSheets.push(newTrait);
+      else if (type === "Flaw") updatedBackgrounds.flaws.push(newTrait);
+      else if (type === "Merit") updatedBackgrounds.merits.push(newTrait);
+      else updatedBackgrounds.advantages.push(newTrait);
+
+      updateDraft('backgrounds', updatedBackgrounds);
     }
     e.target.value = "";
   };
 
-  const updateTrait = (listName, index, field, value) => {
-    const updated = [...draft[listName]];
-    updated[index] = { ...updated[index], [field]: value };
-    updateDraft(listName, updated);
+  const updateTrait = (category, index, field, value) => {
+    const updatedBackgrounds = { ...backgrounds };
+    updatedBackgrounds[category][index] = { ...updatedBackgrounds[category][index], [field]: value };
+    updateDraft('backgrounds', updatedBackgrounds);
   };
 
-  const removeTrait = (listName, index) => {
-    updateDraft(listName, draft[listName].filter((_, i) => i !== index));
+  const removeTrait = (category, index) => {
+    const updatedBackgrounds = { ...backgrounds };
+    updatedBackgrounds[category] = updatedBackgrounds[category].filter((_, i) => i !== index);
+    updateDraft('backgrounds', updatedBackgrounds);
   };
+
+  const renderTraitCard = (trait, index, category, label) => (
+    <div key={`${category}-${index}`} className={`trait-card trait-card_${category}`}>
+      <div className="trait-card__header">
+        <h4>{trait.name} <small>({label})</small></h4>
+        <DotTracker value={trait.dots} onChange={(val) => updateTrait(category, index, 'dots', val)} />
+        <button className="remove-btn" onClick={() => removeTrait(category, index)}>&times;</button>
+      </div>
+      <input 
+        className="spec-input" 
+        placeholder="Details..."
+        value={trait.specification || ""}
+        onChange={(e) => updateTrait(category, index, 'specification', e.target.value)}
+      />
+    </div>
+  );
 
   return (
     <div className="backgrounds-view">
@@ -387,51 +406,10 @@ const BackgroundsView = ({ draft, updateDraft }) => {
         </div>
 
         <div className="trait-list">
-          {/* Backgrounds / Merits */}
-          {advantages.map((adv, i) => (
-            <div key={`adv-${i}`} className="trait-card">
-              <div className="trait-card__header">
-                <h4>{adv.name} <small>({adv.type})</small></h4>
-                <DotTracker value={adv.dots} onChange={(val) => updateTrait('advantages', i, 'dots', val)} />
-                <button className="remove-btn" onClick={() => removeTrait('advantages', i)}>&times;</button>
-              </div>
-              <input 
-                className="spec-input" 
-                placeholder="Details..."
-                value={adv.specification || ""}
-                onChange={(e) => updateTrait('advantages', i, 'specification', e.target.value)}
-              />
-            </div>
-          ))}
-
-          {/* Flaws */}
-          {flaws.map((flaw, i) => (
-            <div key={`flaw-${i}`} className="trait-card trait-card_flaw">
-              <div className="trait-card__header">
-                <h4>{flaw.name} <small>(Flaw)</small></h4>
-                <DotTracker value={flaw.dots} onChange={(val) => updateTrait('flaws', i, 'dots', val)} />
-                <button className="remove-btn" onClick={() => removeTrait('flaws', i)}>&times;</button>
-              </div>
-              <input 
-                className="spec-input" 
-                placeholder="Details..."
-                value={flaw.specification || ""}
-                onChange={(e) => updateTrait('flaws', i, 'specification', e.target.value)}
-              />
-            </div>
-          ))}
-
-          {/* Lore Sheets */}
-          {loreSheets.map((ls, i) => (
-            <div key={`ls-${i}`} className="trait-card trait-card_lore">
-              <div className="trait-card__header">
-                <h4>{ls.name} <small>(Lore Sheet)</small></h4>
-                <DotTracker value={ls.dots} onChange={(val) => updateTrait('loreSheets', i, 'dots', val)} />
-                <button className="remove-btn" onClick={() => removeTrait('loreSheets', i)}>&times;</button>
-              </div>
-              <p className="trait-summary">{v5data.loreSheets.find(v => v.name === ls.name)?.summary}</p>
-            </div>
-          ))}
+          {backgrounds.advantages.map((t, i) => renderTraitCard(t, i, 'advantages', 'Background'))}
+          {backgrounds.merits.map((t, i) => renderTraitCard(t, i, 'merits', 'Merit'))}
+          {backgrounds.flaws.map((t, i) => renderTraitCard(t, i, 'flaws', 'Flaw'))}
+          {backgrounds.loreSheets.map((t, i) => renderTraitCard(t, i, 'loreSheets', 'Lore Sheet'))}
         </div>
       </div>
     </div>
@@ -502,7 +480,6 @@ const CharacterSheet = () => {
 
   const updateDraft = (field, value) => {
     setDraftState(prev => {
-      // If field is null, we're replacing the whole object (like in trackers)
       if (field === null) return value;
       return { ...prev, [field]: value };
     });
