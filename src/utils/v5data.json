@@ -1,0 +1,48 @@
+{
+  "disciplines": [
+    {
+      "name": "Animalism",
+      "powers": [
+        { "name": "Bond Famulus", "level": 1, "cost": "Free", "summary": "Form a bond with an animal.", "page": "V5 Core p. 244" },
+        { "name": "Sense the Beast", "level": 1, "cost": "Free", "summary": "Sense the predatory nature of others.", "page": "V5 Core p. 244", "dice_pool": ["wits", "animalKen"] }
+      ]
+    },
+    {
+      "name": "Celerity",
+      "powers": [
+        { "name": "Cat's Grace", "level": 1, "cost": "Free", "summary": "Perfect balance and grace.", "page": "V5 Core p. 252" },
+        { "name": "Blink", "level": 2, "cost": "1 Rouse Check", "summary": "Move rapidly a short distance.", "page": "V5 Core p. 253" }
+      ]
+    },
+    {
+      "name": "Potence",
+      "powers": [
+        { "name": "Lethal Body", "level": 1, "cost": "Free", "summary": "Your unarmed attacks are deadly.", "page": "V5 Core p. 264" },
+        { "name": "Soaring Leap", "level": 1, "cost": "Free", "summary": "Jump incredible distances.", "page": "V5 Core p. 264", "dice_pool": ["strength", "athletics"] }
+      ]
+    },
+    {
+      "name": "Auspex",
+      "powers": [
+        { "name": "Heightened Senses", "level": 1, "cost": "Free", "summary": "Greatly enhance one sense.", "page": "V5 Core p. 249", "dice_pool": ["wits", "awareness"] },
+        { "name": "Sense the Unseen", "level": 1, "cost": "Free", "summary": "Detect supernatural presence.", "page": "V5 Core p. 249", "dice_pool": ["wits", "awareness"] }
+      ]
+    },
+    {
+      "name": "Blood Sorcery",
+      "rituals": [
+        { "name": "A Taste for Blood", "level": 1, "summary": "Learn facts about a vampire's blood.", "page": "V5 Core p. 272", "dice_pool": ["intelligence", "occult"] }
+      ]
+    }
+  ],
+  "merits": [
+    { "name": "High Pain Tolerance", "type": "Merit", "dots": 2, "summary": "Ignore the first level of injury penalties.", "page": "V5 Core p. 179" }
+  ],
+  "backgrounds": [
+    { "name": "Contacts", "type": "Background", "dots": 1, "summary": "Information sources in the city.", "page": "V5 Core p. 185" },
+    { "name": "Resources", "type": "Background", "dots": 1, "summary": "Personal wealth and liquid assets.", "page": "V5 Core p. 188" }
+  ],
+  "loreSheets": [
+    { "name": "The Firstlight", "summary": "Information on the Second Inquisition.", "page": "V5 Core p. 384" }
+  ]
+}

@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { useCharacters } from '../../contexts/CharacterContext';
 import SheetTabs from '../SheetTabs/SheetTabs';
 import DotTracker from '../DotTracker/DotTracker';
 import DamageTracker from '../DamageTracker/DamageTracker';
+import v5data from '../../utils/v5data.json';
 import './CharacterSheet.css';
 
 const STANDARD_CLANS = [
@@ -153,6 +154,161 @@ const SkillsView = ({ draft, updateNestedDraft }) => {
   );
 };
 
+const SupernaturalView = ({ draft, updateDraft }) => {
+  const navigate = useNavigate();
+  const disciplines = draft.disciplines || [];
+  
+  const handleAddDiscipline = (e) => {
+    const name = e.target.value;
+    if (name && !disciplines.find(d => d.name === name)) {
+      const updated = [...disciplines, { name, dots: 1, powers: [] }];
+      updateDraft('disciplines', updated);
+    }
+    e.target.value = "";
+  };
+
+  const updateDiscDots = (index, dots) => {
+    const updated = [...disciplines];
+    updated[index] = { ...updated[index], dots };
+    updateDraft('disciplines', updated);
+  };
+
+  const removeDiscipline = (index) => {
+    const updated = disciplines.filter((_, i) => i !== index);
+    updateDraft('disciplines', updated);
+  };
+
+  const togglePower = (discIndex, powerName) => {
+    const updated = [...disciplines];
+    const powerList = updated[discIndex].powers || [];
+    if (powerList.includes(powerName)) {
+      updated[discIndex].powers = powerList.filter(p => p !== powerName);
+    } else {
+      updated[discIndex].powers = [...powerList, powerName];
+    }
+    updateDraft('disciplines', updated);
+  };
+
+  return (
+    <div className="supernatural-view">
+      <div className="view-section">
+        <div className="view-section__header">
+          <h3>Disciplines</h3>
+          <select className="add-select" onChange={handleAddDiscipline}>
+            <option value="">+ Add Discipline</option>
+            {v5data.disciplines.map(d => <option key={d.name} value={d.name}>{d.name}</option>)}
+          </select>
+        </div>
+        
+        <div className="discipline-list">
+          {disciplines.map((d, i) => {
+            const data = v5data.disciplines.find(vd => vd.name === d.name);
+            return (
+              <div key={d.name} className="trait-card">
+                <div className="trait-card__header">
+                  <h4>{d.name}</h4>
+                  <DotTracker value={d.dots} onChange={(val) => updateDiscDots(i, val)} />
+                  <button className="remove-btn" onClick={() => removeDiscipline(i)}>&times;</button>
+                </div>
+                
+                <div className="power-selector">
+                  {data?.powers?.filter(p => p.level <= d.dots).map(p => (
+                    <div key={p.name} className="power-item">
+                      <label className="power-item__label">
+                        <input 
+                          type="checkbox" 
+                          checked={d.powers?.includes(p.name)} 
+                          onChange={() => togglePower(i, p.name)}
+                        />
+                        {p.name} (Lvl {p.level})
+                      </label>
+                      {d.powers?.includes(p.name) && (
+                        <div className="power-summary">
+                          <p>{p.summary}</p>
+                          <small>{p.page}</small>
+                          {p.dice_pool && (
+                            <button 
+                              className="roll-btn-small"
+                              onClick={() => navigate(`/dice?charId=${draft._id}`)}
+                            >
+                              Roll
+                            </button>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const AdvantagesView = ({ draft, updateDraft }) => {
+  const advantages = draft.advantages || [];
+  const flaws = draft.flaws || [];
+
+  const handleAddAdvantage = (e) => {
+    const val = e.target.value;
+    if (val) {
+      const [type, name] = val.split(':');
+      const updated = [...advantages, { name, type, dots: 1, specification: "" }];
+      updateDraft('advantages', updated);
+    }
+    e.target.value = "";
+  };
+
+  const updateAdv = (index, field, value) => {
+    const updated = [...advantages];
+    updated[index] = { ...updated[index], [field]: value };
+    updateDraft('advantages', updated);
+  };
+
+  return (
+    <div className="advantages-view">
+      <div className="view-section">
+        <div className="view-section__header">
+          <h3>Advantages</h3>
+          <select className="add-select" onChange={handleAddAdvantage}>
+            <option value="">+ Add Advantage</option>
+            <optgroup label="Merits">
+              {v5data.merits.map(m => <option key={m.name} value={`Merit:${m.name}`}>{m.name}</option>)}
+            </optgroup>
+            <optgroup label="Backgrounds">
+              {v5data.backgrounds.map(b => <option key={b.name} value={`Background:${b.name}`}>{b.name}</option>)}
+            </optgroup>
+          </select>
+        </div>
+
+        <div className="trait-list">
+          {advantages.map((adv, i) => (
+            <div key={`${adv.name}-${i}`} className="trait-card">
+              <div className="trait-card__header">
+                <h4>{adv.name} <small>({adv.type})</small></h4>
+                <DotTracker value={adv.dots} onChange={(val) => updateAdv(i, 'dots', val)} />
+                <button className="remove-btn" onClick={() => {
+                  const updated = advantages.filter((_, idx) => idx !== i);
+                  updateDraft('advantages', updated);
+                }}>&times;</button>
+              </div>
+              <input 
+                className="spec-input" 
+                placeholder="Specification (e.g. Police Contact)"
+                value={adv.specification || ""}
+                onChange={(e) => updateAdv(i, 'specification', e.target.value)}
+              />
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const HealthView = ({ draft, updateDraft }) => {
   const stamina = draft.attributes?.stamina || 1;
   const composure = draft.attributes?.composure || 1;
@@ -247,6 +403,8 @@ const CharacterSheet = () => {
         {activeTab === 'core' && <CoreView draft={draftState} updateDraft={updateDraft} />}
         {activeTab === 'attributes' && <AttributesView draft={draftState} updateNestedDraft={updateNestedDraft} />}
         {activeTab === 'skills' && <SkillsView draft={draftState} updateNestedDraft={updateNestedDraft} />}
+        {activeTab === 'supernatural' && <SupernaturalView draft={draftState} updateDraft={updateDraft} />}
+        {activeTab === 'advantages' && <AdvantagesView draft={draftState} updateDraft={updateDraft} />}
         {activeTab === 'health' && <HealthView draft={draftState} updateDraft={updateDraft} />}
       </div>
 

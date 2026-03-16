@@ -5,6 +5,8 @@ const TABS = [
   { id: 'core', label: 'Core' },
   { id: 'attributes', label: 'Attributes' },
   { id: 'skills', label: 'Skills' },
+  { id: 'supernatural', label: 'Supernatural' },
+  { id: 'advantages', label: 'Advantages' },
   { id: 'health', label: 'Health' },
 ];
 
