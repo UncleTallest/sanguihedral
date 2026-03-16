@@ -1,9 +1,15 @@
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import sanguihedralLogo from "../../../public/sanguihedral.png";
 import "./Header.css";
 
 const Header = ({ isLoggedIn, onOpenModal, onSignOut }) => {
+  const location = useLocation();
+  
+  // Extract character ID if we are on a character sheet page
+  const charMatch = location.pathname.match(/\/characters\/([^/]+)/);
+  const currentCharId = charMatch ? charMatch[1] : null;
+
   return (
     <header className="header">
       <div className="header__content">
@@ -22,7 +28,10 @@ const Header = ({ isLoggedIn, onOpenModal, onSignOut }) => {
               <Link to="/characters" className="header__link">
                 Dashboard
               </Link>
-              <Link to="/dice" className="header__link">
+              <Link 
+                to={currentCharId ? `/dice?charId=${currentCharId}` : "/dice"} 
+                className="header__link"
+              >
                 Dice Roller
               </Link>
               <Link to="/profile" className="header__link">
