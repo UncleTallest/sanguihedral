@@ -41,6 +41,17 @@
       ]
     },
     {
+      "name": "Dominate",
+      "powers": [
+        { "name": "Cloud Memory", "level": 1, "summary": "Wipe the victim's short-term memory.", "page": "V5 Core p. 255" },
+        { "name": "Compel", "level": 1, "summary": "A single word command.", "page": "V5 Core p. 255", "dice_pool": ["manipulation", "intimidation"] },
+        { "name": "Mesmerize", "level": 2, "summary": "Issue complex hypnotic commands.", "page": "V5 Core p. 256", "dice_pool": ["manipulation", "leadership"] },
+        { "name": "Forgetful Mind", "level": 3, "summary": "Rewrite the victim's memories.", "page": "V5 Core p. 257", "dice_pool": ["manipulation", "persuasion"] },
+        { "name": "Rationalize", "level": 4, "summary": "The victim believes your commands are their own idea.", "page": "V5 Core p. 257" },
+        { "name": "Mass Manipulation", "level": 5, "summary": "Dominate a crowd.", "page": "V5 Core p. 258" }
+      ]
+    },
+    {
       "name": "Fortitude",
       "powers": [
         { "name": "Resilience", "level": 1, "summary": "Add dots to Health.", "page": "V5 Core p. 258" },
@@ -89,8 +100,8 @@
       "name": "Protean",
       "powers": [
         { "name": "Weight of the Feather", "level": 1, "summary": "Become nearly weightless.", "page": "V5 Core p. 269" },
-        { "name": "Feral Weapons", "level": 2, "summary": "Grow claws or teeth.", "page": "V5 Core p. 270" },
-        { "name": "Earth Meld", "level": 3, "summary": "Merge with the earth.", "page": "V5 Core p. 270" },
+        { "name": "Feral Weapons", "level": 2, "cost": "1 Rouse Check", "summary": "Grow claws or teeth.", "page": "V5 Core p. 270" },
+        { "name": "Earth Meld", "level": 3, "cost": "1 Rouse Check", "summary": "Merge with the earth.", "page": "V5 Core p. 270" },
         { "name": "Metamorphosis", "level": 4, "summary": "Transform into an animal.", "page": "V5 Core p. 270" },
         { "name": "Mist Form", "level": 5, "summary": "Transform into a cloud of mist.", "page": "V5 Core p. 271" }
       ]
@@ -101,7 +112,9 @@
         { "name": "Corrosive Vitae", "level": 1, "summary": "Your blood becomes acid.", "page": "V5 Core p. 272" },
         { "name": "Extinguish Vitae", "level": 2, "summary": "Drain another's blood power.", "page": "V5 Core p. 273" }
       ],
-      "rituals": []
+      "rituals": [
+        { "name": "A Taste for Blood", "level": 1, "summary": "Learn facts about a vampire's blood.", "page": "V5 Core p. 272", "dice_pool": ["intelligence", "occult"] }
+      ]
     }
   ],
   "merits": [

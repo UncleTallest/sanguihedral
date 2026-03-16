@@ -4,6 +4,7 @@ import { useCharacters } from '../../contexts/CharacterContext';
 import useRollHistory from '../../hooks/useRollHistory';
 import DiceIcon from '../DiceIcon/DiceIcon';
 import HistoryDrawer from '../HistoryDrawer/HistoryDrawer';
+import v5data from '../../utils/v5data.json';
 import * as api from '../../utils/api';
 import './DiceRoller.css';
 
@@ -33,6 +34,7 @@ const DiceRoller = () => {
   const [result, setResult] = useState(null);
   const [showAdvanced, setShowAdvanced] = useState(false);
   const [isHistoryOpen, setIsHistoryOpen] = useState(false);
+  const [selectedPowerName, setSelectedPowerName] = useState("");
 
   useEffect(() => {
     if (charId && characters.length > 0) {
@@ -48,17 +50,16 @@ const DiceRoller = () => {
             calculatedPool += (char.attributes?.[stat] || char.skills?.[stat] || 0);
           });
           if (calculatedPool > 0) setTotalPool(calculatedPool);
+          if (nameFromParam) setSelectedPowerName(nameFromParam);
         }
       }
     }
-  }, [charId, characters, poolFromParam]);
+  }, [charId, characters, poolFromParam, nameFromParam]);
 
   const handleRoll = async () => {
     setRollState('rolling');
     setResult(null);
     const animationPromise = new Promise(resolve => setTimeout(resolve, 800));
-    
-    // Total Pool includes the base pool + manual modifier
     const finalPool = Math.max(1, totalPool + modifier);
 
     try {
@@ -82,7 +83,8 @@ const DiceRoller = () => {
         charName: activeCharacter?.name || null,
         pool: finalPool,
         difficulty: difficulty,
-        result: mappedResult
+        result: mappedResult,
+        powerName: selectedPowerName || null
       });
     } catch (err) {
       console.error(err);
@@ -95,7 +97,43 @@ const DiceRoller = () => {
     const attrValue = activeCharacter.attributes?.[preset.attr] || 0;
     const skillValue = activeCharacter.skills?.[preset.skill] || 0;
     setTotalPool(attrValue + skillValue);
-    setModifier(0); // Reset modifier when picking a new preset
+    setModifier(0);
+    setSelectedPowerName("");
+  };
+
+  const handlePowerSelect = (e) => {
+    const powerName = e.target.value;
+    if (!powerName) {
+      setSelectedPowerName("");
+      return;
+    }
+
+    // Find power metadata
+    let powerData = null;
+    v5data.disciplines.forEach(d => {
+      const found = d.powers?.find(p => p.name === powerName) || d.rituals?.find(r => r.name === powerName);
+      if (found) powerData = found;
+    });
+
+    if (powerData && powerData.dice_pool) {
+      let calculatedPool = 0;
+      powerData.dice_pool.forEach(stat => {
+        calculatedPool += (activeCharacter.attributes?.[stat] || activeCharacter.skills?.[stat] || 0);
+      });
+      setTotalPool(calculatedPool);
+      setSelectedPowerName(powerName);
+      setModifier(0);
+    }
+  };
+
+  const getAllAvailablePowers = () => {
+    if (!activeCharacter) return [];
+    const ownedPowerNames = [];
+    activeCharacter.disciplines?.forEach(d => {
+      d.powers?.forEach(p => ownedPowerNames.push(p));
+    });
+    activeCharacter.rituals?.forEach(r => ownedPowerNames.push(r));
+    return ownedPowerNames;
   };
 
   const renderStatus = () => {
@@ -126,6 +164,7 @@ const DiceRoller = () => {
         {rollState === 'resolved' && result && (
           <>
             <div className="dice-roller__outcome">
+              {selectedPowerName && <div className="dice-roller__power-label">{selectedPowerName}</div>}
               <div className="dice-roller__total">Total Successes: {result.totalSuccesses}</div>
               {renderStatus()}
             </div>
@@ -148,9 +187,23 @@ const DiceRoller = () => {
       <div className="dice-roller__controls">
         {activeCharacter && (
           <div className="dice-roller__char-info">
-            Rolling{nameFromParam ? ` ${nameFromParam}` : ""} for: <strong>{activeCharacter.name}</strong>
+            Character: <strong>{activeCharacter.name}</strong>
           </div>
         )}
+
+        <div className="dice-roller__power-selection">
+          <select 
+            className="dice-roller__dropdown" 
+            value={selectedPowerName}
+            onChange={handlePowerSelect}
+            disabled={!activeCharacter}
+          >
+            <option value="">-- Use Discipline Power --</option>
+            {getAllAvailablePowers().map(pName => (
+              <option key={pName} value={pName}>{pName}</option>
+            ))}
+          </select>
+        </div>
 
         <div className="dice-roller__presets">
           {PRESETS.map(p => (
