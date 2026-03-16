@@ -7,7 +7,7 @@ export const convertToCsvUrl = (url) => {
   return url.replace(/\/edit.*$/, "/export?format=csv");
 };
 
-// Strict labels: word boundaries and optional trailing colon
+// Strict labels: word boundaries
 const FIELD_MAPPINGS = {
   name: [/\bname\b/i, /^n$/i],
   clan: [/\bclan\b/i, /\bcln\b/i],
@@ -82,16 +82,15 @@ export const mapGridToCharacter = (grid) => {
   };
 
   const isLabel = (text) => {
-    if (!text || text.length > 25) return false; // Labels are usually short
+    if (!text || text.length > 25) return false;
     return ALL_LABELS.some(re => re.test(text));
   };
 
   const cleanNumeric = (val, isStrict = false) => {
-    if (typeof val !== 'string') return val;
-    // If strict (like Skill dots), if the cell is long text, it's not a number
-    if (isStrict && val.length > 2) return 0; 
-    
-    const cleaned = val.replace(/[^0-9]/g, '');
+    if (!val) return 0;
+    const s = val.toString();
+    if (isStrict && s.length > 2) return 0; 
+    const cleaned = s.replace(/[^0-9]/g, '');
     if (cleaned === "") return 0;
     const num = Number(cleaned);
     return isStrict ? Math.min(5, num) : num;
@@ -101,16 +100,13 @@ export const mapGridToCharacter = (grid) => {
     for (let r = 0; r < grid.length; r++) {
       for (let c = 0; c < grid[r].length; c++) {
         const cell = grid[r][c]?.toString().trim();
-        // Match label only if it's not buried in a long sentence
         if (cell && cell.length < 25 && regexList.some(re => re.test(cell))) {
-          // Look right
           for (let offset = 1; offset <= 3; offset++) {
             const nextCell = grid[r][c + offset]?.toString().trim();
             if (nextCell && !isLabel(nextCell)) {
               return isNumeric ? cleanNumeric(nextCell, true) : nextCell;
             }
           }
-          // Look down
           if (grid[r+1] && grid[r+1][c]) {
             const downCell = grid[r+1][c].toString().trim();
             if (downCell && !isLabel(downCell)) {
@@ -127,7 +123,6 @@ export const mapGridToCharacter = (grid) => {
   Object.entries(FIELD_MAPPINGS).forEach(([field, regexList]) => {
     const isNum = ["generation", "humanity", "bloodPotency", "hunger"].includes(field);
     let val = getValueForLabel(regexList, isNum);
-    
     if (field === "generation" && val < 4) val = 13;
     if (field === "clan" && val) {
       const slug = (text) => text.toLowerCase().replace("the ", "").replace(/\s+/g, "");
@@ -135,54 +130,34 @@ export const mapGridToCharacter = (grid) => {
       const match = v5data.clans.find(c => slug(c) === targetSlug);
       if (match) val = match;
     }
-    
-    if (val !== undefined && val !== 0) {
-      character[field] = val;
-    }
+    if (val !== undefined && val !== 0) character[field] = val;
   });
 
   if (!character.humanity) character.humanity = 7;
   if (!character.bloodPotency) character.bloodPotency = 1;
   if (!character.hunger) character.hunger = 1;
 
-  // Map Attributes
+  // Attributes & Skills
   Object.entries(ATTRIBUTE_MAPPINGS).forEach(([attr, regexList]) => {
     character.attributes[attr] = Math.max(1, getValueForLabel(regexList, true));
   });
-
-  // Map Skills
   Object.entries(SKILL_MAPPINGS).forEach(([skill, regexList]) => {
     character.skills[skill] = getValueForLabel(regexList, true);
   });
 
-  // Health/Willpower
-  const findValueBelow = (labelRegex) => {
-    for (let r = 0; r < grid.length; r++) {
-      for (let c = 0; c < grid[r].length; c++) {
-        const cell = grid[r][c]?.trim();
-        if (cell && cell.length < 15 && labelRegex.test(cell)) {
-          const val = grid[r+1] ? grid[r+1][c] : undefined;
-          return cleanNumeric(val, true);
-        }
-      }
-    }
-    return 0;
-  };
-
-  character.maxHealth = findValueBelow(/health/i);
-  character.maxWillpower = findValueBelow(/willpower/i);
+  character.maxHealth = findValueBelow(grid, /health/i);
+  character.maxWillpower = findValueBelow(grid, /willpower/i);
 
   const flatGrid = grid.flat().map(cell => cell?.toString().trim()).filter(Boolean);
   
-  // GREEDY DATA MINE for Disciplines
+  // GREEDY Disciplines
   v5data.disciplines.forEach(vDisc => {
     const hasDisc = flatGrid.some(cell => cell.toLowerCase() === vDisc.name.toLowerCase());
     if (hasDisc) {
-      let dots = 1;
+      let dots = 0;
       for (let r = 0; r < grid.length; r++) {
         for (let c = 0; c < grid[r].length; c++) {
-          const cell = grid[r][c]?.toString().trim().toLowerCase();
-          if (cell === vDisc.name.toLowerCase()) {
+          if (grid[r][c]?.toString().trim().toLowerCase() === vDisc.name.toLowerCase()) {
             for (let offset = 1; offset <= 3; offset++) {
               const val = cleanNumeric(grid[r][c+offset], true);
               if (val > 0) { dots = val; break; }
@@ -190,46 +165,72 @@ export const mapGridToCharacter = (grid) => {
           }
         }
       }
-      const ownedPowers = vDisc.powers?.filter(vPower => 
-        flatGrid.some(cell => {
-          const normalized = cell.toLowerCase();
-          const powerName = vPower.name.toLowerCase();
-          return normalized === powerName || normalized.startsWith(powerName + " ") || normalized.includes(" " + powerName);
-        })
-      ).map(p => p.name) || [];
-
-      character.disciplines.push({ name: vDisc.name, dots, powers: ownedPowers });
+      if (dots > 0) {
+        const ownedPowers = vDisc.powers?.filter(vPower => 
+          flatGrid.some(cell => {
+            const normalized = cell.toLowerCase();
+            const powerName = vPower.name.toLowerCase();
+            return normalized === powerName || normalized.startsWith(powerName + " ") || normalized.includes(" " + powerName);
+          })
+        ).map(p => p.name) || [];
+        character.disciplines.push({ name: vDisc.name, dots, powers: ownedPowers });
+      }
     }
   });
 
-  // FUZZY GREEDY DATA MINE for Merits, Flaws, and Backgrounds
+  // ADVANCED FUZZY GREEDY for Merits, Flaws, and Backgrounds
   const mineTrait = (traitList, targetArray, isBackground = false) => {
     traitList.forEach(vTrait => {
       for (let r = 0; r < grid.length; r++) {
         for (let c = 0; c < grid[r].length; c++) {
-          const cell = grid[r][c]?.toString().trim().toLowerCase();
-          if (!cell || cell.length > 40) continue;
+          const cell = grid[r][c]?.toString().trim();
+          if (!cell || cell.length > 50) continue;
 
-          if (cell === vTrait.name.toLowerCase() || 
-              cell.startsWith(vTrait.name.toLowerCase() + " ") || 
-              cell.includes(vTrait.name.toLowerCase() + " (") ||
-              cell.includes(vTrait.name.toLowerCase() + " [") ||
-              cell.startsWith(vTrait.name.toLowerCase() + ":")) {
+          const lowerCell = cell.toLowerCase();
+          const target = vTrait.name.toLowerCase();
+
+          // Match if cell CONTAINS name + (Background X) or (Flaw X) or Name | X | Specification
+          if (lowerCell === target || 
+              lowerCell.startsWith(target + " ") || 
+              lowerCell.includes(target + " (") ||
+              lowerCell.includes(target + " [") ||
+              lowerCell.includes(target + " -")) {
             
-            let dots = 1;
+            let dots = 0;
+            let spec = "";
+
+            // Strategy 1: Look right for dots
             for (let offset = 1; offset <= 4; offset++) {
               const val = cleanNumeric(grid[r][c+offset], true);
-              if (val > 0) { dots = val; break; }
+              if (val > 0) { 
+                dots = val; 
+                // If there's more text to the right of dots, use it as spec
+                const specCell = grid[r][c+offset+1]?.toString().trim();
+                if (specCell && !isLabel(specCell)) spec = specCell;
+                break; 
+              }
             }
-            if (dots === 1) {
-              dots = cleanNumeric(grid[r][c], true) || 1;
+            
+            // Strategy 2: Dots inside the same cell? (e.g. "Contacts 2")
+            if (dots === 0) {
+              dots = cleanNumeric(cell, true);
             }
 
-            const entry = { name: vTrait.name, dots, specification: "" };
-            if (isBackground) entry.type = "Background";
-            else if (vTrait.type) entry.type = vTrait.type;
-            targetArray.push(entry);
-            return;
+            // Strategy 3: Specification before or after?
+            if (!spec) {
+              const possibleSpec = cell.split(/[-–()\[\]]/).pop()?.trim();
+              if (possibleSpec && isNaN(possibleSpec) && possibleSpec.toLowerCase() !== target) {
+                spec = possibleSpec;
+              }
+            }
+
+            if (dots > 0) {
+              const entry = { name: vTrait.name, dots, specification: spec };
+              if (isBackground) entry.type = "Background";
+              else if (vTrait.type) entry.type = vTrait.type;
+              targetArray.push(entry);
+              return;
+            }
           }
         }
       }
@@ -257,6 +258,31 @@ export const mapGridToCharacter = (grid) => {
   });
 
   return character;
+};
+
+const findValueBelow = (grid, labelRegex) => {
+  for (let r = 0; r < grid.length; r++) {
+    for (let c = 0; c < grid[r].length; c++) {
+      const cell = grid[r][c]?.trim();
+      if (cell && cell.length < 15 && labelRegex.test(cell)) {
+        const val = grid[r+1] ? grid[r+1][c] : undefined;
+        // Check right if below is empty
+        if (!val) return cleanNumeric(grid[r][c+1], true);
+        return cleanNumeric(val, true);
+      }
+    }
+  }
+  return 0;
+};
+
+const cleanNumeric = (val, isStrict = false) => {
+  if (!val) return 0;
+  const s = val.toString();
+  if (isStrict && s.length > 2) return 0; 
+  const cleaned = s.replace(/[^0-9]/g, '');
+  if (cleaned === "") return 0;
+  const num = Number(cleaned);
+  return isStrict ? Math.min(5, num) : num;
 };
 
 export const parseCSVData = (csvString) => {
