@@ -334,13 +334,12 @@ const SupernaturalView = ({ draft, updateDraft }) => {
   );
 };
 
-const AdvantagesView = ({ draft, updateDraft }) => {
-  const navigate = useNavigate();
+const BackgroundsView = ({ draft, updateDraft }) => {
   const advantages = draft.advantages || [];
   const flaws = draft.flaws || [];
   const loreSheets = draft.loreSheets || [];
 
-  const handleAddAdvantage = (e) => {
+  const handleAddTrait = (e) => {
     const val = e.target.value;
     if (val) {
       const [type, name] = val.split(':');
@@ -366,17 +365,20 @@ const AdvantagesView = ({ draft, updateDraft }) => {
   };
 
   return (
-    <div className="advantages-view">
+    <div className="backgrounds-view">
       <div className="view-section">
         <div className="view-section__header">
-          <h3>Advantages & Lore Sheets</h3>
-          <select className="add-select" onChange={handleAddAdvantage}>
+          <h3>Backgrounds & Merits</h3>
+          <select className="add-select" onChange={handleAddTrait}>
             <option value="">+ Add Trait</option>
+            <optgroup label="Backgrounds">
+              {v5data.backgrounds.map(b => <option key={b.name} value={`Background:${b.name}`}>{b.name}</option>)}
+            </optgroup>
             <optgroup label="Merits">
               {v5data.merits.map(m => <option key={m.name} value={`Merit:${m.name}`}>{m.name}</option>)}
             </optgroup>
-            <optgroup label="Backgrounds">
-              {v5data.backgrounds.map(b => <option key={b.name} value={`Background:${b.name}`}>{b.name}</option>)}
+            <optgroup label="Flaws">
+              {v5data.flaws.map(f => <option key={f.name} value={`Flaw:${f.name}`}>{f.name}</option>)}
             </optgroup>
             <optgroup label="Lore Sheets">
               {v5data.loreSheets.map(l => <option key={l.name} value={`LoreSheet:${l.name}`}>{l.name}</option>)}
@@ -385,7 +387,7 @@ const AdvantagesView = ({ draft, updateDraft }) => {
         </div>
 
         <div className="trait-list">
-          {/* Advantages */}
+          {/* Backgrounds / Merits */}
           {advantages.map((adv, i) => (
             <div key={`adv-${i}`} className="trait-card">
               <div className="trait-card__header">
@@ -398,6 +400,23 @@ const AdvantagesView = ({ draft, updateDraft }) => {
                 placeholder="Details..."
                 value={adv.specification || ""}
                 onChange={(e) => updateTrait('advantages', i, 'specification', e.target.value)}
+              />
+            </div>
+          ))}
+
+          {/* Flaws */}
+          {flaws.map((flaw, i) => (
+            <div key={`flaw-${i}`} className="trait-card trait-card_flaw">
+              <div className="trait-card__header">
+                <h4>{flaw.name} <small>(Flaw)</small></h4>
+                <DotTracker value={flaw.dots} onChange={(val) => updateTrait('flaws', i, 'dots', val)} />
+                <button className="remove-btn" onClick={() => removeTrait('flaws', i)}>&times;</button>
+              </div>
+              <input 
+                className="spec-input" 
+                placeholder="Details..."
+                value={flaw.specification || ""}
+                onChange={(e) => updateTrait('flaws', i, 'specification', e.target.value)}
               />
             </div>
           ))}
@@ -520,7 +539,7 @@ const CharacterSheet = () => {
         {activeTab === 'attributes' && <AttributesView draft={draftState} updateNestedDraft={updateNestedDraft} />}
         {activeTab === 'skills' && <SkillsView draft={draftState} updateNestedDraft={updateNestedDraft} />}
         {activeTab === 'supernatural' && <SupernaturalView draft={draftState} updateDraft={updateDraft} />}
-        {activeTab === 'advantages' && <AdvantagesView draft={draftState} updateDraft={updateDraft} />}
+        {activeTab === 'backgrounds' && <BackgroundsView draft={draftState} updateDraft={updateDraft} />}
       </div>
 
       <VitalsBar draft={draftState} onJumpToCore={() => setActiveTab('core')} />

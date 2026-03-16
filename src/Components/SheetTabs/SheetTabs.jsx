@@ -6,7 +6,7 @@ const TABS = [
   { id: 'attributes', label: 'Attributes' },
   { id: 'skills', label: 'Skills' },
   { id: 'supernatural', label: 'Supernatural' },
-  { id: 'advantages', label: 'Advantages' },
+  { id: 'backgrounds', label: 'Backgrounds' },
 ];
 
 const SheetTabs = ({ activeTab, onTabChange }) => {
