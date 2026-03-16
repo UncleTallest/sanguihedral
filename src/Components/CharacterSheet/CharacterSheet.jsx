@@ -104,8 +104,8 @@ const CoreView = ({ draft, updateDraft }) => {
             superficial={draft.superficialDamage || 0}
             aggravated={draft.aggravatedDamage || 0}
             onChange={({ superficial, aggravated }) => {
-              updateDraft('superficialDamage', superficial);
-              updateDraft('aggravatedDamage', aggravated);
+              const updated = { ...draft, superficialDamage: superficial, aggravatedDamage: aggravated };
+              updateDraft(null, updated);
             }}
           />
         </div>
@@ -116,8 +116,8 @@ const CoreView = ({ draft, updateDraft }) => {
             superficial={draft.superficialWillpowerDamage || 0}
             aggravated={draft.aggravatedWillpowerDamage || 0}
             onChange={({ superficial, aggravated }) => {
-              updateDraft('superficialWillpowerDamage', superficial);
-              updateDraft('aggravatedWillpowerDamage', aggravated);
+              const updated = { ...draft, superficialWillpowerDamage: superficial, aggravatedWillpowerDamage: aggravated };
+              updateDraft(null, updated);
             }}
           />
         </div>
@@ -501,7 +501,11 @@ const CharacterSheet = () => {
   }, [draftState, initialState]);
 
   const updateDraft = (field, value) => {
-    setDraftState(prev => ({ ...prev, [field]: value }));
+    setDraftState(prev => {
+      // If field is null, we're replacing the whole object (like in trackers)
+      if (field === null) return value;
+      return { ...prev, [field]: value };
+    });
   };
 
   const updateNestedDraft = (category, field, value) => {

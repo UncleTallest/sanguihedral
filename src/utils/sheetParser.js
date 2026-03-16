@@ -15,7 +15,7 @@ const FIELD_MAPPINGS = {
   predator: [/predator/i, /pred/i],
   sire: [/sire/i],
   generation: [/generation/i, /gen/i],
-  humanity: [/humanity/i, /hum/i],
+  humanity: [/humanity/i, /hum/i, /^h$/i],
   bloodPotency: [/blood potency/i, /bp/i],
   hunger: [/hunger/i, /hng/i],
 };
@@ -93,10 +93,18 @@ export const mapGridToCharacter = (grid) => {
       for (let c = 0; c < grid[r].length; c++) {
         const cell = grid[r][c]?.toString().trim();
         if (regexList.some(re => re.test(cell))) {
+          // Look right
           for (let offset = 1; offset <= 2; offset++) {
             const nextCell = grid[r][c + offset]?.toString().trim();
             if (nextCell && !isLabel(nextCell)) {
               return isNumeric ? cleanNumeric(nextCell) : nextCell;
+            }
+          }
+          // Look down (backup)
+          if (grid[r+1] && grid[r+1][c]) {
+            const downCell = grid[r+1][c].toString().trim();
+            if (downCell && !isLabel(downCell)) {
+              return isNumeric ? cleanNumeric(downCell) : downCell;
             }
           }
         }
@@ -118,13 +126,15 @@ export const mapGridToCharacter = (grid) => {
       if (match) val = match;
     }
     
-    if (val !== undefined) character[field] = val;
+    if (val !== undefined && val !== 0) {
+      character[field] = val;
+    }
   });
 
-  // Ensure default values for vital stats if not found
-  if (character.humanity === undefined) character.humanity = 7;
-  if (character.bloodPotency === undefined) character.bloodPotency = 1;
-  if (character.hunger === undefined) character.hunger = 1;
+  // Ensure default values for vital stats if still missing
+  if (!character.humanity) character.humanity = 7;
+  if (!character.bloodPotency) character.bloodPotency = 1;
+  if (!character.hunger) character.hunger = 1;
 
   // Map Attributes
   Object.entries(ATTRIBUTE_MAPPINGS).forEach(([attr, regexList]) => {
