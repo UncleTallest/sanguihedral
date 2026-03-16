@@ -87,21 +87,23 @@
 .stats-grid {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 8px;
 }
 
 .stat-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  min-height: 32px;
 }
 
 .stat-label {
   font-family: var(--font-stats);
-  font-size: 18px;
+  font-size: 16px;
   color: #ccc;
   text-transform: uppercase;
   letter-spacing: 1px;
+  flex: 1;
 }
 
 /* Supernatural & Advantages Styles */
@@ -155,6 +157,7 @@
   font-family: var(--font-header);
   font-size: 20px;
   color: #fff;
+  flex: 1;
 }
 
 .remove-btn {
@@ -164,6 +167,7 @@
   font-size: 24px;
   cursor: pointer;
   padding: 0 5px;
+  margin-left: 10px;
 }
 
 .remove-btn:hover {

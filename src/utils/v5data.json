@@ -1,10 +1,17 @@
 {
+  "clans": [
+    "Banu Haqim", "Brujah", "Gangrel", "Hecata", "Lasombra", "Malkavian", 
+    "The Ministry", "Nosferatu", "Ravnos", "Salubri", "Toreador", "Tremere", 
+    "Tzimisce", "Ventrue"
+  ],
   "disciplines": [
     {
       "name": "Animalism",
       "powers": [
         { "name": "Bond Famulus", "level": 1, "cost": "Free", "summary": "Form a bond with an animal.", "page": "V5 Core p. 244" },
-        { "name": "Sense the Beast", "level": 1, "cost": "Free", "summary": "Sense the predatory nature of others.", "page": "V5 Core p. 244", "dice_pool": ["wits", "animalKen"] }
+        { "name": "Sense the Beast", "level": 1, "cost": "Free", "summary": "Sense the predatory nature of others.", "page": "V5 Core p. 244", "dice_pool": ["wits", "animalKen"] },
+        { "name": "Feral Whispers", "level": 2, "cost": "1 Rouse Check", "summary": "Communicate with animals.", "page": "V5 Core p. 245", "dice_pool": ["manipulation", "animalKen"] },
+        { "name": "Quell the Beast", "level": 3, "cost": "1 Rouse Check", "summary": "Suppress emotional outbursts.", "page": "V5 Core p. 245", "dice_pool": ["charisma", "animalKen"] }
       ]
     },
     {
@@ -22,6 +29,14 @@
       ]
     },
     {
+      "name": "Protean",
+      "powers": [
+        { "name": "Weight of the Feather", "level": 1, "cost": "Free", "summary": "User can become nearly weightless.", "page": "V5 Core p. 269" },
+        { "name": "Feral Weapons", "level": 2, "cost": "1 Rouse Check", "summary": "Grow claws or teeth.", "page": "V5 Core p. 270" },
+        { "name": "Earth Meld", "level": 3, "cost": "1 Rouse Check", "summary": "Merge with the earth.", "page": "V5 Core p. 270" }
+      ]
+    },
+    {
       "name": "Auspex",
       "powers": [
         { "name": "Heightened Senses", "level": 1, "cost": "Free", "summary": "Greatly enhance one sense.", "page": "V5 Core p. 249", "dice_pool": ["wits", "awareness"] },
@@ -30,9 +45,7 @@
     },
     {
       "name": "Blood Sorcery",
-      "rituals": [
-        { "name": "A Taste for Blood", "level": 1, "summary": "Learn facts about a vampire's blood.", "page": "V5 Core p. 272", "dice_pool": ["intelligence", "occult"] }
-      ]
+      "rituals": []
     }
   ],
   "merits": [

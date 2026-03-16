@@ -7,10 +7,7 @@ import DamageTracker from '../DamageTracker/DamageTracker';
 import v5data from '../../utils/v5data.json';
 import './CharacterSheet.css';
 
-const STANDARD_CLANS = [
-  "Brujah", "Gangrel", "Malkavian", "Nosferatu", "Toreador", "Tremere", "Ventrue", 
-  "Lasombra", "Hecata", "Ravnos", "Banu Haqim", "Salubri", "Ministry", "Tzimisce"
-];
+const STANDARD_CLANS = v5data.clans;
 
 const STANDARD_SECTS = ["Camarilla", "Anarch", "Autarkis", "Sabbat"];
 
@@ -198,6 +195,8 @@ const SupernaturalView = ({ draft, updateDraft }) => {
     }
   };
 
+  const bsRituals = v5data.disciplines.find(d => d.name === "Blood Sorcery")?.rituals || [];
+
   return (
     <div className="supernatural-view">
       <div className="view-section">
@@ -259,39 +258,43 @@ const SupernaturalView = ({ draft, updateDraft }) => {
 
       <div className="view-section" style={{marginTop: '40px'}}>
         <h3>Rituals</h3>
-        <div className="trait-card">
-          <div className="power-selector">
-            {v5data.disciplines.find(d => d.name === "Blood Sorcery")?.rituals?.map(r => (
-              <div key={r.name} className="power-item">
-                <label className="power-item__label">
-                  <input 
-                    type="checkbox" 
-                    checked={rituals.includes(r.name)} 
-                    onChange={() => toggleRitual(r.name)}
-                  />
-                  {r.name} (Lvl {r.level})
-                </label>
-                {rituals.includes(r.name) && (
-                  <div className="power-summary">
-                    <p>{r.summary}</p>
-                    <small>{r.page}</small>
-                    {r.dice_pool && (
-                      <button 
-                        className="roll-btn-small"
-                        onClick={() => {
-                          const poolParam = r.dice_pool.join(',');
-                          navigate(`/dice?charId=${draft._id}&pool=${poolParam}&name=${r.name}`);
-                        }}
-                      >
-                        Roll
-                      </button>
-                    )}
-                  </div>
-                )}
-              </div>
-            ))}
+        {bsRituals.length > 0 ? (
+          <div className="trait-card">
+            <div className="power-selector">
+              {bsRituals.map(r => (
+                <div key={r.name} className="power-item">
+                  <label className="power-item__label">
+                    <input 
+                      type="checkbox" 
+                      checked={rituals.includes(r.name)} 
+                      onChange={() => toggleRitual(r.name)}
+                    />
+                    {r.name} (Lvl {r.level})
+                  </label>
+                  {rituals.includes(r.name) && (
+                    <div className="power-summary">
+                      <p>{r.summary}</p>
+                      <small>{r.page}</small>
+                      {r.dice_pool && (
+                        <button 
+                          className="roll-btn-small"
+                          onClick={() => {
+                            const poolParam = r.dice_pool.join(',');
+                            navigate(`/dice?charId=${draft._id}&pool=${poolParam}&name=${r.name}`);
+                          }}
+                        >
+                          Roll
+                        </button>
+                      )}
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
+        ) : (
+          <p className="trait-summary" style={{opacity: 0.5}}>No rituals defined in database.</p>
+        )}
       </div>
     </div>
   );

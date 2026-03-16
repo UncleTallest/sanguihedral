@@ -4,6 +4,7 @@ import ImportForm from '../ImportForm/ImportForm';
 import { useCharacters } from '../../contexts/CharacterContext';
 import { useNavigate } from 'react-router-dom';
 import { fetchAndParseSheet } from '../../utils/sheetParser';
+import v5data from '../../utils/v5data.json';
 import './Dashboard.css';
 
 const Dashboard = () => {
@@ -58,7 +59,15 @@ const Dashboard = () => {
     }
   };
 
+  const handleUpdateParsed = (field, value) => {
+    setParsedCharacter(prev => ({ ...prev, [field]: value }));
+  };
+
   const handleConfirmImport = () => {
+    if (!parsedCharacter.name || !parsedCharacter.clan) {
+      alert("Name and Clan are required to save.");
+      return;
+    }
     addCharacter(parsedCharacter).then((newChar) => {
       setParsedCharacter(null);
       setShowImport(false);
@@ -144,13 +153,49 @@ const Dashboard = () => {
           ) : (
             <div className="dashboard__modal-content dashboard__review">
               <h2>Review Parsed Data</h2>
-              <div className="dashboard__review-data">
-                <p><strong>Name:</strong> {parsedCharacter.name || 'Not found'}</p>
-                <p><strong>Clan:</strong> {parsedCharacter.clan || 'Not found'}</p>
-                <p><strong>Sect:</strong> {parsedCharacter.sect || 'Not found'}</p>
-                <p><strong>Attributes found:</strong> {Object.keys(parsedCharacter.attributes || {}).length}</p>
-                <p><strong>Skills found:</strong> {Object.keys(parsedCharacter.skills || {}).length}</p>
+              <div className="dashboard__review-form">
+                <label className="dashboard__review-label">
+                  Name
+                  <input 
+                    type="text" 
+                    value={parsedCharacter.name || ''} 
+                    onChange={(e) => handleUpdateParsed('name', e.target.value)}
+                    className="dashboard__review-input"
+                  />
+                </label>
+                <label className="dashboard__review-label">
+                  Clan
+                  <select 
+                    value={parsedCharacter.clan || ''} 
+                    onChange={(e) => handleUpdateParsed('clan', e.target.value)}
+                    className="dashboard__review-input"
+                  >
+                    <option value="">-- Select Clan --</option>
+                    {v5data.clans.map(c => <option key={c} value={c}>{c}</option>)}
+                    <option value="Other">Other</option>
+                  </select>
+                </label>
+                <label className="dashboard__review-label">
+                  Sect
+                  <select 
+                    value={parsedCharacter.sect || ''} 
+                    onChange={(e) => handleUpdateParsed('sect', e.target.value)}
+                    className="dashboard__review-input"
+                  >
+                    <option value="Camarilla">Camarilla</option>
+                    <option value="Anarch">Anarch</option>
+                    <option value="Autarkis">Autarkis</option>
+                    <option value="Sabbat">Sabbat</option>
+                  </select>
+                </label>
+                
+                <div className="dashboard__review-stats-summary">
+                  <p>Attributes found: <strong>{Object.keys(parsedCharacter.attributes || {}).length}</strong></p>
+                  <p>Skills found: <strong>{Object.keys(parsedCharacter.skills || {}).length}</strong></p>
+                  <p>Disciplines found: <strong>{parsedCharacter.disciplines?.length || 0}</strong></p>
+                </div>
               </div>
+
               <div className="dashboard__review-actions">
                 <button 
                   className="dashboard__btn dashboard__btn_secondary" 
@@ -161,7 +206,7 @@ const Dashboard = () => {
                 <button 
                   className="dashboard__btn dashboard__btn_primary" 
                   onClick={handleConfirmImport}
-                  disabled={isContextLoading}
+                  disabled={isContextLoading || !parsedCharacter.name || !parsedCharacter.clan}
                 >
                   {isContextLoading ? 'Saving...' : 'Confirm & Save'}
                 </button>

@@ -114,6 +114,16 @@ export const mapGridToCharacter = (grid) => {
     const isNum = ["generation", "humanity", "bloodPotency", "hunger"].includes(field);
     let val = getValueForLabel(regexList, isNum);
     if (field === "generation" && val < 4) val = 13;
+    
+    // Fuzzy match Clan against standard list
+    if (field === "clan" && val) {
+      const match = v5data.clans.find(c => 
+        c.toLowerCase() === val.toLowerCase() || 
+        c.toLowerCase().replace("the ", "") === val.toLowerCase()
+      );
+      if (match) val = match;
+    }
+
     if (val !== undefined) character[field] = val;
   });
 
@@ -152,7 +162,6 @@ export const mapGridToCharacter = (grid) => {
     for (let c = 0; c < grid[r].length; c++) {
       const cell = grid[r][c]?.trim();
       if (/disciplines/i.test(cell)) {
-        // Look at the rows immediately below this label
         for (let rowOffset = 1; rowOffset <= 5; rowOffset++) {
           const discRow = grid[r + rowOffset];
           if (!discRow) continue;
@@ -162,16 +171,14 @@ export const mapGridToCharacter = (grid) => {
           const powerText = discRow[c + 2]?.trim();
 
           if (discName && !isLabel(discName)) {
-            // Validate against our data repo
-            const isValid = v5data.disciplines.some(vd => vd.name.toLowerCase() === discName.toLowerCase());
-            if (isValid) {
-              foundDisciplines.set(discName, dots);
+            const match = v5data.disciplines.find(vd => vd.name.toLowerCase() === discName.toLowerCase());
+            if (match) {
+              foundDisciplines.set(match.name, dots);
               if (powerText && !isLabel(powerText)) {
-                const powers = foundPowers.get(discName) || [];
-                // Only take the name part of the power text (split on dash or comma)
+                const powers = foundPowers.get(match.name) || [];
                 const powerName = powerText.split(/[-–,]/)[0].trim();
                 powers.push(powerName);
-                foundPowers.set(discName, powers);
+                foundPowers.set(match.name, powers);
               }
             }
           }
