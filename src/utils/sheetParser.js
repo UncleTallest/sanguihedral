@@ -99,9 +99,7 @@ export const mapGridToCharacter = (grid) => {
 
   const isLabel = (text) => {
     if (!text || text.length > 25) return false;
-    const lower = text.toLowerCase();
-    if (ALL_LABELS.some(re => re.test(text))) return true;
-    return false;
+    return ALL_LABELS.some(re => re.test(text));
   };
 
   const isAnotherTrait = (text) => {
@@ -223,20 +221,18 @@ export const mapGridToCharacter = (grid) => {
                 specLines.push(cellParts.pop().trim());
               }
 
-              for (let rowOffset = 1; rowOffset <= 5; rowOffset++) {
+              for (let rowOffset = 1; rowOffset <= 8; rowOffset++) {
                 const nextRowCell = grid[r + rowOffset] ? grid[r + rowOffset][c]?.toString().trim() : "";
                 if (!nextRowCell || isLabel(nextRowCell) || isAnotherTrait(nextRowCell)) break;
                 if (cleanNumeric(nextRowCell, true) === dots) continue;
                 specLines.push(nextRowCell);
               }
 
-              const entry = { 
+              targetArray.push({ 
                 name: vTrait.name, 
                 dots, 
                 specification: specLines.filter(Boolean).join(" | ").substring(0, 500) 
-              };
-              targetArray.push(entry);
-              console.log(`[DEBUG] FOUND TRAIT: ${entry.name}, DOTS: ${entry.dots}, SPEC: ${entry.specification}`);
+              });
               return;
             }
           }
