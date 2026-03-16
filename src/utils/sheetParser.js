@@ -63,6 +63,12 @@ const SKILL_MAPPINGS = {
   technology: [/\btechnology\b/i, /^tech\b/i],
 };
 
+const ALL_TRAIT_NAMES = [
+  ...v5data.merits.map(m => m.name.toLowerCase()),
+  ...v5data.backgrounds.map(b => b.name.toLowerCase()),
+  ...v5data.flaws.map(f => f.name.toLowerCase())
+];
+
 const ALL_LABELS = [
   ...Object.values(FIELD_MAPPINGS).flat(),
   ...Object.values(ATTRIBUTE_MAPPINGS).flat(),
@@ -78,7 +84,7 @@ export const mapGridToCharacter = (grid) => {
     backgrounds: {
       merits: [],
       flaws: [],
-      advantages: [], // Used for combined Backgrounds
+      advantages: [],
       loreSheets: []
     },
     rituals: [],
@@ -93,7 +99,12 @@ export const mapGridToCharacter = (grid) => {
 
   const isLabel = (text) => {
     if (!text || text.length > 25) return false;
-    return ALL_LABELS.some(re => re.test(text));
+    const lower = text.toLowerCase();
+    // Is it a core label?
+    if (ALL_LABELS.some(re => re.test(text))) return true;
+    // Is it another trait name?
+    if (ALL_TRAIT_NAMES.some(name => lower.includes(name))) return true;
+    return false;
   };
 
   const cleanNumeric = (val, isStrict = false) => {
@@ -185,7 +196,7 @@ export const mapGridToCharacter = (grid) => {
     }
   });
 
-  // FUZZY Multiline Miner for Backgrounds
+  // FUZZY Multiline Miner
   const mineTrait = (traitList, targetArray) => {
     traitList.forEach(vTrait => {
       for (let r = 0; r < grid.length; r++) {
@@ -209,7 +220,9 @@ export const mapGridToCharacter = (grid) => {
 
             if (dots > 0) {
               const cellParts = cell.split(/[-–()\[\]]/);
-              if (cellParts.length > 1) specLines.push(cellParts.pop().trim());
+              if (cellParts.length > 1 && cellParts[cellParts.length-1].toLowerCase() !== target) {
+                specLines.push(cellParts.pop().trim());
+              }
 
               for (let rowOffset = 1; rowOffset <= 5; rowOffset++) {
                 const nextRowCell = grid[r + rowOffset] ? grid[r + rowOffset][c]?.toString().trim() : "";
