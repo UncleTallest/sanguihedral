@@ -15,7 +15,7 @@ const FIELD_MAPPINGS = {
   predator: [/predator/i, /pred/i],
   sire: [/sire/i],
   generation: [/generation/i, /gen/i],
-  humanity: [/humanity/i, /hum/i, /^h$/i],
+  humanity: [/humanity/i, /hum/i, /^h$/i, /humanity track/i],
   bloodPotency: [/blood potency/i, /bp/i],
   hunger: [/hunger/i, /hng/i],
 };
@@ -94,7 +94,7 @@ export const mapGridToCharacter = (grid) => {
         const cell = grid[r][c]?.toString().trim();
         if (regexList.some(re => re.test(cell))) {
           // Look right
-          for (let offset = 1; offset <= 2; offset++) {
+          for (let offset = 1; offset <= 3; offset++) {
             const nextCell = grid[r][c + offset]?.toString().trim();
             if (nextCell && !isLabel(nextCell)) {
               return isNumeric ? cleanNumeric(nextCell) : nextCell;
@@ -171,9 +171,11 @@ export const mapGridToCharacter = (grid) => {
       for (let r = 0; r < grid.length; r++) {
         for (let c = 0; c < grid[r].length; c++) {
           if (grid[r][c]?.toString().trim().toLowerCase() === vDisc.name.toLowerCase()) {
-            // Check right for dots
-            const possibleDots = cleanNumeric(grid[r][c+1]);
-            if (possibleDots > 0) dots = possibleDots;
+            // Check right for dots (up to 3 cells)
+            for (let offset = 1; offset <= 3; offset++) {
+              const val = cleanNumeric(grid[r][c+offset]);
+              if (val > 0) { dots = val; break; }
+            }
           }
         }
       }
@@ -189,28 +191,38 @@ export const mapGridToCharacter = (grid) => {
     }
   });
 
-  // GREEDY DATA MINE for Merits, Flaws, and Backgrounds
+  // FUZZY GREEDY DATA MINE for Merits, Flaws, and Backgrounds
   const mineTrait = (traitList, targetArray, isBackground = false) => {
     traitList.forEach(vTrait => {
-      // Find exact match or "Trait Name :" format
       for (let r = 0; r < grid.length; r++) {
         for (let c = 0; c < grid[r].length; c++) {
           const cell = grid[r][c]?.toString().trim().toLowerCase();
-          if (cell === vTrait.name.toLowerCase() || cell.startsWith(vTrait.name.toLowerCase() + ":")) {
-            // Found it! Now find dots
+          if (!cell) continue;
+
+          // Match if cell CONTAINS the trait name (e.g., "Contacts Network" matches "Contacts")
+          if (cell === vTrait.name.toLowerCase() || 
+              cell.startsWith(vTrait.name.toLowerCase() + " ") || 
+              cell.includes(vTrait.name.toLowerCase() + " (") ||
+              cell.includes(vTrait.name.toLowerCase() + " [") ||
+              cell.startsWith(vTrait.name.toLowerCase() + ":")) {
+            
             let dots = 1;
-            // Check right
-            const rightVal = cleanNumeric(grid[r][c+1]);
-            if (rightVal > 0) dots = rightVal;
-            // Check right-right (sometimes there's a spacer)
-            const rightRightVal = cleanNumeric(grid[r][c+2]);
-            if (rightRightVal > 0) dots = rightRightVal;
+            // Scan right for dots
+            for (let offset = 1; offset <= 4; offset++) {
+              const val = cleanNumeric(grid[r][c+offset]);
+              if (val > 0) { dots = val; break; }
+            }
+            
+            // If dots still 1, maybe it's in the same cell? (e.g. "Contacts 2")
+            if (dots === 1) {
+              dots = cleanNumeric(grid[r][c]) || 1;
+            }
 
             const entry = { name: vTrait.name, dots, specification: "" };
             if (isBackground) entry.type = "Background";
             else if (vTrait.type) entry.type = vTrait.type;
             targetArray.push(entry);
-            return; // Move to next trait
+            return;
           }
         }
       }

@@ -8,25 +8,25 @@
     {
       "name": "Animalism",
       "powers": [
-        { "name": "Bond Famulus", "level": 1, "summary": "Form a bond with an animal.", "page": "V5 Core p. 244" },
-        { "name": "Sense the Beast", "level": 1, "summary": "Sense the predatory nature of others.", "page": "V5 Core p. 244", "dice_pool": ["wits", "animalKen"] },
-        { "name": "Feral Whispers", "level": 2, "summary": "Communicate with animals.", "page": "V5 Core p. 245", "dice_pool": ["manipulation", "animalKen"] },
-        { "name": "Quell the Beast", "level": 3, "summary": "Suppress emotional outbursts.", "page": "V5 Core p. 245", "dice_pool": ["charisma", "animalKen"] },
+        { "name": "Bond Famulus", "level": 1, "summary": "Form a bond with an animal.", "dice_pool": ["charisma", "animalKen"], "page": "V5 Core p. 244" },
+        { "name": "Sense the Beast", "level": 1, "summary": "Sense the predatory nature of others.", "dice_pool": ["wits", "animalKen"], "page": "V5 Core p. 244" },
+        { "name": "Feral Whispers", "level": 2, "summary": "Communicate with animals.", "dice_pool": ["manipulation", "animalKen"], "page": "V5 Core p. 245" },
+        { "name": "Quell the Beast", "level": 3, "summary": "Suppress emotional outbursts.", "dice_pool": ["charisma", "animalKen"], "page": "V5 Core p. 245" },
         { "name": "Unliving Hive", "level": 3, "summary": "Extend powers to insect swarms.", "page": "V5 Core p. 246" },
-        { "name": "Subsume the Spirit", "level": 4, "summary": "Possess an animal.", "page": "V5 Core p. 246" },
-        { "name": "Animal Dominion", "level": 5, "summary": "Control large groups of animals.", "page": "V5 Core p. 247" }
+        { "name": "Subsume the Spirit", "level": 4, "summary": "Possess an animal.", "dice_pool": ["manipulation", "animalKen"], "page": "V5 Core p. 246" },
+        { "name": "Animal Dominion", "level": 5, "summary": "Control large groups of animals.", "dice_pool": ["charisma", "animalKen"], "page": "V5 Core p. 247" }
       ]
     },
     {
       "name": "Auspex",
       "powers": [
-        { "name": "Heightened Senses", "level": 1, "summary": "Greatly enhance one sense.", "page": "V5 Core p. 249", "dice_pool": ["wits", "awareness"] },
-        { "name": "Sense the Unseen", "level": 1, "summary": "Detect supernatural presence.", "page": "V5 Core p. 249", "dice_pool": ["wits", "awareness"] },
-        { "name": "Premonition", "level": 2, "summary": "Receive flashes of the future.", "page": "V5 Core p. 249" },
-        { "name": "Scry the Soul", "level": 3, "summary": "Read an individual's aura.", "page": "V5 Core p. 250" },
-        { "name": "Share the Senses", "level": 3, "summary": "Project senses into another.", "page": "V5 Core p. 250" },
-        { "name": "Spirit's Touch", "level": 4, "summary": "Read impressions from objects.", "page": "V5 Core p. 251" },
-        { "name": "Clairvoyance", "level": 5, "summary": "Sense distant locations.", "page": "V5 Core p. 251" }
+        { "name": "Heightened Senses", "level": 1, "summary": "Greatly enhance one sense.", "dice_pool": ["wits", "awareness"], "page": "V5 Core p. 249" },
+        { "name": "Sense the Unseen", "level": 1, "summary": "Detect supernatural presence.", "dice_pool": ["wits", "awareness"], "page": "V5 Core p. 249" },
+        { "name": "Premonition", "level": 2, "summary": "Receive flashes of the future.", "dice_pool": ["wits", "awareness"], "page": "V5 Core p. 249" },
+        { "name": "Scry the Soul", "level": 3, "summary": "Read an individual's aura.", "dice_pool": ["intelligence", "insight"], "page": "V5 Core p. 250" },
+        { "name": "Share the Senses", "level": 3, "summary": "Project senses into another.", "dice_pool": ["resolve", "awareness"], "page": "V5 Core p. 250" },
+        { "name": "Spirit's Touch", "level": 4, "summary": "Read impressions from objects.", "dice_pool": ["intelligence", "awareness"], "page": "V5 Core p. 251" },
+        { "name": "Clairvoyance", "level": 5, "summary": "Sense distant locations.", "dice_pool": ["wits", "awareness"], "page": "V5 Core p. 251" }
       ]
     },
     {
@@ -34,8 +34,8 @@
       "powers": [
         { "name": "Cat's Grace", "level": 1, "summary": "Perfect balance and grace.", "page": "V5 Core p. 252" },
         { "name": "Rapid Reflexes", "level": 1, "summary": "Respond instantly to stimuli.", "page": "V5 Core p. 253" },
-        { "name": "Blink", "level": 2, "summary": "Move rapidly a short distance.", "page": "V5 Core p. 253" },
-        { "name": "Traversal", "level": 3, "summary": "Run across liquids or walls.", "page": "V5 Core p. 253" },
+        { "name": "Blink", "level": 2, "summary": "Move rapidly a short distance.", "dice_pool": ["dexterity", "athletics"], "page": "V5 Core p. 253" },
+        { "name": "Traversal", "level": 3, "summary": "Run across liquids or walls.", "dice_pool": ["dexterity", "athletics"], "page": "V5 Core p. 253" },
         { "name": "Unerring Aim", "level": 4, "summary": "Time slows down for your strikes.", "page": "V5 Core p. 254" },
         { "name": "Split Second", "level": 5, "summary": "Take a full turn in an instant.", "page": "V5 Core p. 255" }
       ]
@@ -43,12 +43,12 @@
     {
       "name": "Dominate",
       "powers": [
-        { "name": "Cloud Memory", "level": 1, "summary": "Wipe the victim's short-term memory.", "page": "V5 Core p. 255" },
-        { "name": "Compel", "level": 1, "summary": "A single word command.", "page": "V5 Core p. 255", "dice_pool": ["manipulation", "intimidation"] },
-        { "name": "Mesmerize", "level": 2, "summary": "Issue complex hypnotic commands.", "page": "V5 Core p. 256", "dice_pool": ["manipulation", "leadership"] },
-        { "name": "Forgetful Mind", "level": 3, "summary": "Rewrite the victim's memories.", "page": "V5 Core p. 257", "dice_pool": ["manipulation", "persuasion"] },
+        { "name": "Cloud Memory", "level": 1, "summary": "Wipe the victim's short-term memory.", "dice_pool": ["charisma", "subterfuge"], "page": "V5 Core p. 255" },
+        { "name": "Compel", "level": 1, "summary": "A single word command.", "dice_pool": ["manipulation", "intimidation"], "page": "V5 Core p. 255" },
+        { "name": "Mesmerize", "level": 2, "summary": "Issue complex hypnotic commands.", "dice_pool": ["manipulation", "leadership"], "page": "V5 Core p. 256" },
+        { "name": "Forgetful Mind", "level": 3, "summary": "Rewrite the victim's memories.", "dice_pool": ["manipulation", "persuasion"], "page": "V5 Core p. 257" },
         { "name": "Rationalize", "level": 4, "summary": "The victim believes your commands are their own idea.", "page": "V5 Core p. 257" },
-        { "name": "Mass Manipulation", "level": 5, "summary": "Dominate a crowd.", "page": "V5 Core p. 258" }
+        { "name": "Mass Manipulation", "level": 5, "summary": "Dominate a crowd.", "dice_pool": ["manipulation", "leadership"], "page": "V5 Core p. 258" }
       ]
     },
     {
@@ -77,7 +77,7 @@
       "name": "Potence",
       "powers": [
         { "name": "Lethal Body", "level": 1, "summary": "Unarmed attacks are deadly.", "page": "V5 Core p. 264" },
-        { "name": "Soaring Leap", "level": 1, "summary": "Jump incredible distances.", "page": "V5 Core p. 264", "dice_pool": ["strength", "athletics"] },
+        { "name": "Soaring Leap", "level": 1, "summary": "Jump incredible distances.", "dice_pool": ["strength", "athletics"], "page": "V5 Core p. 264" },
         { "name": "Prowess", "level": 2, "summary": "Add dots to unarmed damage.", "page": "V5 Core p. 264" },
         { "name": "Brutal Clout", "level": 3, "summary": "Knock back foes with impact.", "page": "V5 Core p. 265" },
         { "name": "Uncanny Grip", "level": 4, "summary": "Climb walls like a spider.", "page": "V5 Core p. 266" },
@@ -87,13 +87,13 @@
     {
       "name": "Presence",
       "powers": [
-        { "name": "Awe", "level": 1, "summary": "Center of attention.", "page": "V5 Core p. 267", "dice_pool": ["manipulation", "presence"] },
-        { "name": "Daunt", "level": 1, "summary": "Appear terrifying.", "page": "V5 Core p. 267" },
-        { "name": "Lingering Kiss", "level": 2, "summary": "Your bite creates obsession.", "page": "V5 Core p. 267" },
-        { "name": "Dread Gaze", "level": 3, "summary": "Paralyze with a stare.", "page": "V5 Core p. 268" },
-        { "name": "Entrancement", "level": 3, "summary": "Make a person your devoted servant.", "page": "V5 Core p. 268" },
-        { "name": "Summon", "level": 4, "summary": "Call someone to you from distance.", "page": "V5 Core p. 269" },
-        { "name": "Majesty", "level": 5, "summary": "None can raise a hand against you.", "page": "V5 Core p. 269" }
+        { "name": "Awe", "level": 1, "summary": "Center of attention.", "dice_pool": ["manipulation", "presence"], "page": "V5 Core p. 267" },
+        { "name": "Daunt", "level": 1, "summary": "Appear terrifying.", "dice_pool": ["wits", "presence"], "page": "V5 Core p. 267" },
+        { "name": "Lingering Kiss", "level": 2, "summary": "Your bite creates obsession.", "dice_pool": ["charisma", "persuasion"], "page": "V5 Core p. 267" },
+        { "name": "Dread Gaze", "level": 3, "summary": "Paralyze with a stare.", "dice_pool": ["charisma", "intimidation"], "page": "V5 Core p. 268" },
+        { "name": "Entrancement", "level": 3, "summary": "Make a person your devoted servant.", "dice_pool": ["charisma", "persuasion"], "page": "V5 Core p. 268" },
+        { "name": "Summon", "level": 4, "summary": "Call someone to you from distance.", "dice_pool": ["manipulation", "subterfuge"], "page": "V5 Core p. 269" },
+        { "name": "Majesty", "level": 5, "summary": "None can raise a hand against you.", "dice_pool": ["charisma", "intimidation"], "page": "V5 Core p. 269" }
       ]
     },
     {
@@ -110,19 +110,19 @@
       "name": "Blood Sorcery",
       "powers": [
         { "name": "Corrosive Vitae", "level": 1, "summary": "Your blood becomes acid.", "page": "V5 Core p. 272" },
-        { "name": "Extinguish Vitae", "level": 2, "summary": "Drain another's blood power.", "page": "V5 Core p. 273" },
-        { "name": "Scorpion's Touch", "level": 3, "summary": "Turn your blood into poison.", "page": "V5 Core p. 273" },
-        { "name": "Theft of Vitreous Humor", "level": 4, "summary": "Drain the target's eyes.", "page": "V5 Core p. 273" },
+        { "name": "Extinguish Vitae", "level": 2, "summary": "Drain another's blood power.", "dice_pool": ["wits", "occult"], "page": "V5 Core p. 273" },
+        { "name": "Scorpion's Touch", "level": 3, "summary": "Turn your blood into poison.", "dice_pool": ["strength", "medicine"], "page": "V5 Core p. 273" },
+        { "name": "Theft of Vitreous Humor", "level": 4, "summary": "Drain the target's eyes.", "dice_pool": ["wits", "occult"], "page": "V5 Core p. 273" },
         { "name": "Baal's Caress", "level": 5, "summary": "Coat your blade in lethal blood.", "page": "V5 Core p. 274" }
       ],
       "rituals": [
-        { "name": "A Taste for Blood", "level": 1, "summary": "Learn facts about a vampire's blood.", "page": "V5 Core p. 272", "dice_pool": ["intelligence", "occult"] },
-        { "name": "Illuminate the Trail of Prey", "level": 1, "summary": "See the glowing trail of a target.", "page": "V5 Core p. 272" },
-        { "name": "Blood Walk", "level": 2, "summary": "Learn the target's lineage.", "page": "V5 Core p. 273" },
-        { "name": "Ward Against Ghouls", "level": 2, "summary": "Create a barrier against ghouls.", "page": "V5 Core p. 273" },
-        { "name": "Ward Against Lupines", "level": 3, "summary": "Create a barrier against werewolves.", "page": "V5 Core p. 273" },
-        { "name": "Ward Against Kindred", "level": 4, "summary": "Create a barrier against vampires.", "page": "V5 Core p. 274" },
-        { "name": "Shaft of Belated Quiescence", "level": 5, "summary": "A stake that breaks off in the heart.", "page": "V5 Core p. 274" }
+        { "name": "A Taste for Blood", "level": 1, "summary": "Learn facts about a vampire's blood.", "dice_pool": ["intelligence", "occult"], "page": "V5 Core p. 272" },
+        { "name": "Illuminate the Trail of Prey", "level": 1, "summary": "See the glowing trail of a target.", "dice_pool": ["wits", "occult"], "page": "V5 Core p. 272" },
+        { "name": "Blood Walk", "level": 2, "summary": "Learn the target's lineage.", "dice_pool": ["intelligence", "occult"], "page": "V5 Core p. 273" },
+        { "name": "Ward Against Ghouls", "level": 2, "summary": "Create a barrier against ghouls.", "dice_pool": ["intelligence", "occult"], "page": "V5 Core p. 273" },
+        { "name": "Ward Against Lupines", "level": 3, "summary": "Create a barrier against werewolves.", "dice_pool": ["intelligence", "occult"], "page": "V5 Core p. 273" },
+        { "name": "Ward Against Kindred", "level": 4, "summary": "Create a barrier against vampires.", "dice_pool": ["intelligence", "occult"], "page": "V5 Core p. 274" },
+        { "name": "Shaft of Belated Quiescence", "level": 5, "summary": "A stake that breaks off in the heart.", "dice_pool": ["strength", "occult"], "page": "V5 Core p. 274" }
       ]
     }
   ],
@@ -144,6 +144,7 @@
     { "name": "Addiction", "dots": 1, "summary": "Requires a specific drug in their blood prey.", "page": "V5 Core p. 180" },
     { "name": "Archaic", "dots": 2, "summary": "Cannot use modern technology well.", "page": "V5 Core p. 180" },
     { "name": "Blood Junkie", "dots": 1, "summary": "Addicted to Kindred blood.", "page": "V5 Core p. 180" },
+    { "name": "Dark Secret", "dots": 1, "summary": "You have a secret that could destroy you.", "page": "V5 Core p. 182" },
     { "name": "Infamy", "dots": 2, "summary": "Well known for something terrible.", "page": "V5 Core p. 184" },
     { "name": "Stigmatized", "dots": 1, "summary": "Socially shunned in some way.", "page": "V5 Core p. 184" },
     { "name": "Folkloric Bane", "dots": 1, "summary": "Vulnerable to a classic myth (e.g. Garlic).", "page": "V5 Core p. 182" },
@@ -160,6 +161,7 @@
     { "name": "Influence", "type": "Background", "dots": 1, "summary": "Your power in mortal society.", "page": "V5 Core p. 187" },
     { "name": "Mask", "type": "Background", "dots": 1, "summary": "A fake identity.", "page": "V5 Core p. 190" },
     { "name": "Mentor", "type": "Background", "dots": 1, "summary": "An older Kindred who guides you.", "page": "V5 Core p. 191" },
+    { "name": "Mawla", "type": "Background", "dots": 1, "summary": "A Kindred patron.", "page": "V5 Core p. 191" },
     { "name": "Resources", "type": "Background", "dots": 1, "summary": "Personal wealth and liquid assets.", "page": "V5 Core p. 188" },
     { "name": "Retainers", "type": "Background", "dots": 1, "summary": "Loyal servants (Ghouls).", "page": "V5 Core p. 191" },
     { "name": "Status", "type": "Background", "dots": 1, "summary": "Your standing in Kindred society.", "page": "V5 Core p. 192" }
