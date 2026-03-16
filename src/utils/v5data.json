@@ -113,18 +113,48 @@
         { "name": "Extinguish Vitae", "level": 2, "summary": "Drain another's blood power.", "page": "V5 Core p. 273" }
       ],
       "rituals": [
-        { "name": "A Taste for Blood", "level": 1, "summary": "Learn facts about a vampire's blood.", "page": "V5 Core p. 272", "dice_pool": ["intelligence", "occult"] }
+        { "name": "A Taste for Blood", "level": 1, "summary": "Learn facts about a vampire's blood.", "page": "V5 Core p. 272", "dice_pool": ["intelligence", "occult"] },
+        { "name": "Illuminate the Trail of Prey", "level": 1, "summary": "See the glowing trail of a target.", "page": "V5 Core p. 272" },
+        { "name": "Blood Walk", "level": 2, "summary": "Learn the target's lineage.", "page": "V5 Core p. 273" },
+        { "name": "Ward Against Ghouls", "level": 2, "summary": "Create a barrier against ghouls.", "page": "V5 Core p. 273" }
       ]
     }
   ],
   "merits": [
-    { "name": "High Pain Tolerance", "type": "Merit", "dots": 2, "summary": "Ignore the first level of injury penalties.", "page": "V5 Core p. 179" }
+    { "name": "Beautiful", "type": "Merit", "dots": 2, "summary": "+1 die to Social pools where looks matter.", "page": "V5 Core p. 179" },
+    { "name": "Stunning", "type": "Merit", "dots": 4, "summary": "+2 dice to Social pools where looks matter.", "page": "V5 Core p. 179" },
+    { "name": "Bond Junkie", "type": "Merit", "dots": 1, "summary": "+1 die to use and resist Blood Bonds.", "page": "V5 Core p. 180" },
+    { "name": "Unbondable", "type": "Merit", "dots": 5, "summary": "Cannot be Blood Bound.", "page": "V5 Core p. 180" },
+    { "name": "High Pain Tolerance", "type": "Merit", "dots": 2, "summary": "Ignore the first level of injury penalties.", "page": "V5 Core p. 179" },
+    { "name": "Iron Gullet", "type": "Merit", "dots": 3, "summary": "Can consume rancid or cold blood.", "page": "V5 Core p. 182" },
+    { "name": "Eat Food", "type": "Merit", "dots": 2, "summary": "Can consume and taste food.", "page": "V5 Core p. 182" },
+    { "name": "Linguistics", "type": "Merit", "dots": 1, "summary": "Speaks additional languages.", "page": "V5 Core p. 180" }
+  ],
+  "flaws": [
+    { "name": "Repulsive", "dots": 2, "summary": "-2 dice to Social pools where looks matter.", "page": "V5 Core p. 179" },
+    { "name": "Ugly", "dots": 1, "summary": "-1 die to Social pools where looks matter.", "page": "V5 Core p. 179" },
+    { "name": "Addiction", "dots": 1, "summary": "Requires a specific drug in their blood prey.", "page": "V5 Core p. 180" },
+    { "name": "Archaic", "dots": 2, "summary": "Cannot use modern technology well.", "page": "V5 Core p. 180" },
+    { "name": "Blood Junkie", "dots": 1, "summary": "Addicted to Kindred blood.", "page": "V5 Core p. 180" },
+    { "name": "Infamy", "dots": 2, "summary": "Well known for something terrible.", "page": "V5 Core p. 184" },
+    { "name": "Stigmatized", "dots": 1, "summary": "Socially shunned in some way.", "page": "V5 Core p. 184" },
+    { "name": "Folkloric Bane", "dots": 1, "summary": "Vulnerable to a classic myth (e.g. Garlic).", "page": "V5 Core p. 182" }
   ],
   "backgrounds": [
+    { "name": "Allies", "type": "Background", "dots": 1, "summary": "Mortal associates who help you.", "page": "V5 Core p. 184" },
     { "name": "Contacts", "type": "Background", "dots": 1, "summary": "Information sources in the city.", "page": "V5 Core p. 185" },
-    { "name": "Resources", "type": "Background", "dots": 1, "summary": "Personal wealth and liquid assets.", "page": "V5 Core p. 188" }
+    { "name": "Haven", "type": "Background", "dots": 1, "summary": "A safe place to sleep.", "page": "V5 Core p. 188" },
+    { "name": "Herd", "type": "Background", "dots": 1, "summary": "A group of mortals you can feed from safely.", "page": "V5 Core p. 189" },
+    { "name": "Influence", "type": "Background", "dots": 1, "summary": "Your power in mortal society.", "page": "V5 Core p. 187" },
+    { "name": "Mask", "type": "Background", "dots": 1, "summary": "A fake identity.", "page": "V5 Core p. 190" },
+    { "name": "Mentor", "type": "Background", "dots": 1, "summary": "An older Kindred who guides you.", "page": "V5 Core p. 191" },
+    { "name": "Resources", "type": "Background", "dots": 1, "summary": "Personal wealth and liquid assets.", "page": "V5 Core p. 188" },
+    { "name": "Retainers", "type": "Background", "dots": 1, "summary": "Loyal servants (Ghouls).", "page": "V5 Core p. 191" },
+    { "name": "Status", "type": "Background", "dots": 1, "summary": "Your standing in Kindred society.", "page": "V5 Core p. 192" }
   ],
   "loreSheets": [
-    { "name": "The Firstlight", "summary": "Information on the Second Inquisition.", "page": "V5 Core p. 384" }
+    { "name": "The Firstlight", "summary": "Information on the Second Inquisition.", "page": "V5 Core p. 384" },
+    { "name": "Descendant of Helena", "summary": "Connection to the legendary Toreador.", "page": "V5 Core p. 386" },
+    { "name": "Carna's Rebellion", "summary": "Tremere who follow the path of Carna.", "page": "V5 Core p. 388" }
   ]
 }
