@@ -8,10 +8,10 @@
     {
       "name": "Animalism",
       "powers": [
-        { "name": "Bond Famulus", "level": 1, "cost": "Free", "summary": "Form a bond with an animal.", "page": "V5 Core p. 244" },
-        { "name": "Sense the Beast", "level": 1, "cost": "Free", "summary": "Sense the predatory nature of others.", "page": "V5 Core p. 244", "dice_pool": ["wits", "animalKen"] },
-        { "name": "Feral Whispers", "level": 2, "cost": "1 Rouse Check", "summary": "Communicate with animals.", "page": "V5 Core p. 245", "dice_pool": ["manipulation", "animalKen"] },
-        { "name": "Quell the Beast", "level": 3, "cost": "1 Rouse Check", "summary": "Suppress emotional outbursts.", "page": "V5 Core p. 245", "dice_pool": ["charisma", "animalKen"] },
+        { "name": "Bond Famulus", "level": 1, "summary": "Form a bond with an animal.", "page": "V5 Core p. 244" },
+        { "name": "Sense the Beast", "level": 1, "summary": "Sense the predatory nature of others.", "page": "V5 Core p. 244", "dice_pool": ["wits", "animalKen"] },
+        { "name": "Feral Whispers", "level": 2, "summary": "Communicate with animals.", "page": "V5 Core p. 245", "dice_pool": ["manipulation", "animalKen"] },
+        { "name": "Quell the Beast", "level": 3, "summary": "Suppress emotional outbursts.", "page": "V5 Core p. 245", "dice_pool": ["charisma", "animalKen"] },
         { "name": "Unliving Hive", "level": 3, "summary": "Extend powers to insect swarms.", "page": "V5 Core p. 246" },
         { "name": "Subsume the Spirit", "level": 4, "summary": "Possess an animal.", "page": "V5 Core p. 246" },
         { "name": "Animal Dominion", "level": 5, "summary": "Control large groups of animals.", "page": "V5 Core p. 247" }
@@ -100,8 +100,8 @@
       "name": "Protean",
       "powers": [
         { "name": "Weight of the Feather", "level": 1, "summary": "Become nearly weightless.", "page": "V5 Core p. 269" },
-        { "name": "Feral Weapons", "level": 2, "cost": "1 Rouse Check", "summary": "Grow claws or teeth.", "page": "V5 Core p. 270" },
-        { "name": "Earth Meld", "level": 3, "cost": "1 Rouse Check", "summary": "Merge with the earth.", "page": "V5 Core p. 270" },
+        { "name": "Feral Weapons", "level": 2, "summary": "Grow claws or teeth.", "page": "V5 Core p. 270" },
+        { "name": "Earth Meld", "level": 3, "summary": "Merge with the earth.", "page": "V5 Core p. 270" },
         { "name": "Metamorphosis", "level": 4, "summary": "Transform into an animal.", "page": "V5 Core p. 270" },
         { "name": "Mist Form", "level": 5, "summary": "Transform into a cloud of mist.", "page": "V5 Core p. 271" }
       ]
@@ -110,17 +110,24 @@
       "name": "Blood Sorcery",
       "powers": [
         { "name": "Corrosive Vitae", "level": 1, "summary": "Your blood becomes acid.", "page": "V5 Core p. 272" },
-        { "name": "Extinguish Vitae", "level": 2, "summary": "Drain another's blood power.", "page": "V5 Core p. 273" }
+        { "name": "Extinguish Vitae", "level": 2, "summary": "Drain another's blood power.", "page": "V5 Core p. 273" },
+        { "name": "Scorpion's Touch", "level": 3, "summary": "Turn your blood into poison.", "page": "V5 Core p. 273" },
+        { "name": "Theft of Vitreous Humor", "level": 4, "summary": "Drain the target's eyes.", "page": "V5 Core p. 273" },
+        { "name": "Baal's Caress", "level": 5, "summary": "Coat your blade in lethal blood.", "page": "V5 Core p. 274" }
       ],
       "rituals": [
         { "name": "A Taste for Blood", "level": 1, "summary": "Learn facts about a vampire's blood.", "page": "V5 Core p. 272", "dice_pool": ["intelligence", "occult"] },
         { "name": "Illuminate the Trail of Prey", "level": 1, "summary": "See the glowing trail of a target.", "page": "V5 Core p. 272" },
         { "name": "Blood Walk", "level": 2, "summary": "Learn the target's lineage.", "page": "V5 Core p. 273" },
-        { "name": "Ward Against Ghouls", "level": 2, "summary": "Create a barrier against ghouls.", "page": "V5 Core p. 273" }
+        { "name": "Ward Against Ghouls", "level": 2, "summary": "Create a barrier against ghouls.", "page": "V5 Core p. 273" },
+        { "name": "Ward Against Lupines", "level": 3, "summary": "Create a barrier against werewolves.", "page": "V5 Core p. 273" },
+        { "name": "Ward Against Kindred", "level": 4, "summary": "Create a barrier against vampires.", "page": "V5 Core p. 274" },
+        { "name": "Shaft of Belated Quiescence", "level": 5, "summary": "A stake that breaks off in the heart.", "page": "V5 Core p. 274" }
       ]
     }
   ],
   "merits": [
+    { "name": "Acute Senses", "type": "Merit", "dots": 1, "summary": "+2 dice to Awareness tests for one sense.", "page": "V5 Core p. 179" },
     { "name": "Beautiful", "type": "Merit", "dots": 2, "summary": "+1 die to Social pools where looks matter.", "page": "V5 Core p. 179" },
     { "name": "Stunning", "type": "Merit", "dots": 4, "summary": "+2 dice to Social pools where looks matter.", "page": "V5 Core p. 179" },
     { "name": "Bond Junkie", "type": "Merit", "dots": 1, "summary": "+1 die to use and resist Blood Bonds.", "page": "V5 Core p. 180" },
@@ -128,7 +135,8 @@
     { "name": "High Pain Tolerance", "type": "Merit", "dots": 2, "summary": "Ignore the first level of injury penalties.", "page": "V5 Core p. 179" },
     { "name": "Iron Gullet", "type": "Merit", "dots": 3, "summary": "Can consume rancid or cold blood.", "page": "V5 Core p. 182" },
     { "name": "Eat Food", "type": "Merit", "dots": 2, "summary": "Can consume and taste food.", "page": "V5 Core p. 182" },
-    { "name": "Linguistics", "type": "Merit", "dots": 1, "summary": "Speaks additional languages.", "page": "V5 Core p. 180" }
+    { "name": "Linguistics", "type": "Merit", "dots": 1, "summary": "Speaks additional languages.", "page": "V5 Core p. 180" },
+    { "name": "True Love", "type": "Merit", "dots": 4, "summary": "Automatic success to resist mental control from others.", "page": "V5 Core p. 180" }
   ],
   "flaws": [
     { "name": "Repulsive", "dots": 2, "summary": "-2 dice to Social pools where looks matter.", "page": "V5 Core p. 179" },
@@ -138,7 +146,10 @@
     { "name": "Blood Junkie", "dots": 1, "summary": "Addicted to Kindred blood.", "page": "V5 Core p. 180" },
     { "name": "Infamy", "dots": 2, "summary": "Well known for something terrible.", "page": "V5 Core p. 184" },
     { "name": "Stigmatized", "dots": 1, "summary": "Socially shunned in some way.", "page": "V5 Core p. 184" },
-    { "name": "Folkloric Bane", "dots": 1, "summary": "Vulnerable to a classic myth (e.g. Garlic).", "page": "V5 Core p. 182" }
+    { "name": "Folkloric Bane", "dots": 1, "summary": "Vulnerable to a classic myth (e.g. Garlic).", "page": "V5 Core p. 182" },
+    { "name": "Folkloric Block", "dots": 1, "summary": "Cannot cross certain boundaries (e.g. running water).", "page": "V5 Core p. 182" },
+    { "name": "Known Blank Body", "dots": 2, "summary": "The Second Inquisition has a file on you.", "page": "V5 Core p. 184" },
+    { "name": "Adversary", "dots": 2, "summary": "Someone powerful wants you dead.", "page": "V5 Core p. 184" }
   ],
   "backgrounds": [
     { "name": "Allies", "type": "Background", "dots": 1, "summary": "Mortal associates who help you.", "page": "V5 Core p. 184" },
@@ -158,6 +169,7 @@
     { "name": "Descendant of Helena", "summary": "Connection to the legendary Toreador.", "page": "V5 Core p. 386" },
     { "name": "Carna's Rebellion", "summary": "Tremere who follow the path of Carna.", "page": "V5 Core p. 388" },
     { "name": "The Circulatory System", "summary": "The Kindred black market for blood.", "page": "V5 Core p. 390" },
-    { "name": "Week of Nightmares", "summary": "The return of Ravnos.", "page": "V5 Core p. 392" }
+    { "name": "Week of Nightmares", "summary": "The return of Ravnos.", "page": "V5 Core p. 392" },
+    { "name": "The Ashfinders", "summary": "Vampires addicted to thin-blood ash.", "page": "V5 Core p. 394" }
   ]
 }
