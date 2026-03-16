@@ -17,7 +17,7 @@ const PRESETS = [
 ];
 
 const DiceRoller = () => {
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const { characters } = useCharacters();
   const charId = searchParams.get('charId');
   const poolFromParam = searchParams.get('pool');
@@ -37,8 +37,8 @@ const DiceRoller = () => {
   const [selectedPowerName, setSelectedPowerName] = useState("");
 
   useEffect(() => {
-    if (charId && characters.length > 0) {
-      const char = characters.find(c => c._id === charId);
+    if (characters.length > 0) {
+      const char = charId ? characters.find(c => c._id === charId) : null;
       if (char) {
         setActiveCharacter(char);
         setHungerDice(char.hunger || 1);
@@ -52,9 +52,22 @@ const DiceRoller = () => {
           if (calculatedPool > 0) setTotalPool(calculatedPool);
           if (nameFromParam) setSelectedPowerName(nameFromParam);
         }
+      } else if (!charId && !activeCharacter) {
+        // If no charId in URL, we stay in "No Character Selected" mode
+        setActiveCharacter(null);
       }
     }
-  }, [charId, characters, poolFromParam, nameFromParam]);
+  }, [charId, characters, poolFromParam, nameFromParam, activeCharacter]);
+
+  const handleCharChange = (e) => {
+    const id = e.target.value;
+    if (id) {
+      setSearchParams({ charId: id });
+    } else {
+      setSearchParams({});
+      setActiveCharacter(null);
+    }
+  };
 
   const handleRoll = async () => {
     setRollState('rolling');
@@ -123,7 +136,6 @@ const DiceRoller = () => {
       setSelectedPowerName(powerName);
       setModifier(0);
     } else {
-      // Fallback for powers without defined pools - keep current pool
       setSelectedPowerName(powerName);
     }
   };
@@ -132,13 +144,11 @@ const DiceRoller = () => {
     if (!activeCharacter) return [];
     const ownedPowerNames = new Set();
 
-    // Modern Array format
     if (Array.isArray(activeCharacter.disciplines)) {
       activeCharacter.disciplines.forEach(d => {
         d.powers?.forEach(p => ownedPowerNames.add(p));
       });
     } 
-    // Legacy Object format
     else if (activeCharacter.disciplines && typeof activeCharacter.disciplines === 'object') {
       Object.values(activeCharacter.disciplines).forEach(pList => {
         if (typeof pList === 'string') {
@@ -147,7 +157,6 @@ const DiceRoller = () => {
       });
     }
 
-    // Rituals
     if (Array.isArray(activeCharacter.rituals)) {
       activeCharacter.rituals.forEach(r => ownedPowerNames.add(r));
     }
@@ -206,20 +215,29 @@ const DiceRoller = () => {
       </div>
 
       <div className="dice-roller__controls">
-        {activeCharacter && (
-          <div className="dice-roller__char-info">
-            Character: <strong>{activeCharacter.name}</strong>
-          </div>
-        )}
+        <div className="dice-roller__char-selection">
+          <label className="dice-roller__label">Character</label>
+          <select 
+            className="dice-roller__dropdown" 
+            value={charId || ""} 
+            onChange={handleCharChange}
+          >
+            <option value="">-- No Character (Static Pool) --</option>
+            {characters.map(c => (
+              <option key={c._id} value={c._id}>{c.name}</option>
+            ))}
+          </select>
+        </div>
 
         {availablePowers.length > 0 && (
           <div className="dice-roller__power-selection">
+            <label className="dice-roller__label">Use Power</label>
             <select 
               className="dice-roller__dropdown" 
               value={selectedPowerName}
               onChange={handlePowerSelect}
             >
-              <option value="">-- Use Discipline Power --</option>
+              <option value="">-- Manual/Preset Pool --</option>
               {availablePowers.map(pName => (
                 <option key={pName} value={pName}>{pName}</option>
               ))}

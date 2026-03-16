@@ -7,7 +7,6 @@ export const convertToCsvUrl = (url) => {
   return url.replace(/\/edit.*$/, "/export?format=csv");
 };
 
-// Strict labels: word boundaries
 const FIELD_MAPPINGS = {
   name: [/\bname\b/i, /^n$/i],
   clan: [/\bclan\b/i, /\bcln\b/i],
@@ -178,7 +177,7 @@ export const mapGridToCharacter = (grid) => {
     }
   });
 
-  // ADVANCED FUZZY GREEDY for Merits, Flaws, and Backgrounds
+  // MULTILINE FUZZY GREEDY for Merits, Flaws, and Backgrounds
   const mineTrait = (traitList, targetArray, isBackground = false) => {
     traitList.forEach(vTrait => {
       for (let r = 0; r < grid.length; r++) {
@@ -189,7 +188,6 @@ export const mapGridToCharacter = (grid) => {
           const lowerCell = cell.toLowerCase();
           const target = vTrait.name.toLowerCase();
 
-          // Match if cell CONTAINS name + (Background X) or (Flaw X) or Name | X | Specification
           if (lowerCell === target || 
               lowerCell.startsWith(target + " ") || 
               lowerCell.includes(target + " (") ||
@@ -197,35 +195,37 @@ export const mapGridToCharacter = (grid) => {
               lowerCell.includes(target + " -")) {
             
             let dots = 0;
-            let spec = "";
+            let specLines = [];
 
-            // Strategy 1: Look right for dots
+            // Find dots
             for (let offset = 1; offset <= 4; offset++) {
               const val = cleanNumeric(grid[r][c+offset], true);
               if (val > 0) { 
                 dots = val; 
-                // If there's more text to the right of dots, use it as spec
-                const specCell = grid[r][c+offset+1]?.toString().trim();
-                if (specCell && !isLabel(specCell)) spec = specCell;
                 break; 
               }
             }
-            
-            // Strategy 2: Dots inside the same cell? (e.g. "Contacts 2")
-            if (dots === 0) {
-              dots = cleanNumeric(cell, true);
-            }
+            if (dots === 0) dots = cleanNumeric(cell, true);
 
-            // Strategy 3: Specification before or after?
-            if (!spec) {
-              const possibleSpec = cell.split(/[-–()\[\]]/).pop()?.trim();
-              if (possibleSpec && isNaN(possibleSpec) && possibleSpec.toLowerCase() !== target) {
-                spec = possibleSpec;
-              }
+            // Capture Multiline Specifications
+            // Look at the current cell first
+            const cellParts = cell.split(/[-–()\[\]]/);
+            if (cellParts.length > 1) specLines.push(cellParts.pop().trim());
+
+            // Check up to 4 rows below for descriptive text
+            for (let rowOffset = 1; rowOffset <= 4; rowOffset++) {
+              const nextRowCell = grid[r + rowOffset] ? grid[r + rowOffset][c]?.toString().trim() : "";
+              // If the next row starts a new trait or label, stop
+              if (!nextRowCell || isLabel(nextRowCell)) break;
+              specLines.push(nextRowCell);
             }
 
             if (dots > 0) {
-              const entry = { name: vTrait.name, dots, specification: spec };
+              const entry = { 
+                name: vTrait.name, 
+                dots, 
+                specification: specLines.filter(Boolean).join(" | ") 
+              };
               if (isBackground) entry.type = "Background";
               else if (vTrait.type) entry.type = vTrait.type;
               targetArray.push(entry);
@@ -266,7 +266,6 @@ const findValueBelow = (grid, labelRegex) => {
       const cell = grid[r][c]?.trim();
       if (cell && cell.length < 15 && labelRegex.test(cell)) {
         const val = grid[r+1] ? grid[r+1][c] : undefined;
-        // Check right if below is empty
         if (!val) return cleanNumeric(grid[r][c+1], true);
         return cleanNumeric(val, true);
       }
