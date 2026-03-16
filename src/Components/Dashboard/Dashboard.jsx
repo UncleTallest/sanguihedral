@@ -39,6 +39,12 @@ const Dashboard = () => {
         athletics: 0, brawl: 0, craft: 0, drive: 0, firearms: 0, larceny: 0, melee: 0, stealth: 0, survival: 0,
         animalKen: 0, etiquette: 0, insight: 0, intimidation: 0, leadership: 0, performance: 0, persuasion: 0, streetwise: 0, subterfuge: 0,
         academics: 0, awareness: 0, finance: 0, investigation: 0, medicine: 0, occult: 0, politics: 0, science: 0, technology: 0
+      },
+      backgrounds: {
+        merits: [],
+        flaws: [],
+        advantages: [],
+        loreSheets: []
       }
     };
     addCharacter(newCharData).then((newChar) => {
@@ -197,9 +203,12 @@ const Dashboard = () => {
                   <p>Attributes: <strong>{Object.keys(parsedCharacter.attributes || {}).length}</strong></p>
                   <p>Skills: <strong>{Object.keys(parsedCharacter.skills || {}).length}</strong></p>
                   <p>Disciplines: <strong>{parsedCharacter.disciplines?.length || 0}</strong></p>
-                  <p>Advantages: <strong>{parsedCharacter.advantages?.length || 0}</strong></p>
-                  <p>Flaws: <strong>{parsedCharacter.flaws?.length || 0}</strong></p>
-                  <p>LoreSheets: <strong>{parsedCharacter.loreSheets?.length || 0}</strong></p>
+                  
+                  {/* Correct mapping for refactored nested backgrounds */}
+                  <p>Backgrounds: <strong>{parsedCharacter.backgrounds?.advantages?.length || 0}</strong></p>
+                  <p>Merits: <strong>{parsedCharacter.backgrounds?.merits?.length || 0}</strong></p>
+                  <p>Flaws: <strong>{parsedCharacter.backgrounds?.flaws?.length || 0}</strong></p>
+                  <p>LoreSheets: <strong>{parsedCharacter.backgrounds?.loreSheets?.length || 0}</strong></p>
                   
                   <div className="dashboard__review-lists">
                     {parsedCharacter.disciplines?.length > 0 && (
@@ -212,12 +221,32 @@ const Dashboard = () => {
                         </ul>
                       </div>
                     )}
-                    {parsedCharacter.advantages?.length > 0 && (
+                    {parsedCharacter.backgrounds?.advantages?.length > 0 && (
                       <div className="dashboard__review-list-section">
-                        <span className="dashboard__review-list-title">Advantages</span>
+                        <span className="dashboard__review-list-title">Backgrounds</span>
                         <ul className="dashboard__review-list">
-                          {parsedCharacter.advantages.map(a => (
+                          {parsedCharacter.backgrounds.advantages.map(a => (
                             <li key={a.name}>{a.name} ({a.dots})</li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+                    {parsedCharacter.backgrounds?.merits?.length > 0 && (
+                      <div className="dashboard__review-list-section">
+                        <span className="dashboard__review-list-title">Merits</span>
+                        <ul className="dashboard__review-list">
+                          {parsedCharacter.backgrounds.merits.map(m => (
+                            <li key={m.name}>{m.name} ({m.dots})</li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+                    {parsedCharacter.backgrounds?.flaws?.length > 0 && (
+                      <div className="dashboard__review-list-section">
+                        <span className="dashboard__review-list-title">Flaws</span>
+                        <ul className="dashboard__review-list">
+                          {parsedCharacter.backgrounds.flaws.map(f => (
+                            <li key={f.name}>{f.name} ({f.dots})</li>
                           ))}
                         </ul>
                       </div>

@@ -100,17 +100,23 @@ export const mapGridToCharacter = (grid) => {
   const isLabel = (text) => {
     if (!text || text.length > 25) return false;
     const lower = text.toLowerCase();
-    // Is it a core label?
     if (ALL_LABELS.some(re => re.test(text))) return true;
-    // Is it another trait name?
-    if (ALL_TRAIT_NAMES.some(name => lower.includes(name))) return true;
     return false;
+  };
+
+  // Helper to check if a cell contains a new trait name (to stop multiline grab)
+  const isAnotherTrait = (text) => {
+    if (!text) return false;
+    const lower = text.toLowerCase();
+    return ALL_TRAIT_NAMES.some(name => lower.includes(name));
   };
 
   const cleanNumeric = (val, isStrict = false) => {
     if (!val) return 0;
-    const s = val.toString();
-    if (isStrict && s.length > 2) return 0; 
+    const s = val.toString().trim();
+    // In strict mode (looking at neighbor cells), ignore long text
+    if (isStrict && s.length > 3) return 0; 
+    
     const cleaned = s.replace(/[^0-9]/g, '');
     if (cleaned === "") return 0;
     const num = Number(cleaned);
@@ -211,11 +217,13 @@ export const mapGridToCharacter = (grid) => {
             let dots = 0;
             let specLines = [];
 
+            // 1. Check right for dots
             for (let offset = 1; offset <= 4; offset++) {
               const val = cleanNumeric(grid[r][c+offset], true);
               if (val > 0) { dots = val; break; }
             }
-            if (dots === 0) dots = cleanNumeric(cell, true);
+            // 2. Check current cell or below
+            if (dots === 0) dots = cleanNumeric(cell); // Not strict here so it can find "Contacts 2"
             if (dots === 0 && grid[r+1]) dots = cleanNumeric(grid[r+1][c], true);
 
             if (dots > 0) {
@@ -226,7 +234,7 @@ export const mapGridToCharacter = (grid) => {
 
               for (let rowOffset = 1; rowOffset <= 5; rowOffset++) {
                 const nextRowCell = grid[r + rowOffset] ? grid[r + rowOffset][c]?.toString().trim() : "";
-                if (!nextRowCell || isLabel(nextRowCell)) break;
+                if (!nextRowCell || isLabel(nextRowCell) || isAnotherTrait(nextRowCell)) break;
                 if (cleanNumeric(nextRowCell, true) === dots) continue;
                 specLines.push(nextRowCell);
               }

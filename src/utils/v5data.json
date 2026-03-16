@@ -150,7 +150,10 @@
     { "name": "Folkloric Bane", "dots": 1, "summary": "Vulnerable to a classic myth (e.g. Garlic).", "page": "V5 Core p. 182" },
     { "name": "Folkloric Block", "dots": 1, "summary": "Cannot cross certain boundaries (e.g. running water).", "page": "V5 Core p. 182" },
     { "name": "Known Blank Body", "dots": 2, "summary": "The Second Inquisition has a file on you.", "page": "V5 Core p. 184" },
-    { "name": "Adversary", "dots": 2, "summary": "Someone powerful wants you dead.", "page": "V5 Core p. 184" }
+    { "name": "Adversary", "dots": 2, "summary": "Someone powerful wants you dead.", "page": "V5 Core p. 184" },
+    { "name": "Feeding Flaw", "dots": 1, "summary": "Difficulty in feeding (Prey Exclusion, etc).", "page": "V5 Core p. 180" },
+    { "name": "Knowledge Hungry", "dots": 1, "summary": "Cannot resist relic leads or occult secrets.", "page": "Homebrew" },
+    { "name": "Risk Taker", "dots": 1, "summary": "Doesn't know when to quit.", "page": "Homebrew" }
   ],
   "backgrounds": [
     { "name": "Allies", "type": "Background", "dots": 1, "summary": "Mortal associates who help you.", "page": "V5 Core p. 184" },
@@ -163,8 +166,9 @@
     { "name": "Mentor", "type": "Background", "dots": 1, "summary": "An older Kindred who guides you.", "page": "V5 Core p. 191" },
     { "name": "Mawla", "type": "Background", "dots": 1, "summary": "A Kindred patron.", "page": "V5 Core p. 191" },
     { "name": "Resources", "type": "Background", "dots": 1, "summary": "Personal wealth and liquid assets.", "page": "V5 Core p. 188" },
-    { "name": "Retainers", "type": "Background", "dots": 1, "summary": "Loyal servants (Ghouls).", "page": "V5 Core p. 191" },
-    { "name": "Status", "type": "Background", "dots": 1, "summary": "Your standing in Kindred society.", "page": "V5 Core p. 192" }
+    { "name": "Retainer", "type": "Background", "dots": 1, "summary": "Loyal servants (Ghouls).", "page": "V5 Core p. 191" },
+    { "name": "Status", "type": "Background", "dots": 1, "summary": "Your standing in Kindred society.", "page": "V5 Core p. 192" },
+    { "name": "Touchstone", "type": "Background", "dots": 1, "summary": "A mortal who grounds your Humanity.", "page": "V5 Core p. 239" }
   ],
   "loreSheets": [
     { "name": "The Firstlight", "summary": "Information on the Second Inquisition.", "page": "V5 Core p. 384" },
