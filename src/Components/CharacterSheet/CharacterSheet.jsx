@@ -134,24 +134,31 @@ const CoreView = ({ draft, updateDraft }) => {
   );
 };
 
-const StatSection = ({ title, items, values, onChange }) => (
+const StatSection = ({ title, items, values, onChange, isSelectionMode, selectedStats, onToggleSelection }) => (
   <div className="stat-section">
     <h3 className="stat-section__title">{title}</h3>
     <div className="stats-grid">
-      {items.map(item => (
-        <div key={item} className="stat-row">
-          <span className="stat-label">{item}</span>
-          <DotTracker 
-            value={values[item] || 0} 
-            onChange={(val) => onChange(item, val)} 
-          />
-        </div>
-      ))}
+      {items.map(item => {
+        const isSelected = selectedStats?.find(s => s.label === item);
+        return (
+          <div 
+            key={item} 
+            className={`stat-row ${isSelectionMode ? 'stat-row_selectable' : ''} ${isSelected ? 'stat-row_selected' : ''}`}
+            onClick={() => isSelectionMode && onToggleSelection(item, values[item] || 0)}
+          >
+            <span className="stat-label">{item}</span>
+            <DotTracker 
+              value={values[item] || 0} 
+              onChange={(val) => !isSelectionMode && onChange(item, val)} 
+            />
+          </div>
+        );
+      })}
     </div>
   </div>
 );
 
-const AttributesView = ({ draft, updateNestedDraft }) => {
+const AttributesView = ({ draft, updateNestedDraft, isSelectionMode, selectedStats, onToggleSelection }) => {
   const attrs = draft.attributes || {};
   return (
     <div className="tab-view_grouped">
@@ -162,13 +169,16 @@ const AttributesView = ({ draft, updateNestedDraft }) => {
           items={fields}
           values={attrs}
           onChange={(field, val) => updateNestedDraft('attributes', field, val)}
+          isSelectionMode={isSelectionMode}
+          selectedStats={selectedStats}
+          onToggleSelection={onToggleSelection}
         />
       ))}
     </div>
   );
 };
 
-const SkillsView = ({ draft, updateNestedDraft }) => {
+const SkillsView = ({ draft, updateNestedDraft, isSelectionMode, selectedStats, onToggleSelection }) => {
   const skills = draft.skills || {};
   return (
     <div className="tab-view_grouped">
@@ -179,13 +189,16 @@ const SkillsView = ({ draft, updateNestedDraft }) => {
           items={fields}
           values={skills}
           onChange={(field, val) => updateNestedDraft('skills', field, val)}
+          isSelectionMode={isSelectionMode}
+          selectedStats={selectedStats}
+          onToggleSelection={onToggleSelection}
         />
       ))}
     </div>
   );
 };
 
-const SupernaturalView = ({ draft, updateDraft }) => {
+const SupernaturalView = ({ draft, updateDraft, isSelectionMode, selectedStats, onToggleSelection }) => {
   const navigate = useNavigate();
   const disciplines = draft.disciplines || [];
   const rituals = draft.rituals || [];
@@ -236,7 +249,7 @@ const SupernaturalView = ({ draft, updateDraft }) => {
       <div className="view-section">
         <div className="view-section__header">
           <h3>Disciplines</h3>
-          <select className="add-select" onChange={handleAddDiscipline}>
+          <select className="add-select" onChange={handleAddDiscipline} disabled={isSelectionMode}>
             <option value="">+ Add Discipline</option>
             {v5data.disciplines.map(d => <option key={d.name} value={d.name}>{d.name}</option>)}
           </select>
@@ -245,22 +258,31 @@ const SupernaturalView = ({ draft, updateDraft }) => {
         <div className="discipline-list">
           {disciplines.map((d, i) => {
             const data = v5data.disciplines.find(vd => vd.name === d.name);
+            const isSelected = selectedStats?.find(s => s.label === d.name);
             return (
-              <div key={d.name} className="trait-card">
+              <div 
+                key={d.name} 
+                className={`trait-card ${isSelectionMode ? 'trait-card_selectable' : ''} ${isSelected ? 'trait-card_selected' : ''}`}
+                onClick={() => isSelectionMode && onToggleSelection(d.name, d.dots)}
+              >
                 <div className="trait-card__header">
                   <h4>{d.name}</h4>
-                  <DotTracker value={d.dots} onChange={(val) => updateDiscDots(i, val)} />
-                  <button className="remove-btn btn_icon-only" onClick={() => removeDiscipline(i)}>&times;</button>
+                  <DotTracker value={d.dots} onChange={(val) => !isSelectionMode && updateDiscDots(i, val)} />
+                  <button className="remove-btn btn_icon-only" onClick={(e) => {
+                    e.stopPropagation();
+                    !isSelectionMode && removeDiscipline(i);
+                  }}>&times;</button>
                 </div>
                 
                 <div className="power-selector">
                   {data?.powers?.filter(p => p.level <= d.dots).map(p => (
-                    <div key={p.name} className="power-item">
+                    <div key={p.name} className="power-item" onClick={(e) => isSelectionMode && e.stopPropagation()}>
                       <label className="power-item__label">
                         <input 
                           type="checkbox" 
                           checked={d.powers?.includes(p.name)} 
-                          onChange={() => togglePower(i, p.name)}
+                          onChange={() => !isSelectionMode && togglePower(i, p.name)}
+                          disabled={isSelectionMode}
                         />
                         {p.name} (Lvl {p.level})
                       </label>
@@ -271,7 +293,9 @@ const SupernaturalView = ({ draft, updateDraft }) => {
                           {p.dice_pool && (
                             <button 
                               className="roll-btn-small"
-                              onClick={() => {
+                              disabled={isSelectionMode}
+                              onClick={(e) => {
+                                e.stopPropagation();
                                 const poolParam = p.dice_pool.join(',');
                                 navigate(`/dice?charId=${draft._id}&pool=${poolParam}&name=${p.name}`);
                               }}
@@ -301,7 +325,8 @@ const SupernaturalView = ({ draft, updateDraft }) => {
                     <input 
                       type="checkbox" 
                       checked={rituals.includes(r.name)} 
-                      onChange={() => toggleRitual(r.name)}
+                      onChange={() => !isSelectionMode && toggleRitual(r.name)}
+                      disabled={isSelectionMode}
                     />
                     {r.name} (Lvl {r.level})
                   </label>
@@ -312,6 +337,7 @@ const SupernaturalView = ({ draft, updateDraft }) => {
                       {r.dice_pool && (
                         <button 
                           className="roll-btn-small"
+                          disabled={isSelectionMode}
                           onClick={() => {
                             const poolParam = r.dice_pool.join(',');
                             navigate(`/dice?charId=${draft._id}&pool=${poolParam}&name=${r.name}`);
@@ -334,7 +360,7 @@ const SupernaturalView = ({ draft, updateDraft }) => {
   );
 };
 
-const BackgroundsView = ({ draft, updateDraft }) => {
+const BackgroundsView = ({ draft, updateDraft, isSelectionMode, selectedStats, onToggleSelection }) => {
   const backgrounds = draft.backgrounds || { merits: [], flaws: [], advantages: [], loreSheets: [] };
 
   const handleAddTrait = (e) => {
@@ -367,28 +393,39 @@ const BackgroundsView = ({ draft, updateDraft }) => {
     updateDraft('backgrounds', updatedBackgrounds);
   };
 
-  const renderTraitCard = (trait, index, category, label) => (
-    <div key={`${category}-${index}`} className={`trait-card trait-card_${category}`}>
-      <div className="trait-card__header">
-        <h4>{trait.name} <small>({label})</small></h4>
-        <DotTracker value={trait.dots} onChange={(val) => updateTrait(category, index, 'dots', val)} />
-        <button className="remove-btn btn_icon-only" onClick={() => removeTrait(category, index)}>&times;</button>
+  const renderTraitCard = (trait, index, category, label) => {
+    const isSelected = selectedStats?.find(s => s.label === trait.name);
+    return (
+      <div 
+        key={`${category}-${index}`} 
+        className={`trait-card trait-card_${category} ${isSelectionMode ? 'trait-card_selectable' : ''} ${isSelected ? 'trait-card_selected' : ''}`}
+        onClick={() => isSelectionMode && onToggleSelection(trait.name, trait.dots)}
+      >
+        <div className="trait-card__header">
+          <h4>{trait.name} <small>({label})</small></h4>
+          <DotTracker value={trait.dots} onChange={(val) => !isSelectionMode && updateTrait(category, index, 'dots', val)} />
+          <button className="remove-btn btn_icon-only" onClick={(e) => {
+            e.stopPropagation();
+            !isSelectionMode && removeTrait(category, index);
+          }}>&times;</button>
+        </div>
+        <input 
+          className="spec-input" 
+          placeholder="Details..."
+          value={trait.specification || ""}
+          onChange={(e) => !isSelectionMode && updateTrait(category, index, 'specification', e.target.value)}
+          disabled={isSelectionMode}
+        />
       </div>
-      <input 
-        className="spec-input" 
-        placeholder="Details..."
-        value={trait.specification || ""}
-        onChange={(e) => updateTrait(category, index, 'specification', e.target.value)}
-      />
-    </div>
-  );
+    );
+  };
 
   return (
     <div className="backgrounds-view">
       <div className="view-section">
         <div className="view-section__header">
           <h3>Backgrounds & Merits</h3>
-          <select className="add-select" onChange={handleAddTrait}>
+          <select className="add-select" onChange={handleAddTrait} disabled={isSelectionMode}>
             <option value="">+ Add Trait</option>
             <optgroup label="Backgrounds">
               {v5data.backgrounds.map(b => <option key={b.name} value={`Background:${b.name}`}>{b.name}</option>)}
@@ -451,14 +488,17 @@ const VitalsBar = ({ draft, onJumpToCore }) => {
   );
 };
 
-const CharacterSheet = () => {
+const CharacterSheet = ({ onOpenModal }) => {
   const { id } = useParams();
   const { characters, updateCharacter } = useCharacters();
+  const navigate = useNavigate();
   
   const [activeTab, setActiveTab] = useState('core');
   const [draftState, setDraftState] = useState(null);
   const [initialState, setInitialState] = useState(null);
   const [hasChanges, setHasChanges] = useState(false);
+  const [isSelectionMode, setIsSelectionMode] = useState(false);
+  const [selectedStats, setSelectedStats] = useState([]);
 
   // ONLY initialize once
   useEffect(() => {
@@ -477,6 +517,18 @@ const CharacterSheet = () => {
       setHasChanges(isDifferent);
     }
   }, [draftState, initialState]);
+
+  const toggleStatSelection = (label, value) => {
+    setSelectedStats(prev => {
+      const exists = prev.find(s => s.label === label);
+      if (exists) return prev.filter(s => s.label !== label);
+      return [...prev, { label, value }];
+    });
+  };
+
+  const calculateSelectedPool = () => {
+    return selectedStats.reduce((sum, s) => sum + s.value, 0);
+  };
 
   const updateDraft = (field, value) => {
     setDraftState(prev => {
@@ -508,7 +560,19 @@ const CharacterSheet = () => {
   }
 
   return (
-    <div className="character-sheet">
+    <div className={`character-sheet ${isSelectionMode ? 'character-sheet_selection-mode' : ''}`}>
+      <div className="sheet-header-actions">
+        <button 
+          className={`selection-toggle ${isSelectionMode ? 'selection-toggle_active' : ''}`}
+          onClick={() => {
+            setIsSelectionMode(!isSelectionMode);
+            setSelectedStats([]);
+          }}
+        >
+          {isSelectionMode ? 'Cancel Roll' : 'Roll Selection'}
+        </button>
+      </div>
+
       {hasChanges && (
         <div className="sticky-header">
           <button className="save-button btn_primary" onClick={handleSave}>Save Changes</button>
@@ -517,11 +581,67 @@ const CharacterSheet = () => {
       
       <div className="tab-content" style={{ padding: '20px', minHeight: '60vh', paddingBottom: '120px' }}>
         {activeTab === 'core' && <CoreView draft={draftState} updateDraft={updateDraft} />}
-        {activeTab === 'attributes' && <AttributesView draft={draftState} updateNestedDraft={updateNestedDraft} />}
-        {activeTab === 'skills' && <SkillsView draft={draftState} updateNestedDraft={updateNestedDraft} />}
-        {activeTab === 'supernatural' && <SupernaturalView draft={draftState} updateDraft={updateDraft} />}
-        {activeTab === 'backgrounds' && <BackgroundsView draft={draftState} updateDraft={updateDraft} />}
+        {activeTab === 'attributes' && (
+          <AttributesView 
+            draft={draftState} 
+            updateNestedDraft={updateNestedDraft} 
+            isSelectionMode={isSelectionMode}
+            selectedStats={selectedStats}
+            onToggleSelection={toggleStatSelection}
+          />
+        )}
+        {activeTab === 'skills' && (
+          <SkillsView 
+            draft={draftState} 
+            updateNestedDraft={updateNestedDraft} 
+            isSelectionMode={isSelectionMode}
+            selectedStats={selectedStats}
+            onToggleSelection={toggleStatSelection}
+          />
+        )}
+        {activeTab === 'supernatural' && (
+          <SupernaturalView 
+            draft={draftState} 
+            updateDraft={updateDraft} 
+            isSelectionMode={isSelectionMode}
+            selectedStats={selectedStats}
+            onToggleSelection={toggleStatSelection}
+          />
+        )}
+        {activeTab === 'backgrounds' && (
+          <BackgroundsView 
+            draft={draftState} 
+            updateDraft={updateDraft} 
+            isSelectionMode={isSelectionMode}
+            selectedStats={selectedStats}
+            onToggleSelection={toggleStatSelection}
+          />
+        )}
       </div>
+
+      {isSelectionMode && selectedStats.length > 0 && (
+        <div className="floating-roll-btn-container">
+          <button 
+            className="floating-roll-btn"
+            onClick={() => {
+              const pool = calculateSelectedPool();
+              const names = selectedStats.map(s => s.label).join(' + ');
+              // Trigger global modal instead of navigation
+              onOpenModal('dice', { 
+                charId: id, 
+                pool: pool, 
+                name: names 
+              });
+              setIsSelectionMode(false);
+              setSelectedStats([]);
+            }}
+          >
+            <div className="floating-roll-btn__label">Roll Pool</div>
+            <div className="floating-roll-btn__total">{calculateSelectedPool()} DICE</div>
+            <div className="floating-roll-btn__stats">{selectedStats.map(s => s.label).join(' + ')}</div>
+          </button>
+        </div>
+      )}
 
       <VitalsBar draft={draftState} onJumpToCore={() => setActiveTab('core')} />
       <SheetTabs activeTab={activeTab} onTabChange={setActiveTab} />

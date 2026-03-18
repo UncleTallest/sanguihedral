@@ -16,12 +16,14 @@ const PRESETS = [
   { label: 'Res + Composure', attr: 'resolve', skill: 'composure' },
 ];
 
-const DiceRoller = () => {
+const DiceRoller = ({ isModal = false, onClose, initialData = null }) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const { characters } = useCharacters();
-  const charId = searchParams.get('charId');
-  const poolFromParam = searchParams.get('pool');
-  const nameFromParam = searchParams.get('name');
+  
+  // Use props if in modal, otherwise use searchParams
+  const charId = isModal ? initialData?.charId : searchParams.get('charId');
+  const poolFromParam = isModal ? initialData?.pool : searchParams.get('pool');
+  const nameFromParam = isModal ? initialData?.name : searchParams.get('name');
   
   const { history, addRoll, deleteRoll, clearHistory } = useRollHistory();
 

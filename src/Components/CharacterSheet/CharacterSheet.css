@@ -335,3 +335,109 @@
     gap: 20px;
   }
 }
+
+/* Selection Mode Styles */
+.character-sheet_selection-mode .stat-row,
+.character-sheet_selection-mode .trait-card {
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.stat-row_selectable:hover,
+.trait-card_selectable:hover {
+  background: rgba(139, 0, 0, 0.1);
+  box-shadow: 0 0 10px rgba(139, 0, 0, 0.2);
+}
+
+.stat-row_selected,
+.trait-card_selected {
+  background: rgba(139, 0, 0, 0.15) !important;
+  border-left: 4px solid #d32f2f !important;
+  box-shadow: inset 0 0 10px rgba(139, 0, 0, 0.1);
+}
+
+.sheet-header-actions {
+  display: flex;
+  justify-content: flex-end;
+  padding: 10px 20px 0;
+}
+
+.selection-toggle {
+  background: transparent;
+  border: 1px solid #d32f2f;
+  color: #d32f2f;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.8em;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.selection-toggle_active {
+  background: #d32f2f;
+  color: white;
+}
+
+/* Floating Roll Button */
+.floating-roll-btn-container {
+  position: fixed;
+  bottom: 120px; /* Above VitalsBar and SheetTabs */
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  z-index: 1001;
+  pointer-events: none;
+}
+
+.floating-roll-btn {
+  pointer-events: auto;
+  background: #d32f2f;
+  color: white;
+  border: none;
+  padding: 15px 30px;
+  border-radius: 40px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 200px;
+  animation: slideUp 0.3s ease-out;
+}
+
+.floating-roll-btn:hover {
+  background-color: #f44336;
+  transform: scale(1.05);
+}
+
+.floating-roll-btn__label {
+  font-size: 0.7em;
+  text-transform: uppercase;
+  opacity: 0.8;
+  letter-spacing: 1px;
+}
+
+.floating-roll-btn__total {
+  font-size: 1.5em;
+  font-weight: bold;
+  margin: 2px 0;
+}
+
+.floating-roll-btn__stats {
+  font-size: 0.7em;
+  opacity: 0.9;
+  font-style: italic;
+}
+
+@keyframes slideUp {
+  from { transform: translateY(50px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.spec-input:disabled {
+  background: transparent;
+  border-color: transparent;
+  cursor: default;
+}

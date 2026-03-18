@@ -22,8 +22,16 @@ function App() {
 
   const navigate = useNavigate();
 
-  const handleOpenModal = (modal) => setActiveModal(modal);
-  const handleCloseModal = () => setActiveModal("");
+  const [diceRollerData, setDiceRollerData] = useState(null);
+
+  const handleOpenModal = (modal, data = null) => {
+    setActiveModal(modal);
+    if (modal === "dice" && data) setDiceRollerData(data);
+  };
+  const handleCloseModal = () => {
+    setActiveModal("");
+    setDiceRollerData(null);
+  };
 
   const handleLogin = (email, password) => {
     setIsLoading(true);
@@ -122,7 +130,7 @@ function App() {
             path="/characters/:id"
             element={
               <ProtectedRoute isLoggedIn={isLoggedIn}>
-                <CharacterSheet />
+                <CharacterSheet onOpenModal={handleOpenModal} />
               </ProtectedRoute>
             }
           />
@@ -156,6 +164,18 @@ function App() {
           isLoading={isLoading}
           setIsLoading={setIsLoading}
         />
+      )}
+      {activeModal === "dice" && (
+        <div className="modal">
+          <div className="modal__container modal__container_size_large">
+            <button className="modal__close btn_icon-only" onClick={handleCloseModal}>&times;</button>
+            <DiceRoller 
+              isModal={true} 
+              onClose={handleCloseModal} 
+              initialData={diceRollerData}
+            />
+          </div>
+        </div>
       )}
     </CharacterProvider>
   );
