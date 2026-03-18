@@ -1,0 +1,98 @@
+.help-page {
+  padding: 20px;
+  max-width: 800px;
+  margin: 0 auto;
+  padding-bottom: 100px;
+  text-align: left;
+}
+
+.help-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.help-header h1 {
+  margin-bottom: 5px;
+}
+
+.help-section {
+  margin-bottom: 40px;
+  background-color: rgba(30, 30, 30, 0.5);
+  padding: 25px;
+  border-radius: 12px;
+  border: 1px solid #333;
+}
+
+.help-section h2 {
+  font-size: 1.8em;
+  margin-top: 0;
+  margin-bottom: 20px;
+  border-bottom: 1px solid var(--color-blood);
+  padding-bottom: 10px;
+}
+
+.install-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.install-card {
+  background-color: rgba(0, 0, 0, 0.3);
+  padding: 15px;
+  border-radius: 8px;
+  border: 1px solid #444;
+}
+
+.install-card h3 {
+  color: var(--color-accent);
+  margin-top: 0;
+  font-size: 1.2em;
+}
+
+.install-card ol {
+  padding-left: 20px;
+  margin-bottom: 0;
+}
+
+.install-card li {
+  margin-bottom: 10px;
+  font-size: 0.9em;
+  color: #ccc;
+}
+
+.faq-item {
+  margin-bottom: 20px;
+}
+
+.faq-item h3 {
+  font-size: 1.1em;
+  color: var(--color-accent);
+  margin-bottom: 8px;
+  text-transform: none;
+  letter-spacing: 0.5px;
+}
+
+.faq-item p {
+  color: #aaa;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.help-footer {
+  text-align: center;
+  margin-top: 40px;
+  font-family: var(--font-flavor);
+  color: #666;
+}
+
+@media (max-width: 600px) {
+  .install-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .help-page {
+    padding: 15px;
+  }
+}

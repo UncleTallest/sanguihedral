@@ -23,6 +23,12 @@ const Header = ({ isLoggedIn, onOpenModal, onSignOut }) => {
         </Link>
 
         <nav className="header__nav">
+          <NavLink 
+            to="/help" 
+            className={({ isActive }) => `header__link ${isActive ? "header__link_active" : ""}`}
+          >
+            Help
+          </NavLink>
           {isLoggedIn ? (
             <>
               <NavLink 

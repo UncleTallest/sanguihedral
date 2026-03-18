@@ -6,6 +6,7 @@ import Header from "../Header/Header";
 import Dashboard from "../Dashboard/Dashboard";
 import CharacterSheet from "../CharacterSheet/CharacterSheet";
 import DiceRoller from "../DiceRoller/DiceRoller";
+import Help from "../Help/Help";
 import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
 import LoginModal from "../LoginModal/LoginModal";
 import RegisterModal from "../RegisterModal/RegisterModal";
@@ -138,6 +139,12 @@ function App() {
             path="/dice"
             element={
               <DiceRoller />
+            }
+          />
+          <Route
+            path="/help"
+            element={
+              <Help />
             }
           />
         </Routes>
