@@ -8,6 +8,7 @@
   justify-content: center;
   align-items: center;
   background-color: rgba(0, 0, 0, 0.8);
+  z-index: 2000; /* Higher than VitalsBar (999) and SheetTabs (1000) */
 }
 .modal_opened {
   display: flex;
@@ -20,6 +21,9 @@
   font-size: 16px;
   line-height: 20px;
   width: 496px;
+  max-width: 95vw;
+  max-height: 90vh;
+  overflow-y: auto;
   border-radius: 20px;
   border: none;
   padding: 20px 20px;
