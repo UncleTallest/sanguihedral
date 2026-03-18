@@ -393,9 +393,9 @@
 
 .floating-roll-btn {
   pointer-events: auto;
-  background: var(--color-blood);
-  color: white;
-  border: 2px solid var(--color-accent);
+  background: var(--color-blood) !important;
+  color: white !important;
+  border: 2px solid var(--color-accent) !important;
   padding: 15px 30px;
   border-radius: 40px;
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.6);
