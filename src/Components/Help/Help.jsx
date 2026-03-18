@@ -15,11 +15,11 @@ const Help = () => {
         
         <div className="install-grid">
           <div className="install-card">
-            <h3>Android (Chrome)</h3>
+            <h3>Android (Chrome or Firefox)</h3>
             <ol>
-              <li>Open <strong>Sanguihedral</strong> in Chrome.</li>
-              <li>Tap the <strong>three dots (⋮)</strong> in the top right.</li>
-              <li>Select <strong>"Add to Home screen"</strong>.</li>
+              <li>Open <strong>Sanguihedral</strong> in your browser.</li>
+              <li>For <strong>Chrome</strong>: Tap the three dots (⋮) > "Add to Home screen".</li>
+              <li>For <strong>Firefox</strong>: Tap the three dots (⋮) > "Install".</li>
               <li>Launch from your home screen for a full-screen experience.</li>
             </ol>
           </div>
@@ -73,7 +73,7 @@ const Help = () => {
         <h2>🛠 Troubleshooting</h2>
         <div className="faq-item">
           <h3>The "Add to Home Screen" button isn't appearing.</h3>
-          <p>Make sure you are using <strong>Chrome</strong> on Android or <strong>Safari</strong> on iOS. Third-party browsers (like the Facebook or Reddit in-app browsers) do not support PWA installation.</p>
+          <p>Make sure you are using <strong>Chrome or Firefox</strong> on Android, or <strong>Safari</strong> on iOS. Third-party browsers (like the Facebook or Reddit in-app browsers) do not support PWA installation.</p>
         </div>
         <div className="faq-item">
           <h3>I'm seeing browser chrome even after installing.</h3>
