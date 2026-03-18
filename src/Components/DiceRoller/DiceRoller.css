@@ -251,9 +251,9 @@
 
 .dice-roller__roll-button {
   font-family: var(--font-stats);
-  background-color: #d32f2f;
-  color: white;
-  border: none;
+  background-color: var(--color-blood) !important;
+  color: white !important;
+  border: 2px solid var(--color-accent) !important;
   padding: 18px;
   font-size: 26px;
   font-weight: bold;
@@ -266,7 +266,8 @@
 }
 
 .dice-roller__roll-button:hover:not(:disabled) {
-  background-color: #f44336;
+  background-color: var(--color-blood-bright) !important;
+  transform: scale(1.02);
 }
 
 @keyframes pulse {
