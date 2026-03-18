@@ -64,12 +64,16 @@ const DiceRoller = ({ isModal = false, onClose, initialData = null }) => {
         setHungerDice(char.hunger || 1);
 
         if (poolFromParam) {
-          const stats = poolFromParam.split(',');
-          let calculatedPool = 0;
-          stats.forEach(stat => {
-            calculatedPool += (char.attributes?.[stat] || char.skills?.[stat] || 0);
-          });
-          if (calculatedPool > 0) setTotalPool(calculatedPool);
+          if (typeof poolFromParam === 'number') {
+            setTotalPool(poolFromParam);
+          } else if (typeof poolFromParam === 'string') {
+            const stats = poolFromParam.split(',');
+            let calculatedPool = 0;
+            stats.forEach(stat => {
+              calculatedPool += (char.attributes?.[stat] || char.skills?.[stat] || 0);
+            });
+            if (calculatedPool > 0) setTotalPool(calculatedPool);
+          }
           if (nameFromParam) setSelectedPowerName(nameFromParam);
         } else if (nameFromParam) {
           const pool = getPoolForPower(nameFromParam, char);

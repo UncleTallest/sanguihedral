@@ -166,9 +166,9 @@ function App() {
         />
       )}
       {activeModal === "dice" && (
-        <div className="modal">
-          <div className="modal__container modal__container_size_large">
-            <button className="modal__close btn_icon-only" onClick={handleCloseModal}>&times;</button>
+        <div className={`modal ${activeModal === "dice" ? "modal_opened" : ""}`}>
+          <div className="modal__content modal__container_size_large" style={{ backgroundColor: '#050505', border: '1px solid var(--color-blood)' }}>
+            <button className="modal__close btn_icon-only" onClick={handleCloseModal} style={{ position: 'absolute', top: '10px', right: '10px' }}>&times;</button>
             <DiceRoller 
               isModal={true} 
               onClose={handleCloseModal} 
