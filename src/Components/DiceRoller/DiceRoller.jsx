@@ -333,7 +333,7 @@ const DiceRoller = ({ isModal = false, onClose, initialData = null }) => {
         </div>
 
         <button 
-          className="dice-roller__roll-button btn_primary" 
+          className="dice-roller__roll-button" 
           onClick={rollState === 'resolved' ? onClose : handleRoll}
           disabled={rollState === 'rolling' || (rollState !== 'resolved' && finalPoolCount <= 0)}
         >
