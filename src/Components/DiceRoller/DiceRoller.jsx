@@ -236,21 +236,23 @@ const DiceRoller = ({ isModal = false, onClose, initialData = null }) => {
       </div>
 
       <div className="dice-roller__controls">
-        <div className="dice-roller__char-selection">
-          <label className="dice-roller__label">Character</label>
-          <select 
-            className="dice-roller__dropdown" 
-            value={charId || ""} 
-            onChange={handleCharChange}
-          >
-            <option value="">-- No Character (Static Pool) --</option>
-            {characters.map(c => (
-              <option key={c._id} value={c._id}>{c.name}</option>
-            ))}
-          </select>
-        </div>
+        {!isModal && (
+          <div className="dice-roller__char-selection">
+            <label className="dice-roller__label">Character</label>
+            <select 
+              className="dice-roller__dropdown" 
+              value={charId || ""} 
+              onChange={handleCharChange}
+            >
+              <option value="">-- No Character (Static Pool) --</option>
+              {characters.map(c => (
+                <option key={c._id} value={c._id}>{c.name}</option>
+              ))}
+            </select>
+          </div>
+        )}
 
-        {availablePowers.length > 0 && (
+        {(!isModal && availablePowers.length > 0) && (
           <div className="dice-roller__power-selection">
             <label className="dice-roller__label">Use Power</label>
             <select 
@@ -266,25 +268,27 @@ const DiceRoller = ({ isModal = false, onClose, initialData = null }) => {
           </div>
         )}
 
-        <div className="dice-roller__presets">
-          {PRESETS.map(p => (
+        {!isModal && (
+          <div className="dice-roller__presets">
+            {PRESETS.map(p => (
+              <button 
+                key={p.label} 
+                className="dice-roller__preset-btn" 
+                onClick={() => applyPreset(p)}
+                disabled={!activeCharacter}
+                title={!activeCharacter ? "Select a character first" : ""}
+              >
+                {p.label}
+              </button>
+            ))}
             <button 
-              key={p.label} 
-              className="dice-roller__preset-btn" 
-              onClick={() => applyPreset(p)}
-              disabled={!activeCharacter}
-              title={!activeCharacter ? "Select a character first" : ""}
+              className="dice-roller__preset-btn dice-roller__preset-btn_alt"
+              onClick={() => setShowAdvanced(!showAdvanced)}
             >
-              {p.label}
+              {showAdvanced ? 'Simple Mode' : 'Advanced Mode'}
             </button>
-          ))}
-          <button 
-            className="dice-roller__preset-btn dice-roller__preset-btn_alt"
-            onClick={() => setShowAdvanced(!showAdvanced)}
-          >
-            {showAdvanced ? 'Simple Mode' : 'Advanced Mode'}
-          </button>
-        </div>
+          </div>
+        )}
 
         <div className="dice-roller__input-group">
           <label>Modifier (+/-)</label>
