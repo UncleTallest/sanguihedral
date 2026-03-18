@@ -84,6 +84,10 @@
   transform: translateY(-1px);
 }
 
+.header__button_signout {
+  margin-left: 15px;
+}
+
 @media (max-width: 600px) {
   .header__title {
     display: none;

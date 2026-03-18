@@ -7,17 +7,16 @@
   border-top: 1px solid #d32f2f;
   z-index: 1000;
   box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center; /* Center the scroll container */
 }
 
 .sheet-tabs__scroll-container {
   display: flex;
   overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
   scrollbar-width: none; /* Firefox */
   -ms-overflow-style: none; /* IE/Edge */
-  max-width: 100%;
-  padding: 0 10px;
+  width: 100%;
+  padding: 0 5px;
 }
 
 .sheet-tabs__scroll-container::-webkit-scrollbar {

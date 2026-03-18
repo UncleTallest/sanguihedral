@@ -372,6 +372,7 @@
   font-weight: bold;
   cursor: pointer;
   transition: all 0.2s;
+  margin-right: 10px;
 }
 
 .selection-toggle_active {
