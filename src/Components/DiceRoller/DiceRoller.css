@@ -249,13 +249,12 @@
   font-weight: bold;
 }
 
-.dice-roller__roll-button {
+#root .dice-roller__roll-button {
   font-family: var(--font-stats);
   background-color: var(--color-blood) !important;
   color: white !important;
   border: 2px solid var(--color-accent) !important;
   padding: 18px;
-
   font-size: 26px;
   font-weight: bold;
   border-radius: 8px;
@@ -266,16 +265,17 @@
   box-shadow: 0 4px 15px rgba(211, 47, 47, 0.3);
 }
 
-.dice-roller__roll-button:disabled {
+#root .dice-roller__roll-button:disabled {
   background-color: var(--color-blood) !important;
   opacity: 0.7;
   cursor: not-allowed;
   color: white !important;
 }
 
-.dice-roller__roll-button:hover:not(:disabled) {
+#root .dice-roller__roll-button:hover:not(:disabled) {
   background-color: var(--color-blood-bright) !important;
   transform: scale(1.02);
+  color: white !important;
 }
 
 @keyframes pulse {

@@ -619,7 +619,7 @@ const CharacterSheet = ({ onOpenModal }) => {
         )}
       </div>
 
-      {isSelectionMode && selectedStats.length > 0 && (
+      {isSelectionMode && selectedStats.length >= 2 && (
         <div className="floating-roll-btn-container">
           <button 
             className="floating-roll-btn"

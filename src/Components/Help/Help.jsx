@@ -37,6 +37,20 @@ const Help = () => {
       </section>
 
       <section className="help-section">
+        <h2>📄 Google Sheets Importer</h2>
+        <p>You can import characters directly from specialized Google Sheets (like the Austin V5 template).</p>
+        <div className="faq-item">
+          <h3>How to get your Import Link:</h3>
+          <ol>
+            <li>In your Google Sheet, go to <strong>File > Share > Publish to web</strong>.</li>
+            <li>Change the link type from <code>Web Page</code> to <code>Comma-separated values (.csv)</code>.</li>
+            <li>Click <strong>Publish</strong> and copy the generated link.</li>
+            <li>On the Sanguihedral Dashboard, click <strong>"Import Character"</strong> and paste that link!</li>
+          </ol>
+        </div>
+      </section>
+
+      <section className="help-section">
         <h2>🎲 Dice Roller FAQ</h2>
         <div className="faq-item">
           <h3>How do I combine stats?</h3>
@@ -52,36 +66,6 @@ const Help = () => {
         <div className="faq-item">
           <h3>Can I reroll?</h3>
           <p>Once a roll is resolved, the button changes to <strong>"CLOSE"</strong> to prevent accidental rerolls. If you need to roll again, close the window and re-select your stats.</p>
-        </div>
-      </section>
-
-      <section className="help-section">
-        <h2>🛠 Troubleshooting</h2>
-        <div className="faq-item">
-          <h3>The "Add to Home Screen" button isn't appearing.</h3>
-          <p>Make sure you are using <strong>Chrome</strong> on Android or <strong>Safari</strong> on iOS. Third-party browsers (like the Facebook or Reddit in-app browsers) do not support PWA installation.</p>
-        </div>
-        <div className="faq-item">
-          <h3>I'm seeing browser chrome even after installing.</h3>
-          <p>If we recently pushed an update, your phone might be using a cached manifest. Try deleting the home screen shortcut, clearing your browser cache, and adding it again.</p>
-        </div>
-        <div className="faq-item">
-          <h3>My character data didn't save.</h3>
-          <p>Ensure you hit the <strong>"Save Changes"</strong> button that appears at the top of the sheet when you make edits. The sheet uses a "Draft" mode so your changes aren't permanent until you commit them.</p>
-        </div>
-      </section>
-
-      <section className="help-section">
-        <h2>📄 Google Sheets Importer</h2>
-        <p>You can import characters directly from specialized Google Sheets (like the Austin V5 template).</p>
-        <div className="faq-item">
-          <h3>How to get your Import Link:</h3>
-          <ol>
-            <li>In your Google Sheet, go to <strong>File > Share > Publish to web</strong>.</li>
-            <li>Change the link type from <code>Web Page</code> to <code>Comma-separated values (.csv)</code>.</li>
-            <li>Click <strong>Publish</strong> and copy the generated link.</li>
-            <li>On the Sanguihedral Dashboard, click <strong>"Import Character"</strong> and paste that link!</li>
-          </ol>
         </div>
       </section>
 
