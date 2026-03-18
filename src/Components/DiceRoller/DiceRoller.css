@@ -265,6 +265,13 @@
   box-shadow: 0 4px 15px rgba(211, 47, 47, 0.3);
 }
 
+.dice-roller__roll-button:disabled {
+  background-color: var(--color-blood) !important;
+  opacity: 0.7;
+  cursor: not-allowed;
+  color: white !important;
+}
+
 .dice-roller__roll-button:hover:not(:disabled) {
   background-color: var(--color-blood-bright) !important;
   transform: scale(1.02);
