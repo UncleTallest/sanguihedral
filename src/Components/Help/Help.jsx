@@ -71,6 +71,20 @@ const Help = () => {
         </div>
       </section>
 
+      <section className="help-section">
+        <h2>📄 Google Sheets Importer</h2>
+        <p>You can import characters directly from specialized Google Sheets (like the Austin V5 template).</p>
+        <div className="faq-item">
+          <h3>How to get your Import Link:</h3>
+          <ol>
+            <li>In your Google Sheet, go to <strong>File > Share > Publish to web</strong>.</li>
+            <li>Change the link type from <code>Web Page</code> to <code>Comma-separated values (.csv)</code>.</li>
+            <li>Click <strong>Publish</strong> and copy the generated link.</li>
+            <li>On the Sanguihedral Dashboard, click <strong>"Import Character"</strong> and paste that link!</li>
+          </ol>
+        </div>
+      </section>
+
       <footer className="help-footer">
         <p>Still having trouble? Contact the developer via <a href="https://ko-fi.com/uncletallest" target="_blank" rel="noreferrer">Ko-fi</a>.</p>
       </footer>
