@@ -69,6 +69,22 @@ const Help = () => {
         </div>
       </section>
 
+      <section className="help-section">
+        <h2>🛠 Troubleshooting</h2>
+        <div className="faq-item">
+          <h3>The "Add to Home Screen" button isn't appearing.</h3>
+          <p>Make sure you are using <strong>Chrome</strong> on Android or <strong>Safari</strong> on iOS. Third-party browsers (like the Facebook or Reddit in-app browsers) do not support PWA installation.</p>
+        </div>
+        <div className="faq-item">
+          <h3>I'm seeing browser chrome even after installing.</h3>
+          <p>If we recently pushed an update, your phone might be using a cached manifest. Try deleting the home screen shortcut, clearing your browser cache, and adding it again.</p>
+        </div>
+        <div className="faq-item">
+          <h3>My character data didn't save.</h3>
+          <p>Ensure you hit the <strong>"Save Changes"</strong> button that appears at the top of the sheet when you make edits. The sheet uses a "Draft" mode so your changes aren't permanent until you commit them.</p>
+        </div>
+      </section>
+
       <footer className="help-footer">
         <p>Still having trouble? Contact the developer via <a href="https://ko-fi.com/uncletallest" target="_blank" rel="noreferrer">Ko-fi</a>.</p>
       </footer>
