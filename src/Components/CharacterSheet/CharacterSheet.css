@@ -393,23 +393,25 @@
 
 .floating-roll-btn {
   pointer-events: auto;
-  background: #d32f2f;
+  background: var(--color-blood);
   color: white;
-  border: none;
+  border: 2px solid var(--color-accent);
   padding: 15px 30px;
   border-radius: 40px;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.6);
   cursor: pointer;
   display: flex;
   flex-direction: column;
   align-items: center;
-  min-width: 200px;
+  min-width: 220px;
   animation: slideUp 0.3s ease-out;
+  transition: all 0.2s;
 }
 
 .floating-roll-btn:hover {
-  background-color: #f44336;
-  transform: scale(1.05);
+  background-color: var(--color-blood-bright);
+  transform: scale(1.05) translateY(-2px);
+  box-shadow: 0 8px 25px rgba(168, 2, 2, 0.4);
 }
 
 .floating-roll-btn__label {
