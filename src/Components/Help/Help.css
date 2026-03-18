@@ -13,6 +13,7 @@
 
 .help-header h1 {
   margin-bottom: 5px;
+  overflow-wrap: break-word;
 }
 
 .help-section {
@@ -94,5 +95,23 @@
   
   .help-page {
     padding: 15px;
+  }
+
+  .help-header h1 {
+    font-size: 2.2em;
+    font-weight: 700;
+    letter-spacing: normal;
+  }
+
+  .help-header .subtitle {
+    font-size: 0.9em;
+  }
+
+  .help-section {
+    padding: 15px;
+  }
+
+  .help-section h2 {
+    font-size: 1.5em;
   }
 }
